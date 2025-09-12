@@ -126,7 +126,7 @@ void Game::render()
 {
 	m_window.clear(ULTRAMARINE);
 	
-	m_npc.update(m_window);
+	m_npc.Update(m_window);
 
 	m_window.display();
 }

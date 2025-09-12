@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include <random>
 
 
 class NPC
@@ -16,6 +17,7 @@ private:
 
 	sf::CircleShape m_npc;
 	sf::Vector2f m_pos{ 400.0f, 300.0f };
-	bool directionDecided;
+	sf::Vector2f m_moveDir;
+	bool directionDecided = false;
 
 };

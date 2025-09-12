@@ -18,6 +18,8 @@
 /// </summary>
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
+#include <random>
+#include <cstdlib>
 #include "NPC.h"
 #include "Player.h"
 
