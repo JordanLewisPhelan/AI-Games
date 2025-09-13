@@ -1,25 +1,15 @@
-/// <summary>
-/// author Pete Lowe May 2025
-/// you need to change the above line or lose marks
-/// </summary>
-
 
 #include "Game.h"
+#include "BoundaryManager.h"
 #include <iostream>
 
 
-
-/// <summary>
-/// default constructor
-/// setup the window properties
-/// load and setup the texts
-/// load and setup the images
-/// load and setup the sounds
-/// </summary>
 Game::Game() :
-	m_window{ sf::VideoMode{ sf::Vector2u{800U, 600U}, 32U }, "SFML Game 3.0" },
-	m_DELETEexitGame{false} //when true game will exit
+	m_window{ sf::VideoMode{ sf::Vector2u{1000U, 800U}, 32U }, "SFML Game 3.0" },
+	m_DELETEexitGame{false}, //when true game will exit
+	m_npc{ sf::Vector2f(400.0f, 300.0f) } // Initialize NPC with a starting position
 {
+	BoundaryManager::setGlobalScreenSize(1000.0f, 800.0f); // Match screen size with border
 	setupTexts(); // load font 
 	setupSprites(); // load texture
 	setupAudio(); // load sounds
@@ -113,6 +103,11 @@ void Game::checkKeyboardState()
 void Game::update(sf::Time t_deltaTime)
 {
 	checkKeyboardState();
+
+	// grab time as full seconds to use for movement 
+	float deltaTimeSeconds = t_deltaTime.asSeconds();
+	m_npc.Update(deltaTimeSeconds);
+
 	if (m_DELETEexitGame)
 	{
 		m_window.close();
@@ -126,7 +121,7 @@ void Game::render()
 {
 	m_window.clear(ULTRAMARINE);
 	
-	m_npc.Update(m_window);
+	m_npc.Render(m_window);
 
 	m_window.display();
 }
@@ -149,7 +144,6 @@ void Game::setupTexts()
 /// </summary>
 void Game::setupSprites()
 {
-	m_npc.GenerateSprite();
 }
 
 /// <summary>
