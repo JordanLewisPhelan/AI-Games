@@ -1,9 +1,4 @@
-﻿  NPC.cpp
-C:\SFML-3.0.0\include\SFML\System\Exception.hpp(41,47): warning C4275: non dll-interface class 'std::runtime_error' used as base for dll-interface class 'sf::Exception'
-  (compiling source file 'NPC.cpp')
-      C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.43.34808\include\stdexcept(100,19):
-      see declaration of 'std::runtime_error'
-      C:\SFML-3.0.0\include\SFML\System\Exception.hpp(41,23):
-      see declaration of 'sf::Exception'
-  
-  AI Game Lab1.vcxproj -> C:\Users\jorda\OneDrive\Desktop\AI Games Lab\AI-Games\AI Game Lab1\Debug\AI Game Lab1.exe
+﻿  Game.cpp
+  AI Game Lab1.vcxproj -> C:\Users\Jordan\Desktop\4th Year Work\AIGames\AI-Games\AI Game Lab1\Debug\AI Game Lab1.exe
+  'pwsh.exe' is not recognized as an internal or external command,
+  operable program or batch file.

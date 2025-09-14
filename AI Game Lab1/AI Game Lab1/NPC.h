@@ -13,8 +13,6 @@ public:
 	void Update(float t_deltaTime);
 	void Render(sf::RenderWindow&);
 
-	void Move();
-
 	sf::Vector2f getPosition() const { return m_pos; }
 
 private:

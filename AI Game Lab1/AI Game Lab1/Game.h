@@ -46,7 +46,7 @@ private:
 	void setupAudio();
 
 	NPC m_npc;
-	//Player m_player;
+	Player m_player;
 	
 	sf::RenderWindow m_window; // main SFML window
 	sf::Font m_jerseyFont;// font used by message
