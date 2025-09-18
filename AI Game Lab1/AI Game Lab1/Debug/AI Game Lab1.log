@@ -1,4 +1,9 @@
-﻿  Game.cpp
-  AI Game Lab1.vcxproj -> C:\Users\Jordan\Desktop\4th Year Work\AIGames\AI-Games\AI Game Lab1\Debug\AI Game Lab1.exe
-  'pwsh.exe' is not recognized as an internal or external command,
-  operable program or batch file.
+﻿  Player.cpp
+C:\SFML-3.0.0\include\SFML\System\Exception.hpp(41,47): warning C4275: non dll-interface class 'std::runtime_error' used as base for dll-interface class 'sf::Exception'
+  (compiling source file 'Player.cpp')
+      C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\stdexcept(100,30):
+      see declaration of 'std::runtime_error'
+      C:\SFML-3.0.0\include\SFML\System\Exception.hpp(41,23):
+      see declaration of 'sf::Exception'
+  
+  AI Game Lab1.vcxproj -> C:\Users\c00287898\Documents\AIGames\AI-Games\AI Game Lab1\Debug\AI Game Lab1.exe

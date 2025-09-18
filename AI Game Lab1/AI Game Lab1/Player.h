@@ -23,6 +23,8 @@ private:
     sf::Vector2f m_targetVelocity;  // What we want to move toward
 
     float m_speed;
+    float m_angle;
+    float m_rotationSpeed = 180.0f; // degrees per second
     float m_acceleration;  // How quickly we reach target velocity
     float m_deceleration;  // How quickly we slow down when no input
 };

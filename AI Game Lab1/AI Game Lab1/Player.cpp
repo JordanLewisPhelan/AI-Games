@@ -9,6 +9,7 @@ Player::Player(sf::Vector2f startPos)
 {
     m_velocity = sf::Vector2f(0.0f, 0.0f);
     m_targetVelocity = sf::Vector2f(0.0f, 0.0f);
+    m_angle = 0.0f;
     setupSprite();
 }
 
@@ -27,36 +28,54 @@ void Player::setupSprite()
 
     m_playerSprite.setPosition(m_position);
 }
-
 void Player::handleInput(float t_deltaTime)
 {
-    sf::Vector2f inputDirection(0.0f, 0.0f);
-
-    // Check all arrow keys simultaneously
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up)) 
+    // Handle rotation (Left/Right arrows)
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left))
     {
-        inputDirection.y -= 1.0f;
+        m_angle -= m_rotationSpeed * t_deltaTime; // Turn left (counterclockwise)
     }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down)) 
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right))
     {
-        inputDirection.y += 1.0f;
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left)) 
-    {
-        inputDirection.x -= 1.0f;
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right)) 
-    {
-        inputDirection.x += 1.0f;
+        m_angle += m_rotationSpeed * t_deltaTime; // Turn right (clockwise)
     }
 
-    // Normalize diagonal movement so it's not faster
-    inputDirection = normalizeVector(inputDirection);
+    // Keep angle between 0 and 360 degrees
+    while (m_angle < 0.0f) m_angle += 360.0f;
+    while (m_angle >= 360.0f) m_angle -= 360.0f;
 
-    // Set target velocity based on input
-    m_targetVelocity = inputDirection * m_speed;
+    // Convert angle to radians for math functions
+    float angleRad = m_angle * (3.14159f / 180.0f);
+    // Handle movement (Up/Down arrows for forward/backward)
+    float forwardInput = 0.0f;
+
+    // Update Visuals
+    m_playerSprite.setRotation(sf::degrees(m_angle + 90.0f));
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up))
+    {
+        forwardInput = 1.0f;  // Move forward in facing direction
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down))
+    {
+        forwardInput = -0.6f; // Move backward (slower reverse)
+    }
+
+    // Calculate movement direction based on current facing angle
+    if (forwardInput != 0.0f)
+    {
+        // Calculate forward direction vector
+        sf::Vector2f forwardDirection(std::cos(angleRad), std::sin(angleRad));
+
+        // Set target velocity based on facing direction and input
+        m_targetVelocity = forwardDirection * (forwardInput * m_speed);
+    }
+    else
+    {
+        // No movement input 
+        m_targetVelocity = sf::Vector2f(0.0f, 0.0f);
+    }
 }
-
 sf::Vector2f Player::normalizeVector(const sf::Vector2f& t_vector)
 {
     float length = std::sqrt(t_vector.x * t_vector.x + t_vector.y * t_vector.y);
@@ -100,13 +119,6 @@ void Player::updateMovement(float t_deltaTime)
 
     // Apply boundary wrapping
     BoundaryManager::wrapPosition(m_position, 1000.0f, 800.0f);
-
-    // Update visual rotation to face movement direction (optional)
-    if (m_velocity.x != 0.0f || m_velocity.y != 0.0f) 
-    {
-        float angle = std::atan2(m_velocity.y, m_velocity.x) * (180.0f / 3.14159f);
-        m_playerSprite.setRotation(sf::degrees(angle + 90.0f)); // +90 because triangle points up by default
-    }
 }
 
 void Player::Update(float t_deltaTime)
