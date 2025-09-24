@@ -45,6 +45,9 @@
     <ClCompile Include="Behaviours.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="NPCManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -60,6 +63,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Behaviours.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NPCManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -24,6 +24,7 @@
 #include "Player.h"
 #include "Behaviours.h"
 #include "Utilities.h"
+#include "NPCManager.h"
 
 
 const sf::Color ULTRAMARINE{ 5, 55,242,255 }; // const colour
@@ -47,17 +48,20 @@ private:
 	void setupSprites();
 	void setupAudio();
 
-	NPC m_npc;
+	//NPC m_npc;
+
+	NPCManager m_npcManager;
 	Player m_player;
 
 	// GameContext holds references to player data - solely for npc tracking
 	PlayerContext m_context;
 
 	// Shared steering behaviors - 1 behaviour and can swap them out
-	SeekBehavior m_seekPlayer;
+	//SeekBehavior m_seekPlayer;
 	
 	sf::RenderWindow m_window; // main SFML window
 	sf::Font m_jerseyFont;// font used by message
+	std::string defaultNpcString = "NPC: ";
 	
 	bool m_DELETEexitGame; // control exiting game
 

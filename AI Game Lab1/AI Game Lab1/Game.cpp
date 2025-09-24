@@ -6,16 +6,18 @@
 Game::Game() :
 	m_window{ sf::VideoMode{ sf::Vector2u{1000U, 800U}, 32U }, "SFML Game 3.0" },
 	m_DELETEexitGame{false}, //when true game will exit
-	m_npc{ sf::Vector2f(400.0f, 300.0f) }, // Initialize NPC with a starting position
+	//m_npc{ sf::Vector2f(400.0f, 300.0f) }, // Initialize NPC with a starting position
 	m_player{ sf::Vector2(600.0f, 400.0f)}, 
 	m_context(m_player),
-	m_seekPlayer(m_context)
+	m_npcManager(m_context)
 {
 	BoundaryManager::setGlobalScreenSize(1000.0f, 800.0f); // Match screen size with border
 	setupTexts(); // load font 
 	setupSprites(); // load texture
 	setupAudio(); // load sounds
-	m_npc.setBehavior(&m_seekPlayer);
+
+	// Spawn 5 NPCs with same default behaviour
+	//m_npc.setBehavior(&m_seekPlayer, "Seek");
 }
 
 /// <summary>
@@ -86,6 +88,17 @@ void Game::processKeys(const std::optional<sf::Event> t_event)
 	{
 		m_DELETEexitGame = true; 
 	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num0))
+	{
+		for (auto& npc : m_npcManager.getAll())
+			npc->toggleCone();
+	}
+
+	if (newKeypress->code >= sf::Keyboard::Key::Num1 && newKeypress->code <= sf::Keyboard::Key::Num5)
+	{
+		int index = static_cast<int>(newKeypress->code) - static_cast<int>(sf::Keyboard::Key::Num1);
+		m_npcManager.toggleNPC(index);
+	}
 }
 
 /// <summary>
@@ -109,8 +122,10 @@ void Game::update(sf::Time t_deltaTime)
 
 	// grab time as full seconds to use for movement 
 	float deltaTimeSeconds = t_deltaTime.asSeconds();
-	m_npc.Update(deltaTimeSeconds);
+	//m_npc.Update(deltaTimeSeconds);
 	m_player.Update(deltaTimeSeconds);
+
+	m_npcManager.updateAll(deltaTimeSeconds);
 
 	if (m_DELETEexitGame)
 	{
@@ -125,7 +140,7 @@ void Game::render()
 {
 	m_window.clear(ULTRAMARINE);
 	
-	m_npc.Render(m_window);
+	m_npcManager.render(m_window);
 	m_player.Render(m_window);
 
 	m_window.display();

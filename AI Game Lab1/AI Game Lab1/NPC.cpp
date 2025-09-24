@@ -8,11 +8,20 @@
 	// Sin is the Vertical -- Up - 90 | 270 - Down -
 
 
-// Initializer for an NPC
 NPC::NPC(sf::Vector2f startPos)
-	: m_pos(startPos), m_speed(50.0f)
+	: m_pos(startPos),
+	m_speed(50.f)
 {
+	// Generate visual triangle
 	GenerateSprite();
+
+	// Setup vision cone as a triangle fan (3 points = FOV wedge)
+	m_visionCone.setPointCount(3);
+	m_visionCone.setFillColor(sf::Color(255, 255, 0, 100)); // semi-transparent yellow
+
+		
+	//sf::FloatRect bounds = m_label.getLocalBounds();
+	//m_label.setOrigin(sf::Vector2f(bounds.size.x / 2.f, bounds.size.y / 2.f));
 }
 
 // Generate our NPC and visualize them visually
@@ -35,6 +44,13 @@ void NPC::GenerateSprite()
 								 bounds.size.y / 2.0f));
 }
 
+void NPC::setBehavior(std::unique_ptr<SteeringBehavior>t_behavior, const std::string& t_behaviorName)
+{
+	m_behaviour = std::move(t_behavior);
+	m_behaviorName = t_behaviorName;
+	//m_label.setString(m_behaviorName); // update label
+}
+
 // Simply adjusts shape rotation to face the Player - ToDo: currently pretty snappy at intense re-directs, look into a fix later on
 void NPC::FaceMovementDirection()
 {
@@ -50,9 +66,44 @@ void NPC::FaceMovementDirection()
 	}
 }
 
+// AI Generated, it is late, this shit is awkward.. I will regrettable read over this and how to do this better later..
+void NPC::updateVisionCone()
+{
+	if (!m_showCone) return;
+
+	float visionLength = 100.f;
+	float visionAngle = 60.f; // full cone angle
+
+	// Get NPC rotation in degrees and correct for the triangle pointing right by default
+	float rotationDeg = m_npc.getRotation().asDegrees() - 90.f;
+	float halfAngle = visionAngle / 2.f;
+
+	// Convert left/right angles to radians
+	float leftRad = (rotationDeg - halfAngle) * 3.14159265f / 180.f;
+	float rightRad = (rotationDeg + halfAngle) * 3.14159265f / 180.f;
+
+	sf::Vector2f pos = m_pos;
+
+	// Compute the end points of the vision cone
+	sf::Vector2f leftPoint = pos + sf::Vector2f(std::cos(leftRad), std::sin(leftRad)) * visionLength;
+	sf::Vector2f rightPoint = pos + sf::Vector2f(std::cos(rightRad), std::sin(rightRad)) * visionLength;
+
+	// Build the triangle
+	m_visionCone.setPointCount(3);
+	m_visionCone.setPoint(0, pos);        // NPC position as apex
+	m_visionCone.setPoint(1, leftPoint);  // left edge
+	m_visionCone.setPoint(2, rightPoint); // right edge
+
+	m_visionCone.setFillColor(sf::Color(255, 255, 0, 100)); // semi-transparent yellow
+}
+
+
+
 
 void NPC::Update(float t_deltaTime)
 {
+	if (!m_active) return;
+
 	if (m_behaviour) {
 		sf::Vector2f steering = m_behaviour->calculateSteering(m_pos,
 			m_velocity,
@@ -76,11 +127,18 @@ void NPC::Update(float t_deltaTime)
 	
 	// Replaces Generate Random Direction to work with any movement not just a fixed one
 	FaceMovementDirection();
+
+	updateVisionCone();
 }
 
 void NPC::Render(sf::RenderWindow& t_window)
 {	
 	// Draws a declared NPC
+	if (!m_active) return;
+
+	if (m_showCone)
+		t_window.draw(m_visionCone);
+
 	t_window.draw(m_npc);
 }
 
