@@ -1,4 +1,5 @@
 #include "NPC.h"
+#include "Behaviours.h"
 #include "BoundaryManager.h"
 
 // // Personal Notes
@@ -9,10 +10,9 @@
 
 // Initializer for an NPC
 NPC::NPC(sf::Vector2f startPos)
-	: m_pos(startPos), m_speed(90.0f)
+	: m_pos(startPos), m_speed(50.0f)
 {
 	GenerateSprite();
-	GenerateRandomDirection();
 }
 
 // Generate our NPC and visualize them visually
@@ -28,7 +28,6 @@ void NPC::GenerateSprite()
 	m_npc.setOutlineThickness(0.5f);
 	m_npc.setOutlineColor(sf::Color::Black);
 	m_npc.setFillColor(sf::Color::Magenta);
-	m_npc.setRotation(sf::degrees(180.0f));
 
 	// Centers the shape on its position - prevents odd movements
 	sf::FloatRect bounds = m_npc.getLocalBounds();
@@ -36,31 +35,37 @@ void NPC::GenerateSprite()
 								 bounds.size.y / 2.0f));
 }
 
-// Creates a random direction for our NPC to move in, testing 360 degree angles for inevitable complexity 
-// Tldr; half of this is unnecessary.. But for SCIENCE!
-void NPC::GenerateRandomDirection()
+// Simply adjusts shape rotation to face the Player - ToDo: currently pretty snappy at intense re-directs, look into a fix later on
+void NPC::FaceMovementDirection()
 {
+	// Only update if velocity is non-zero
+	if (m_velocity.x != 0.f || m_velocity.y != 0.f)
+	{
+		// Calculate angle in degrees from velocity
+		float angleRad = std::atan2(m_velocity.y, m_velocity.x); // atan2 returns radians
+		float angleDeg = angleRad * 180.f / 3.14159265f;
 
-	// VILE, Hacky idea to randomize the move direction properly
-	rand(); rand(); rand();
-
-	// Simple random angle between 0 and 359 degrees
-	float angle = static_cast<float>(rand() % 360);
-
-	// Convert to radians for math functions
-	float angleRad = angle * (3.14159f / 180.0f);
-
-	// Create velocity vector from angle
-	m_velocity.x = std::cos(angleRad) * m_speed;
-	m_velocity.y = std::sin(angleRad) * m_speed;
-	
-
-	// Rotate the triangle to face the movement direction
-	m_npc.setRotation(sf::degrees(angle + 90.0f)); // +90 because triangle points up by default
+		// Triangle points up by default, so +90 to align
+		m_npc.setRotation(sf::degrees(angleDeg + 90.f));
+	}
 }
+
 
 void NPC::Update(float t_deltaTime)
 {
+	if (m_behaviour) {
+		sf::Vector2f steering = m_behaviour->calculateSteering(m_pos,
+			m_velocity,
+			m_speed);
+
+		m_velocity += steering;
+
+		// Clamp velocity
+		float len = std::sqrt(m_velocity.x * m_velocity.x + m_velocity.y * m_velocity.y);
+		if (len > m_speed) {
+			m_velocity = (m_velocity / len) * m_speed;
+		}
+	}
 	// should be more mild movements - less jitter or snappiness
 	m_pos += m_velocity * t_deltaTime;
 
@@ -68,6 +73,9 @@ void NPC::Update(float t_deltaTime)
 	BoundaryManager::wrapPositionGlobal(m_pos);
 
 	m_npc.setPosition(m_pos);
+	
+	// Replaces Generate Random Direction to work with any movement not just a fixed one
+	FaceMovementDirection();
 }
 
 void NPC::Render(sf::RenderWindow& t_window)
@@ -75,3 +83,4 @@ void NPC::Render(sf::RenderWindow& t_window)
 	// Draws a declared NPC
 	t_window.draw(m_npc);
 }
+

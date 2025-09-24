@@ -9,6 +9,7 @@ public:
     void Update(float deltaTime);
     void Render(sf::RenderWindow& window);
     sf::Vector2f getPosition() const { return m_position; }
+    sf::Vector2f getVelocity() const { return m_velocity; }
     void setSpeed(float speed) { m_speed = speed; }
 
 private:

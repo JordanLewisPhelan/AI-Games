@@ -4,26 +4,35 @@
 #include <random>
 
 
+// Forward declaration
+class SteeringBehavior;
+
 class NPC
 {
 public:
+    NPC(sf::Vector2f startPos = sf::Vector2f(400.f, 300.f));
 
-	NPC(sf::Vector2f startPos = sf::Vector2f(400.0f, 300.0f));
+    void Update(float t_deltaTime);
+    void Render(sf::RenderWindow&);
 
-	void Update(float t_deltaTime);
-	void Render(sf::RenderWindow&);
+    // Accessors
+    sf::Vector2f getPosition() const { return m_pos; }
+    sf::Vector2f getVelocity() const { return m_velocity; }
+    float getMaxSpeed() const { return m_speed; }
 
-	sf::Vector2f getPosition() const { return m_pos; }
+    // Behavior management
+    void setBehavior(SteeringBehavior* behavior) { m_behaviour = behavior; }
 
 private:
+    void GenerateSprite();
+    void FaceMovementDirection();
 
-	void GenerateSprite();
-	void GenerateRandomDirection();
-
-	sf::CircleShape m_npc;
-	sf::Vector2f m_pos;
-	sf::Vector2f m_velocity;
-	float m_speed;
-	bool directionDecided = false;
-
+    sf::CircleShape m_npc;
+    sf::Vector2f m_pos;
+    sf::Vector2f m_velocity;
+    float m_speed;
+    SteeringBehavior* m_behaviour = nullptr;
 };
+
+
+
