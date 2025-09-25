@@ -21,14 +21,15 @@ protected:
         return std::sqrt(v.x * v.x + v.y * v.y);
     }
 
-    // Normalizes the value of the vector lines magnitude between -1 and 1, good for keeping the code structure consistent
+    // Normalizes the value of the vector lines magnitude between -1 and 1, good for keeping the vector maths consistent
     static sf::Vector2f normalize(const sf::Vector2f& v) {
         float len = vectorLength(v);
         if (len == 0.f) return { 0.f, 0.f };
         return { v.x / len, v.y / len };
     }
 
-    // < Refine Understanding of function purpose >
+    // Caps vector magnitude to a maximum value If vector is too long;
+    // - it normalizes then scales to max - Good for preventing overpowering steering forces
     static sf::Vector2f truncate(const sf::Vector2f& v, float max) {
         float len = vectorLength(v);
         if (len > max && len > 0.f) {
@@ -40,10 +41,9 @@ protected:
 
 
 
-// SEEK behavior: Move directly toward a target position.
+// SeekBehavior: Move directly toward a target position.
 class SeekBehavior : public SteeringBehavior {
 public:
-    // Constructor - Uses PlayerContext to track player
     SeekBehavior(const PlayerContext& context) : m_context(context) {}
 
     // Is used to update the target position to reach as the npc
