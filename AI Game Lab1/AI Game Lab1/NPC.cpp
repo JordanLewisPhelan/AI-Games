@@ -39,13 +39,23 @@ void NPC::GenerateSprite()
 	sf::FloatRect bounds = m_npc.getLocalBounds();
 	m_npc.setOrigin(sf::Vector2f(bounds.size.x / 2.0f,
 								 bounds.size.y / 2.0f));
+
+	if (!m_jerseyFont.openFromFile("ASSETS\\FONTS\\Jersey20-Regular.ttf"))
+	{
+		std::cout << "problem loading arial black font" << std::endl;
+	}
+	m_name.setFont(m_jerseyFont);
+	m_name.setString("hello world");
+	m_name.setPosition(sf::Vector2f{ 205.0f, 240.0f });
+	m_name.setCharacterSize(15U);
+	m_name.setFillColor(sf::Color::White);
 }
 
 void NPC::setBehavior(std::unique_ptr<SteeringBehavior>t_behavior, const std::string& t_behaviorName)
 {
 	m_behaviour = std::move(t_behavior);
 	m_behaviorName = t_behaviorName;
-	//m_label.setString(m_behaviorName); // update label
+	m_name.setString(m_behaviorName); // update label
 }
 
 // Simply adjusts shape rotation to face the Player - ToDo: currently pretty snappy at intense re-directs, look into a fix later on
@@ -95,8 +105,6 @@ void NPC::updateVisionCone()
 }
 
 
-
-
 void NPC::Update(float t_deltaTime)
 {
 	if (!m_active) return;
@@ -121,6 +129,7 @@ void NPC::Update(float t_deltaTime)
 	BoundaryManager::wrapPositionGlobal(m_pos);
 
 	m_npc.setPosition(m_pos);
+	m_name.setPosition(m_pos + m_textOffset);
 	
 	// Replaces Generate Random Direction to work with any movement not just a fixed one
 	FaceMovementDirection();
@@ -135,7 +144,7 @@ void NPC::Render(sf::RenderWindow& t_window)
 
 	if (m_showCone)
 		t_window.draw(m_visionCone);
-
+	t_window.draw(m_name);
 	t_window.draw(m_npc);
 }
 

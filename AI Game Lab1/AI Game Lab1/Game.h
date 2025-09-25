@@ -56,6 +56,7 @@ private:
 	
 	sf::RenderWindow m_window; // main SFML window
 	sf::Font m_jerseyFont;// font used by message
+	sf::Text m_defaultText{ m_jerseyFont };
 	std::string defaultNpcString = "NPC: ";
 	
 	bool m_DELETEexitGame; // control exiting game

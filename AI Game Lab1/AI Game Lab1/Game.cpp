@@ -151,8 +151,13 @@ void Game::setupTexts()
 	{
 		std::cout << "problem loading arial black font" << std::endl;
 	}
-
-
+	m_defaultText.setFont(m_jerseyFont);
+	m_defaultText.setString("SFML Game");
+	m_defaultText.setPosition(sf::Vector2f{ 205.0f, 240.0f });
+	m_defaultText.setCharacterSize(96U);
+	m_defaultText.setOutlineColor(sf::Color::Black);
+	m_defaultText.setFillColor(sf::Color::Red);
+	m_defaultText.setOutlineThickness(2.0f);
 }
 
 /// <summary>

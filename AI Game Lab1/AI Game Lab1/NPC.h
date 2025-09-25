@@ -2,6 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <random>
+#include <iostream>
 
 
 // Forward declaration
@@ -40,6 +41,10 @@ private:
     float m_speed;
     std::unique_ptr<SteeringBehavior>  m_behaviour = nullptr;
     std::string m_behaviorName = "None";
+
+    sf::Font m_jerseyFont;// font used by message
+    sf::Text m_name{ m_jerseyFont };
+    sf::Vector2f m_textOffset{ sf::Vector2f(20.f, 15.f) };
 
     // Control for NPC presence
     bool m_active = true;
