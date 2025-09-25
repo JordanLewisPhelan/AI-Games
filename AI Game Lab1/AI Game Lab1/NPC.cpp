@@ -19,9 +19,6 @@ NPC::NPC(sf::Vector2f startPos)
 	m_visionCone.setPointCount(3);
 	m_visionCone.setFillColor(sf::Color(255, 255, 0, 100)); // semi-transparent yellow
 
-		
-	//sf::FloatRect bounds = m_label.getLocalBounds();
-	//m_label.setOrigin(sf::Vector2f(bounds.size.x / 2.f, bounds.size.y / 2.f));
 }
 
 // Generate our NPC and visualize them visually
@@ -72,7 +69,7 @@ void NPC::updateVisionCone()
 	if (!m_showCone) return;
 
 	float visionLength = 100.f;
-	float visionAngle = 60.f; // full cone angle
+	float visionAngle = 40.f; // full cone angle
 
 	// Get NPC rotation in degrees and correct for the triangle pointing right by default
 	float rotationDeg = m_npc.getRotation().asDegrees() - 90.f;

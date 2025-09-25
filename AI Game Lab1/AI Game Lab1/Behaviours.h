@@ -40,7 +40,6 @@ protected:
 };
 
 
-
 // SeekBehavior: Move directly toward a target position.
 class SeekBehavior : public SteeringBehavior {
 public:
@@ -83,7 +82,7 @@ private:
 // Arrive Behaviour: NPC will approach the player and slow down when reaching too close to the player
 class ArriveBehavior : public SteeringBehavior {
 public:
-    ArriveBehavior(const PlayerContext& context, float slowRadius = 100.f, float stopRadius = 10.f)
+    ArriveBehavior(const PlayerContext& context, float slowRadius = 100.f, float stopRadius = 30.f)
     : m_context(context), m_slowRadius(slowRadius), m_stopRadius(stopRadius){}
 
     virtual sf::Vector2f calculateSteering(const sf::Vector2f& npcPos,

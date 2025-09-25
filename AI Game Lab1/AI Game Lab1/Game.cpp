@@ -6,7 +6,6 @@
 Game::Game() :
 	m_window{ sf::VideoMode{ sf::Vector2u{1000U, 800U}, 32U }, "SFML Game 3.0" },
 	m_DELETEexitGame{false}, //when true game will exit
-	//m_npc{ sf::Vector2f(400.0f, 300.0f) }, // Initialize NPC with a starting position
 	m_player{ sf::Vector2(600.0f, 400.0f)}, 
 	m_context(m_player),
 	m_npcManager(m_context)
@@ -15,9 +14,6 @@ Game::Game() :
 	setupTexts(); // load font 
 	setupSprites(); // load texture
 	setupAudio(); // load sounds
-
-	// Spawn 5 NPCs with same default behaviour
-	//m_npc.setBehavior(&m_seekPlayer, "Seek");
 }
 
 /// <summary>

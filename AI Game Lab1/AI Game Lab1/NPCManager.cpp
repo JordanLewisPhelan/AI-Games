@@ -1,9 +1,6 @@
 #include "NPCManager.h"
 #include <iostream>
 
-
-#include "NPCManager.h"
-
 NPCManager::NPCManager(PlayerContext& context)
     : m_context(context)
 {
@@ -13,12 +10,12 @@ NPCManager::NPCManager(PlayerContext& context)
 
 void NPCManager::createNPCs(const PlayerContext& context)
 {
-    // Example positions
+    // Preset positions
     std::vector<sf::Vector2f> positions = {
         {400,300}, {500,300}, {600,300}, {700,300}, {800,300}
     };
 
-    // Example speeds
+    // Preset speeds
     std::vector<float> speeds = { 50, 60, 40, 55, 45 };
 
     for (size_t i = 0; i < positions.size(); ++i)
@@ -43,23 +40,6 @@ void NPCManager::updateAll(float dt)
     for (auto& npc : m_npcs)
         npc->Update(dt);
 }
-
-
-
-//void NPCManager::addNPC(const sf::Vector2f& pos, SteeringBehavior* defaultBehavior, const std::string& behaviorName)
-//{
-//    NPC npc(pos);
-//    npc.setBehavior(defaultBehavior, behaviorName);
-//    m_npcs.push_back(std::move(npc));
-//}
-
-//void NPCManager::update(float deltaTime)
-//{
-//    for (auto& npc : m_npcs)
-//    {
-//        npc->Update(deltaTime);
-//    }
-//}
 
 void NPCManager::render(sf::RenderWindow& window)
 {

@@ -48,16 +48,11 @@ private:
 	void setupSprites();
 	void setupAudio();
 
-	//NPC m_npc;
-
 	NPCManager m_npcManager;
 	Player m_player;
 
 	// GameContext holds references to player data - solely for npc tracking
 	PlayerContext m_context;
-
-	// Shared steering behaviors - 1 behaviour and can swap them out
-	//SeekBehavior m_seekPlayer;
 	
 	sf::RenderWindow m_window; // main SFML window
 	sf::Font m_jerseyFont;// font used by message
