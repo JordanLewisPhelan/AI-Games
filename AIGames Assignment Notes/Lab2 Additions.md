@@ -7,6 +7,6 @@
 		1.4 One Pursue Behaviour; The NPC will ***predict where the player will be and aim to intercept the player*** as they move. -COMPLETED AND FUNCTIONAL-
 		
 2. Multiple NPCs must be Made - Used a NPCManager ***-COMPLETED AND FUNCTIONAL-***
-3. NPCs will display Text next to them explaining what their behaviour pattern is. 
-4. NPCs will have a vision cone system, we must also display that or atleast a debug option for this feature.
+3. NPCs will display Text next to them explaining what their behaviour pattern is. ***-COMPLETED AND FUNCTIONAL-***
+4. NPCs will have a vision cone system, we must also display that or atleast a debug option for this feature. ***-COMPLETED-***
 5. NPCs can be toggled via numpad 1 - 5 and text for this should be displayed. ***-COMPLETED AND FUNCTIONAL-***
