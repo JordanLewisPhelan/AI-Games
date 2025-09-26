@@ -101,7 +101,17 @@ void NPC::updateVisionCone()
 	m_visionCone.setPoint(1, leftPoint);  // left edge
 	m_visionCone.setPoint(2, rightPoint); // right edge
 
-	m_visionCone.setFillColor(sf::Color(255, 255, 0, 100)); // semi-transparent yellow
+	// At the end, choose color based on player detection
+	sf::Color fovColor = m_playerDetected ?
+		sf::Color(255, 0, 0, 150) :      // Red when player detected
+		sf::Color(255, 255, 0, 100);     // Yellow when normal
+
+	m_visionCone.setFillColor(fovColor);
+}
+
+void NPC::setPlayerDetected(bool detected)
+{
+	m_playerDetected = detected;
 }
 
 

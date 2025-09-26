@@ -37,9 +37,49 @@ void NPCManager::createNPCs(const PlayerContext& context)
 
 void NPCManager::updateAll(float dt)
 {
-    for (auto& npc : m_npcs)
+    const float PI = 3.14159265f;
+    sf::Vector2f playerPos = m_context.getPlayerPos();
+
+    for (size_t i = 0; i < m_npcs.size(); ++i)
+    {
+        auto& npc = m_npcs[i];
+
+        sf::Vector2f toPlayer = playerPos - npc->getPosition();
+        float distance = std::sqrt(toPlayer.x * toPlayer.x + toPlayer.y * toPlayer.y);
+
+        bool playerVisible = false;
+
+        float visionLen = npc->getVisionLength();
+        if (distance <= visionLen && distance > 0.0001f)
+        {
+            // normalize
+            sf::Vector2f toPlayerNorm = toPlayer / distance;
+
+            // compute NPC forward vector using the same rotation basis as updateVisionCone()
+            // (rotationDegrees - 90) is used in updateVisionCone to derive direction
+            float rotationDeg = npc->getRotationDegrees() - 90.f;
+            float rotationRad = rotationDeg * PI / 180.f;
+            sf::Vector2f forward(std::cos(rotationRad), std::sin(rotationRad));
+
+            // dot product to get cos(angle between forward and toPlayer)
+            float dot = forward.x * toPlayerNorm.x + forward.y * toPlayerNorm.y;
+
+            // compare against cos(halfConeAngle)
+            float cosHalf = std::cos(npc->getVisionHalfAngleRadians());
+            if (dot >= cosHalf)
+                playerVisible = true;
+        }
+
+        // set detection BEFORE Update, so Update -> updateVisionCone() can pick up the flag and colour it.
+        npc->setPlayerDetected(playerVisible);
+
+        // optional debug:
+        // std::cout << "NPC " << i << " detected=" << playerVisible << " dist=" << distance << "\n";
+
         npc->Update(dt);
+    }
 }
+
 
 void NPCManager::render(sf::RenderWindow& window)
 {

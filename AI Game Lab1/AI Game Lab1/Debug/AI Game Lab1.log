@@ -18,4 +18,5 @@ C:\SFML-3.0.0\include\SFML\System\Exception.hpp(41,47): warning C4275: non dll-i
   main.cpp
 C:\Users\c00287898\Documents\AIGames\AI-Games\AI Game Lab1\AI Game Lab1\main.cpp(33,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
   Generating Code...
+C:\Users\c00287898\Documents\AIGames\AI-Games\AI Game Lab1\AI Game Lab1\Utilities.h(15,1): warning C4172: returning address of local variable or temporary 
   AI Game Lab1.vcxproj -> C:\Users\c00287898\Documents\AIGames\AI-Games\AI Game Lab1\Debug\AI Game Lab1.exe

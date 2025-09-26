@@ -22,6 +22,10 @@ public:
     float getMaxSpeed() const { return m_speed; }
     float setSpeed(float t_speed) { return m_speed = t_speed; }
 
+    float getRotationDegrees() const { return m_npc.getRotation().asDegrees(); }
+    float getVisionLength() const { return m_visionLength; }
+    float getVisionHalfAngleRadians() const { return (m_visionAngle * 0.5f) * 3.14159265f / 180.f; }
+
     // Behavior management
     void setBehavior(std::unique_ptr<SteeringBehavior>, const std::string& behaviorName);
     void toggleActive() { m_active = !m_active; }
@@ -29,7 +33,9 @@ public:
     void toggleCone() { m_showCone = !m_showCone; }
     void updateVisionCone();
 
-
+    // Update player detection status
+    void setPlayerDetected(bool detected);
+    bool isPlayerDetected() const { return m_playerDetected; }
 
 private:
     void GenerateSprite();
@@ -54,9 +60,8 @@ private:
     sf::ConvexShape m_visionCone;
     float m_visionAngle = 45.f;   // half-angle in degrees
     float m_visionLength = 150.f; // how far they can see
+    bool m_playerDetected = false;
 
-    // Display text
-    // sf::Text m_label;
 };
 
 
