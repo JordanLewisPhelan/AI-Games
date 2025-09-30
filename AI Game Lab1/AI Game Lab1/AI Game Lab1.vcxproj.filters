@@ -22,31 +22,61 @@
     <Filter Include="Resource Files\AUDIO">
       <UniqueIdentifier>{8389fe52-4a9c-4634-a901-3339082136d3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\NPC Details - CPPs">
+      <UniqueIdentifier>{32044f47-bf68-4e99-a825-89ed61c800d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\NPC Details - Hs">
+      <UniqueIdentifier>{e249db4e-31d2-4f74-a951-0c84e1747581}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Miscellaneous - CPPs">
+      <UniqueIdentifier>{9aeb53d9-d455-491f-8fb7-513ff2902904}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Miscellaneous - Hs">
+      <UniqueIdentifier>{3554575c-5ba1-4503-99fb-277554bd63b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\LennardJones - CPPs">
+      <UniqueIdentifier>{9cdfad90-9425-4de6-b5d8-b9d1d6308252}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\LennardJones - Hs">
+      <UniqueIdentifier>{4b46a0c2-8b26-4415-9629-c7c56dc48bf3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Player.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="NPC.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="BoundaryManager.h">
-      <Filter>Header Files</Filter>
-    </ClCompile>
-    <ClCompile Include="BoundaryManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Behaviours.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\NPC Details - CPPs</Filter>
+    </ClCompile>
+    <ClCompile Include="NPC.cpp">
+      <Filter>Source Files\NPC Details - CPPs</Filter>
     </ClCompile>
     <ClCompile Include="NPCManager.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\NPC Details - CPPs</Filter>
+    </ClCompile>
+    <ClCompile Include="BoundaryManager.h">
+      <Filter>Header Files\Miscellaneous - Hs</Filter>
+    </ClCompile>
+    <ClCompile Include="BoundaryManager.cpp">
+      <Filter>Source Files\Miscellaneous - CPPs</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files\Miscellaneous - CPPs</Filter>
+    </ClCompile>
+    <ClCompile Include="SwarmSystem.cpp">
+      <Filter>Source Files\LennardJones - CPPs</Filter>
+    </ClCompile>
+    <ClCompile Include="NeighbourMonitor.cpp">
+      <Filter>Source Files\LennardJones - CPPs</Filter>
+    </ClCompile>
+    <ClCompile Include="LennardJones.cpp">
+      <Filter>Source Files\LennardJones - CPPs</Filter>
+    </ClCompile>
+    <ClCompile Include="SwarmSystem.h">
+      <Filter>Header Files\LennardJones - Hs</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -56,17 +86,26 @@
     <ClInclude Include="Player.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="NPC.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Utilities.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Behaviours.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\NPC Details - Hs</Filter>
+    </ClInclude>
+    <ClInclude Include="NPC.h">
+      <Filter>Header Files\NPC Details - Hs</Filter>
     </ClInclude>
     <ClInclude Include="NPCManager.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\NPC Details - Hs</Filter>
+    </ClInclude>
+    <ClInclude Include="Utilities.h">
+      <Filter>Header Files\Miscellaneous - Hs</Filter>
+    </ClInclude>
+    <ClInclude Include="Swarmers.h">
+      <Filter>Header Files\LennardJones - Hs</Filter>
+    </ClInclude>
+    <ClInclude Include="NeighbourMonitor.h">
+      <Filter>Header Files\LennardJones - Hs</Filter>
+    </ClInclude>
+    <ClInclude Include="LennardJones.h">
+      <Filter>Header Files\LennardJones - Hs</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

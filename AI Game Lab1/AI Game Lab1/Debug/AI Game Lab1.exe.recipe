@@ -2,12 +2,12 @@
 <Project>
   <ProjectOutputs>
     <ProjectOutput>
-      <FullPath>C:\Users\c00287898\Documents\AIGames\AI-Games\AI Game Lab1\Debug\AI Game Lab1.exe</FullPath>
+      <FullPath>C:\Users\Jordan\Desktop\4th Year Work\AIGames\AI-Games\AI Game Lab1\Debug\AI Game Lab1.exe</FullPath>
     </ProjectOutput>
   </ProjectOutputs>
   <ContentFiles>
     <ContentFile>
-      <FullPath>C:\Users\c00287898\Documents\AIGames\AI-Games\AI Game Lab1\AI Game Lab1\ASSETS\IMAGES\SFML-LOGO.png</FullPath>
+      <FullPath>C:\Users\Jordan\Desktop\4th Year Work\AIGames\AI-Games\AI Game Lab1\AI Game Lab1\ASSETS\IMAGES\SFML-LOGO.png</FullPath>
     </ContentFile>
   </ContentFiles>
   <SatelliteDlls />

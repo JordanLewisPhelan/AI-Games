@@ -23,14 +23,21 @@
     <ClCompile Include="BoundaryManager.cpp" />
     <ClCompile Include="BoundaryManager.h" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="LennardJones.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="NeighbourMonitor.cpp" />
     <ClCompile Include="NPC.cpp" />
     <ClCompile Include="NPCManager.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="SwarmSystem.cpp" />
+    <ClCompile Include="SwarmSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Behaviours.h" />
+    <ClInclude Include="LennardJones.h" />
+    <ClInclude Include="NeighbourMonitor.h" />
     <ClInclude Include="NPCManager.h" />
+    <ClInclude Include="Swarmers.h" />
     <ClInclude Include="Utilities.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="NPC.h" />

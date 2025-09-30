@@ -1,7 +1,6 @@
-This is your new *vault*.
-
-Make a note of something, [[Workflow]], or try [the Importer](https://help.obsidian.md/Plugins/Importer)!
 
 
+Overarching AI Games Assignment for the year we will discuss the dates working on and which lab we are tackling in [[Workflow]].
 
-When you're ready, delete this note and make the vault your own.
+This should lead to a cohesive list of progression.
+

@@ -6,7 +6,7 @@
       {
         "id": "ce3ec4ff3e91662f",
         "type": "tabs",
-        "dimension": 62.43589743589744,
+        "dimension": 35.233160621761655,
         "children": [
           {
             "id": "a8c9227f157269bb",
@@ -14,12 +14,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Lab2 Additions.md",
+                "file": "Lab3 Additions.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Lab2 Additions"
+              "title": "Lab3 Additions"
             }
           }
         ]
@@ -27,16 +27,20 @@
       {
         "id": "a7646f731cd436eb",
         "type": "tabs",
-        "dimension": 37.56410256410256,
+        "dimension": 64.76683937823834,
         "children": [
           {
             "id": "6718d3565eabd6a1",
             "type": "leaf",
             "state": {
-              "type": "graph",
-              "state": {},
-              "icon": "lucide-git-fork",
-              "title": "Graph view"
+              "type": "markdown",
+              "state": {
+                "file": "Lab3 Additions.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Lab3 Additions"
             }
           }
         ]
@@ -186,8 +190,9 @@
   },
   "active": "a8c9227f157269bb",
   "lastOpenFiles": [
-    "Workflow.md",
     "AI Games Assignment.md",
+    "Lab3 Additions.md",
+    "Workflow.md",
     "Lab2 Additions.md",
     "Lab2.md",
     "] Requirements..md"

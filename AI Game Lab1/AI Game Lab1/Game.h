@@ -25,7 +25,7 @@
 #include "Behaviours.h"
 #include "Utilities.h"
 #include "NPCManager.h"
-
+#include "SwarmSystem.h"
 
 const sf::Color ULTRAMARINE{ 5, 55,242,255 }; // const colour
 
@@ -50,6 +50,7 @@ private:
 
 	NPCManager m_npcManager;
 	Player m_player;
+	SwarmSystem m_swarm;
 
 	// GameContext holds references to player data - solely for npc tracking
 	PlayerContext m_context;

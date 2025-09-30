@@ -8,7 +8,8 @@ Game::Game() :
 	m_DELETEexitGame{false}, //when true game will exit
 	m_player{ sf::Vector2(600.0f, 400.0f)}, 
 	m_context(m_player),
-	m_npcManager(m_context)
+	m_npcManager(m_context),
+	m_swarm(50, LennardJonesParams(200.f, 150.f, 12, 6))	// Entity Amount - LJP(A, B, n, m)
 {
 	BoundaryManager::setGlobalScreenSize(1000.0f, 800.0f); // Match screen size with border
 	setupTexts(); // load font 
@@ -118,10 +119,10 @@ void Game::update(sf::Time t_deltaTime)
 
 	// grab time as full seconds to use for movement 
 	float deltaTimeSeconds = t_deltaTime.asSeconds();
-	//m_npc.Update(deltaTimeSeconds);
-	m_player.Update(deltaTimeSeconds);
 
+	m_player.Update(deltaTimeSeconds);
 	m_npcManager.updateAll(deltaTimeSeconds);
+	m_swarm.update();
 
 	if (m_DELETEexitGame)
 	{
@@ -138,6 +139,7 @@ void Game::render()
 	
 	m_npcManager.render(m_window);
 	m_player.Render(m_window);
+	m_swarm.render(m_window);
 
 	m_window.display();
 }
