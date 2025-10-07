@@ -6,7 +6,6 @@
       {
         "id": "ce3ec4ff3e91662f",
         "type": "tabs",
-        "dimension": 35.233160621761655,
         "children": [
           {
             "id": "a8c9227f157269bb",
@@ -14,33 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Lab3 Additions.md",
+                "file": "Lab4 Additions.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Lab3 Additions"
-            }
-          }
-        ]
-      },
-      {
-        "id": "a7646f731cd436eb",
-        "type": "tabs",
-        "dimension": 64.76683937823834,
-        "children": [
-          {
-            "id": "6718d3565eabd6a1",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Lab3 Additions.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "Lab3 Additions"
+              "title": "Lab4 Additions"
             }
           }
         ]
@@ -190,10 +168,11 @@
   },
   "active": "a8c9227f157269bb",
   "lastOpenFiles": [
-    "AI Games Assignment.md",
-    "Lab3 Additions.md",
     "Workflow.md",
+    "AI Games Assignment.md",
     "Lab2 Additions.md",
+    "Lab3 Additions.md",
+    "Lab4 Additions.md",
     "Lab2.md",
     "] Requirements..md"
   ]
