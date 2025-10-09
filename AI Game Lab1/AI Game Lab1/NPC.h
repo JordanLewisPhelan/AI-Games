@@ -18,6 +18,8 @@ public:
 
     // Accessors
     sf::Vector2f getPosition() const { return m_pos; }
+	void setPosition(const sf::Vector2f& pos) { m_pos = pos; m_npc.setPosition(m_pos); }
+
     sf::Vector2f getVelocity() const { return m_velocity; }
     float getMaxSpeed() const { return m_speed; }
     float setSpeed(float t_speed) { return m_speed = t_speed; }

@@ -43,7 +43,7 @@ protected:
 // SeekBehavior: Move directly toward a target position.
 class SeekBehavior : public SteeringBehavior {
 public:
-    SeekBehavior(const PlayerContext& context) : m_context(context) {}
+    SeekBehavior(const MovementContext& context) : m_context(context) {}
 
     // Is used to update the target position to reach as the npc
      void setTarget(const sf::Vector2f& target) { m_target = target; }
@@ -55,7 +55,7 @@ public:
 
 private:
     sf::Vector2f m_target;
-    const PlayerContext& m_context;
+    const MovementContext& m_context;
 };
 
 
@@ -63,7 +63,7 @@ private:
 class WanderBehavior : public SteeringBehavior
 {
 public:
-    WanderBehavior::WanderBehavior(const PlayerContext& context, float wanderRadius = 50.f, float tolerance = 5.f)
+    WanderBehavior::WanderBehavior(const MovementContext& context, float wanderRadius = 50.f, float tolerance = 5.f)
         : m_context(context), m_wanderRadius(wanderRadius), m_tolerance(tolerance) {}
 
     // Non-const so we can update internal target
@@ -72,7 +72,7 @@ public:
         float maxSpeed) override;
 
 private:
-    const PlayerContext& m_context; // Reference to player info if needed
+    const MovementContext& m_context; // Reference to player info if needed
     sf::Vector2f m_wanderTarget;    // Current wander target
     bool m_hasTarget = false;
     float m_wanderRadius;           // How far to pick new points
@@ -82,7 +82,7 @@ private:
 // Arrive Behaviour: NPC will approach the player and slow down when reaching too close to the player
 class ArriveBehavior : public SteeringBehavior {
 public:
-    ArriveBehavior(const PlayerContext& context, float slowRadius = 100.f, float stopRadius = 30.f)
+    ArriveBehavior(const MovementContext& context, float slowRadius = 100.f, float stopRadius = 30.f)
     : m_context(context), m_slowRadius(slowRadius), m_stopRadius(stopRadius){}
 
     virtual sf::Vector2f calculateSteering(const sf::Vector2f& npcPos,
@@ -90,7 +90,7 @@ public:
         float maxSpeed) override;
 
 private:
-    const PlayerContext& m_context;
+    const MovementContext& m_context;
     float m_slowRadius;
     float m_stopRadius;
 };
@@ -99,7 +99,7 @@ private:
 // PursueBehavior: NPC will predict where the target will go 
 class PursueBehavior : public SteeringBehavior {
 public:
-    PursueBehavior(const PlayerContext& context)
+    PursueBehavior(const MovementContext& context)
         : m_context(context) {}
 
     virtual sf::Vector2f calculateSteering(const sf::Vector2f& npcPos,
@@ -107,7 +107,7 @@ public:
         float maxSpeed) override;
 
 private:
-    const PlayerContext& m_context;
+    const MovementContext& m_context;
 };
 
 

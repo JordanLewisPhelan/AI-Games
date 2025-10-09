@@ -4,16 +4,40 @@
 #include <cmath>
 #include "BoundaryManager.h"
 #include "Player.h"
+#include "Transform.h"
 
-struct PlayerContext 
+
+struct MovementContext
 {
-   const Player& player;
+    const Player* m_player = nullptr;
+    const Transform* m_target = nullptr;
 
-    // Constructor takes references to the actual Player data
-    PlayerContext(const Player& p) : player(p) {}
+	// Constructors for different contexts
+    MovementContext(const Player& player)
+        : m_player(&player) {}
 
-    const sf::Vector2f& getPlayerPos() const { return player.getPosition(); }
-    const sf::Vector2f& getPlayerVel() const { return player.getVelocity(); }
+    MovementContext(const Transform& target)
+        : m_target(&target) {}
 
+    MovementContext(const Player& player, const Transform& target)
+        : m_player(&player), m_target(&target) {}
+
+
+    // Accessor functions
+    sf::Vector2f getTargetPos() const
+    {
+        if (m_target)
+        {
+            getTargetVel();
+            return m_target->getPosition();
+        }
+
+        if (m_player)
+            return m_player->getPosition();
+        return {};
+    }
+
+    sf::Vector2f getTargetVel() const  { return m_player->getVelocity(); }
 };
+
 

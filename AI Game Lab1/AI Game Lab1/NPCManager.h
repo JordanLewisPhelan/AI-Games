@@ -10,9 +10,9 @@ class NPCManager
 public:
     NPCManager() = default;
 
-    NPCManager(PlayerContext& context);
+    NPCManager(MovementContext& context);
 
-    void createNPCs(const PlayerContext& context);
+    void createNPCs(const MovementContext& context);
 
     void updateAll(float dt);
 
@@ -23,6 +23,6 @@ public:
     std::vector<std::unique_ptr<NPC>>& getAll();
 
 private:
-    PlayerContext& m_context;
+    MovementContext& m_context;
     std::vector<std::unique_ptr<NPC>> m_npcs;
 };

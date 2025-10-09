@@ -78,6 +78,9 @@
     <ClCompile Include="SwarmSystem.h">
       <Filter>Header Files\LennardJones - Hs</Filter>
     </ClCompile>
+    <ClCompile Include="Transform.cpp">
+      <Filter>Source Files\Miscellaneous - CPPs</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -106,6 +109,9 @@
     </ClInclude>
     <ClInclude Include="LennardJones.h">
       <Filter>Header Files\LennardJones - Hs</Filter>
+    </ClInclude>
+    <ClInclude Include="Transform.h">
+      <Filter>Header Files\Miscellaneous - Hs</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

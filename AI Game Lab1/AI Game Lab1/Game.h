@@ -53,7 +53,7 @@ private:
 	SwarmSystem m_swarm;
 
 	// GameContext holds references to player data - solely for npc tracking
-	PlayerContext m_context;
+	MovementContext m_context;
 	
 	sf::RenderWindow m_window; // main SFML window
 	sf::Font m_jerseyFont;// font used by message

@@ -31,6 +31,7 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="SwarmSystem.cpp" />
     <ClCompile Include="SwarmSystem.h" />
+    <ClCompile Include="Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Behaviours.h" />
@@ -38,6 +39,7 @@
     <ClInclude Include="NeighbourMonitor.h" />
     <ClInclude Include="NPCManager.h" />
     <ClInclude Include="Swarmers.h" />
+    <ClInclude Include="Transform.h" />
     <ClInclude Include="Utilities.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="NPC.h" />

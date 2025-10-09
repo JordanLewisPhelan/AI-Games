@@ -7,7 +7,7 @@ sf::Vector2f SeekBehavior::calculateSteering(const sf::Vector2f& t_npcPos,
 {
     // Distance
     // Goal     ==      targetPos(player) - currentPos(npc)
-    sf::Vector2f desired = m_context.getPlayerPos() - t_npcPos;
+    sf::Vector2f desired = m_context.getTargetPos() - t_npcPos;
     desired = normalize(desired) * t_speed; 
     return truncate(desired - t_npcVel, t_speed);   
 }
@@ -50,7 +50,7 @@ sf::Vector2f ArriveBehavior::calculateSteering(const sf::Vector2f& t_npcPos,
     float t_speed) 
 {
     // distance
-    sf::Vector2f toTarget = m_context.getPlayerPos() - t_npcPos;
+    sf::Vector2f toTarget = m_context.getTargetPos() - t_npcPos;
     float distance = vectorLength(toTarget);
     if (distance < m_stopRadius) return -t_npcVel; // resist velocity when we are too close to target
 
@@ -66,8 +66,8 @@ sf::Vector2f PursueBehavior::calculateSteering(const sf::Vector2f& t_npcPos,
     const sf::Vector2f& t_npcVel,
     float t_speed)
 {
-    sf::Vector2f playerPos = m_context.getPlayerPos();
-    sf::Vector2f playerVel = m_context.getPlayerVel();
+    sf::Vector2f playerPos = m_context.getTargetPos();
+    sf::Vector2f playerVel = m_context.getTargetVel();
 
     // distance - could refactor class to add in distance checker?
     sf::Vector2f toPlayer = playerPos - t_npcPos;

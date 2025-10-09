@@ -1,14 +1,14 @@
 #include "NPCManager.h"
 #include <iostream>
 
-NPCManager::NPCManager(PlayerContext& context)
+NPCManager::NPCManager(MovementContext& context)
     : m_context(context)
 {
     createNPCs(m_context);
 }
 
 
-void NPCManager::createNPCs(const PlayerContext& context)
+void NPCManager::createNPCs(const MovementContext& context)
 {
     // Preset positions
     std::vector<sf::Vector2f> positions = {
@@ -38,7 +38,7 @@ void NPCManager::createNPCs(const PlayerContext& context)
 void NPCManager::updateAll(float dt)
 {
     const float PI = 3.14159265f;
-    sf::Vector2f playerPos = m_context.getPlayerPos();
+    sf::Vector2f playerPos = m_context.getTargetPos();
 
     for (size_t i = 0; i < m_npcs.size(); ++i)
     {
