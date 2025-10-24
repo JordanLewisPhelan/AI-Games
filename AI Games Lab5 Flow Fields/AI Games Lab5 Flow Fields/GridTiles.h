@@ -1,35 +1,8 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-
-
-
-/// <summary>
-/// Tiles will focus on encapsulating what a tile should concern itself with, self serving and 
-/// these will be slot into a grid of plots of tiles.
-/// Side-Note: If this gets too large move data into a TileInfo structure
-/// </summary>
-class Tiles 
-{
-
-public:
-
-
-private:
-	// -- sfml variables -- //
-	sf::RectangleShape tileShape;
-	sf::Color tileColour;
-
-	// -- scalar variables -- //
-	float tileSize;
-
-	// -- field class variables -- //
-	/*
-		Not yet present, this would include details such as Vector & Cost fields
-		Will allow us to know what way we should push the Entity & the rough 
-		outline of how expensive the cost is, we will use this to adjust the 
-		colour/hue of the tiles - visual representation is ideal
-	*/
-};
+#include <vector>
+#include "Utilities.h"
+#include "Tiles.h"
 
 
 /// <summary>
@@ -40,8 +13,18 @@ class Grid
 {
 
 public:
+    Grid(int t_rows, int t_cols);
 
+    void render(sf::RenderWindow& t_window) const;
+
+    Tile& getTile(int t_row, int t_col);
+    
 
 private:
+    void generateGrid();
 
+    int m_rows;
+    int m_columns;
+    std::vector<Tile> m_gridTiles;
+    const float m_tileSize = Utilities::TILE_SIZE;
 };

@@ -18,6 +18,8 @@
 /// </summary>
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
+#include "Utilities.h"
+#include "GridTiles.h"
 
 
 const sf::Color ULTRAMARINE{ 5, 55,242,255 }; // const colour
@@ -42,15 +44,13 @@ private:
 	void setupAudio();
 
 	
+	Grid m_grid;
+
+
 	sf::RenderWindow m_window; // main SFML window
 	sf::Font m_jerseyFont;// font used by message
-	
 	sf::Text m_DELETEwelcomeMessage{ m_jerseyFont }; // text used for message on screen
-	sf::Texture m_DELETElogoTexture;//  texture used for sfml logo
-	sf::Sprite m_DELETElogoSprite{ m_DELETElogoTexture }; // sprite used for sfml logo
 	
-	sf::SoundBuffer m_DELETEsoundBuffer; // buffer for beep sound
-	sf::Sound m_DELETEsound{ m_DELETEsoundBuffer }; // sound object to play
 	bool m_DELETEexitGame; // control exiting game
 
 };

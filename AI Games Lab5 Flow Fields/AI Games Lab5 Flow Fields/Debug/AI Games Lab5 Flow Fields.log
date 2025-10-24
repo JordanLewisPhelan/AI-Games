@@ -1,0 +1,26 @@
+﻿  Game.cpp
+C:\Users\Jordan\Desktop\4th Year Work\AIGames\AI-Games\AI Games Lab5 Flow Fields\AI Games Lab5 Flow Fields\Game.cpp(114,28): warning C4100: 't_deltaTime': unreferenced formal parameter
+  GridTiles.cpp
+C:\SFML-3.0.0\include\SFML\System\Exception.hpp(41,47): warning C4275: non dll-interface class 'std::runtime_error' used as base for dll-interface class 'sf::Exception'
+  (compiling source file 'GridTiles.cpp')
+      C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.41.34120\include\stdexcept(100,19):
+      see declaration of 'std::runtime_error'
+      C:\SFML-3.0.0\include\SFML\System\Exception.hpp(41,23):
+      see declaration of 'sf::Exception'
+  
+C:\Users\Jordan\Desktop\4th Year Work\AIGames\AI-Games\AI Games Lab5 Flow Fields\AI Games Lab5 Flow Fields\GridTiles.cpp(26,26): warning C4709: comma operator within array index expression
+  Tiles.cpp
+C:\SFML-3.0.0\include\SFML\System\Exception.hpp(41,47): warning C4275: non dll-interface class 'std::runtime_error' used as base for dll-interface class 'sf::Exception'
+  (compiling source file 'Tiles.cpp')
+      C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.41.34120\include\stdexcept(100,19):
+      see declaration of 'std::runtime_error'
+      C:\SFML-3.0.0\include\SFML\System\Exception.hpp(41,23):
+      see declaration of 'sf::Exception'
+  
+  main.cpp
+  Generating Code...
+C:\Users\Jordan\Desktop\4th Year Work\AIGames\AI-Games\AI Games Lab5 Flow Fields\AI Games Lab5 Flow Fields\Tiles.cpp(54,1): warning C4172: returning address of local variable or temporary 
+C:\Users\Jordan\Desktop\4th Year Work\AIGames\AI-Games\AI Games Lab5 Flow Fields\AI Games Lab5 Flow Fields\Tiles.cpp(60,1): warning C4172: returning address of local variable or temporary 
+  AI Games Lab5 Flow Fields.vcxproj -> C:\Users\Jordan\Desktop\4th Year Work\AIGames\AI-Games\AI Games Lab5 Flow Fields\Debug\AI Games Lab5 Flow Fields.exe
+  'pwsh.exe' is not recognized as an internal or external command,
+  operable program or batch file.
