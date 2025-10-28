@@ -5,17 +5,17 @@
 Tile::Tile()
 {	
 	// Default
-	m_tileShape.setSize({ m_tileSize, m_tileSize });
-	m_tileShape.setFillColor(sf::Color::Blue);	
+	m_tileShape.setSize({ Utilities::TILE_SIZE, Utilities::TILE_SIZE });	
 	m_tileShape.setOutlineColor(sf::Color::Black);
 	m_tileShape.setOutlineThickness(2.f);
 }
 
-Tile::Tile(const sf::Vector2f& t_position, const sf::Color t_colour)
-	: Tile()	// Delegating constructor: reuse default setup - Just nifty, saw and wanted to use - Not really important here
+Tile::Tile(const sf::Vector2f& t_position, const sf::Color t_colour, const int t_idVal)
+	: Tile()	// Delegating constructor: reuses default setup - Just nifty, saw and wanted to use - Not really important here
 {
 	m_tileShape.setPosition(t_position);
 	m_tileShape.setFillColor(t_colour);	// Here only should we change it
+	m_id = t_idVal;
 }
 
 void Tile::render(sf::RenderWindow& t_window) const
@@ -70,4 +70,9 @@ float Tile::getCost() const
 const sf::Vector2f& Tile::getDirection() const
 {
 	return m_direction;
+}
+
+const int Tile::getID() const
+{
+	return m_id;
 }

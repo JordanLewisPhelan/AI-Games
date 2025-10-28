@@ -20,6 +20,7 @@
 #include <SFML/Audio.hpp>
 #include "Utilities.h"
 #include "GridTiles.h"
+#include "FlowField.h"
 
 
 const sf::Color ULTRAMARINE{ 5, 55,242,255 }; // const colour
@@ -45,7 +46,7 @@ private:
 
 	
 	Grid m_grid;
-
+	Flowfield m_flow;
 
 	sf::RenderWindow m_window; // main SFML window
 	sf::Font m_jerseyFont;// font used by message

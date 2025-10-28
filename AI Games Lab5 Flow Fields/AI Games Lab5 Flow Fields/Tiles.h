@@ -19,7 +19,8 @@ public:
 
     // Custom Constructor to give : Position & Optional Colour(Defaults to blue)
     Tile(const sf::Vector2f& t_position,
-        const sf::Color t_colour = sf::Color::Blue);
+        const sf::Color t_colour = sf::Color::Blue,
+        const int t_idValue = 0);
 
 
     // -- Flow-Field data(Will implement use cases later) --
@@ -31,6 +32,7 @@ public:
     const sf::Vector2f& getSize() const;
     float getCost() const;
     const sf::Vector2f& getDirection() const;
+    const int getID() const;
 
     // -- Renderers --
     void render(sf::RenderWindow& t_window) const;
@@ -44,9 +46,10 @@ private:
     sf::Color m_tileColour;
 
     // -- scalar variables -- //
+    int m_id = 0;
 
     // -- flow-field class variables -- //
     float m_cost = 1.f;
     sf::Vector2f m_direction = { 0,0 };
-    float m_tileSize = Utilities::TILE_SIZE;
+    // float m_tileSize = Utilities::TILE_SIZE; // Maybe a little confusing
 };

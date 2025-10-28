@@ -19,12 +19,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="FlowField.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GridTiles.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Tiles.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="FlowField.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GridTiles.h" />
     <ClInclude Include="Tiles.h" />

@@ -19,11 +19,16 @@
 Game::Game() :
 	m_window{ sf::VideoMode{ sf::Vector2u{1200U, 1000U}, 32U }, "SFML Game 3.0" },
 	m_DELETEexitGame{false}, //when true game will exit
-	m_grid(50, 50)
+	m_grid(50, 50),
+	m_flow(m_grid)
 {
 	setupTexts(); // load font 
 	setupSprites(); // load texture
 	setupAudio(); // load sounds
+
+	// Temp : Tile Index position to call generateCostField - Will move to on click later
+	sf::Vector2i l_start(11, 39);
+	m_flow.generateCostField(l_start);
 }
 
 /// <summary>
@@ -93,6 +98,11 @@ void Game::processKeys(const std::optional<sf::Event> t_event)
 	if (sf::Keyboard::Key::Escape == newKeypress->code)
 	{
 		m_DELETEexitGame = true; 
+	}
+
+	if (sf::Keyboard::Key::G == newKeypress->code)
+	{
+		m_grid.getTile(25, 9);	// Debugging
 	}
 }
 

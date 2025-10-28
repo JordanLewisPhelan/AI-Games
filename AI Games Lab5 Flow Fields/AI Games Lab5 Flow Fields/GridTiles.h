@@ -1,4 +1,5 @@
 #pragma once
+#include <iostream>
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include "Utilities.h"
@@ -19,6 +20,8 @@ public:
 
     Tile& getTile(int t_row, int t_col);
     
+    int getRows() const;
+    int getCols() const;
 
 private:
     void generateGrid();
@@ -26,5 +29,6 @@ private:
     int m_rows;
     int m_columns;
     std::vector<Tile> m_gridTiles;
-    const float m_tileSize = Utilities::TILE_SIZE;
+
+   // const float m_tileSize = Utilities::TILE_SIZE;  // done to keep scripts more readable | Maybe stupid in retrospect
 };
