@@ -1,5 +1,6 @@
 #pragma once
 
+#include <iostream>
 #include <SFML/Graphics.hpp>
 #include "Utilities.h"
 
@@ -20,7 +21,7 @@ public:
     // Custom Constructor to give : Position & Optional Colour(Defaults to blue)
     Tile(const sf::Vector2f& t_position,
         const sf::Color t_colour = sf::Color::Blue,
-        const int t_idValue = 0);
+        const int t_idValue = 0, const bool t_traversable = true);
 
 
     // -- Flow-Field data(Will implement use cases later) --
@@ -33,12 +34,15 @@ public:
     float getCost() const;
     const sf::Vector2f& getDirection() const;
     const int getID() const;
+    bool isTraversable() const { return m_traversable; }
 
     // -- Renderers --
-    void render(sf::RenderWindow& t_window) const;
+    void render(sf::RenderWindow& t_window, bool t_drawVectors = false, bool t_drawCost = false) const;
 
     // -- Adjustors --
     void setColour(const sf::Color& t_colour);
+    void setCostText(const std::string& t_costText);
+    void toggleTraversable();
 
 private:
     // -- sfml variables -- //
@@ -47,9 +51,13 @@ private:
 
     // -- scalar variables -- //
     int m_id = 0;
+    bool m_traversable = true;
 
     // -- flow-field class variables -- //
     float m_cost = 1.f;
     sf::Vector2f m_direction = { 0,0 };
-    // float m_tileSize = Utilities::TILE_SIZE; // Maybe a little confusing
+    
+    // -- text variables -- //
+    sf::Font m_jerseyFont;// font used by text
+    sf::Text m_costText{ m_jerseyFont }; // text used for text on screen
 };

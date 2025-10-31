@@ -15,7 +15,7 @@ void Grid::render(sf::RenderWindow& t_window) const
 {
 	for (const auto& tile : m_gridTiles)
 	{
-		tile.render(t_window);
+		tile.render(t_window, m_showVectors, m_showCost);
 	}
 }
 
@@ -30,7 +30,14 @@ Tile& Grid::getTile(int t_row, int t_col)
 
 	//m_gridTiles[t_row * m_columns + t_col].setColour(sf::Color::Magenta);
 
-	return m_gridTiles[t_row * m_columns + t_col];
+	if (t_row < 0 || t_row >= m_rows || t_col < 0 || t_col >= m_columns)
+		throw std::out_of_range("Tile access out of bounds!");
+
+	int index = t_row * m_columns + t_col; // correct 1D mapping
+
+	assert(index >= 0 && index < m_gridTiles.size());
+
+	return m_gridTiles[index];
 
 /*
 	 Proof i am an idiot, so this I did use AI to diagnose - The issue is so fucking subtle I am

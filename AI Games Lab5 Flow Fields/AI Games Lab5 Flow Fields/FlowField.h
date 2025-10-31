@@ -2,6 +2,7 @@
 
 #include "GridTiles.h"
 #include <queue>
+#include <cmath>
 
 /*	Intenral Notes + reminders - Remove later [ Or keep for proof of logic? ]:
 //// Summary Notice about concept: What is the intended idea of a flowfield?
@@ -39,7 +40,11 @@ class Flowfield {
 public:
 	Flowfield(Grid& t_grid);
 
-	void generateCostField(const sf::Vector2i& t_startPos);
+	// -- FF Data setup-generators -- 
+	//void generateCostField(const sf::Vector2i& t_startPos);
+	//void generateVectorField(const sf::Vector2i& t_endPos);
+	void generateHybridFlowfield(const sf::Vector2i& t_startPos = sf::Vector2i{ 0,0 },
+								 const sf::Vector2i& t_goalPos = sf::Vector2i{ 49,49 });	// Defaults to prevent invalid inputs - not selecting a start or end
 
 private:
 	Grid& m_grid;
@@ -53,7 +58,7 @@ private:
 	};
 
 	// Checking if a tile is valid
-	bool isValid(int t_row, int t_col) const;
+	//bool isValid(int t_row, int t_col) const;
 
 	int m_rows, m_cols;
 };

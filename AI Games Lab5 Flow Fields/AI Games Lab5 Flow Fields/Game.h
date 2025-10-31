@@ -21,6 +21,7 @@
 #include "Utilities.h"
 #include "GridTiles.h"
 #include "FlowField.h"
+#include "Entity.h"
 
 
 const sf::Color ULTRAMARINE{ 5, 55,242,255 }; // const colour
@@ -44,13 +45,13 @@ private:
 	void setupSprites();
 	void setupAudio();
 
-	
+	void handleMouseClick(const sf::Event::MouseButtonReleased& t_mouseEvent);
+
 	Grid m_grid;
 	Flowfield m_flow;
+	Entity m_npc;
 
 	sf::RenderWindow m_window; // main SFML window
-	sf::Font m_jerseyFont;// font used by message
-	sf::Text m_DELETEwelcomeMessage{ m_jerseyFont }; // text used for message on screen
 	
 	bool m_DELETEexitGame; // control exiting game
 
