@@ -1,6 +1,6 @@
 
 
-Overarching AI Games Assignment for the year we will discuss the dates working on and which lab we are tackling in [[Workflow]].
+Overarching AI Games Project plan for the End of Semester 1, we will discuss what we are tackling in [[Workflow]].
 
 This should lead to a cohesive list of progression.
 
