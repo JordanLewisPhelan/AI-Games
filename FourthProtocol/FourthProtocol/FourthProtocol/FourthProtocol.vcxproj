@@ -20,10 +20,18 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GamePlayState.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MainMenuState.cpp" />
+    <ClCompile Include="StateManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
+    <ClInclude Include="GamePlayState.h" />
+    <ClInclude Include="GameState.h" />
+    <ClInclude Include="Globals.h" />
+    <ClInclude Include="MainMenuState.h" />
+    <ClInclude Include="StateManager.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="ASSETS\IMAGES\SFML-LOGO.png">
