@@ -1,5 +1,6 @@
 #pragma once
 #include "GameState.h"
+#include "Board.h"
 #include <SFML/Graphics.hpp>
 
 enum class GameMode { VsAI, VsPvP };
@@ -7,6 +8,7 @@ enum class GameMode { VsAI, VsPvP };
 class GamePlayState : public GameState {
 private:
     GameMode m_mode;
+    Board m_board;
 
     // Game data
     int m_currentPlayer;
@@ -30,6 +32,8 @@ private:
     void handleGameInput(const sf::Event& t_event);
     void handlePauseInput(const sf::Event& t_event);
     bool isMouseOver(const sf::Text& t_text, sf::Vector2f t_mousePos) const;
+    void updateGameInfoText();
+    void checkForWinner();
 
 public:
     GamePlayState(sf::Font* t_font, GameMode t_mode);

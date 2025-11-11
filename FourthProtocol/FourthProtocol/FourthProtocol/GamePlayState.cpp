@@ -31,12 +31,7 @@ void GamePlayState::onEnter()
     m_gameInfoText.setFillColor(sf::Color::White);
     m_gameInfoText.setPosition(sf::Vector2f(50.f, 50.f));
 
-    if (m_mode == GameMode::VsAI) {
-        m_gameInfoText.setString("Mode: vs AI | Player 1's Turn | Press ESC to pause");
-    }
-    else {
-        m_gameInfoText.setString("Mode: PvP | Player 1's Turn | Press ESC to pause");
-    }
+    updateGameInfoText();
 
     // Setup pause menu texts
     m_pausedText.setString("PAUSED");
@@ -62,45 +57,41 @@ void GamePlayState::onExit()
 
 void GamePlayState::update(sf::Time t_deltaTime)
 {
-    if (m_isPaused) {
+    if (m_isPaused || !m_winner.empty())
+    {
         return;
     }
 
-    if (!m_winner.empty()) {
-        return;
-    }
+    // Check for winner after each move
+    checkForWinner();
 
-    // TODO: Game logic here
+    // Update UI text
+    updateGameInfoText();
+
+    // TODO: AI logic here if in AI mode
+    if (m_mode == GameMode::VsAI && m_board.getCurrentPlayer() == Player::Player2 && !m_board.isPlacementPhase()) {
+        // AI would make a move here
+        // For now, AI functionality is a placeholder
+    }
 }
+
 
 void GamePlayState::render(sf::RenderWindow& t_window)
 {
     // Draw game info
     t_window.draw(m_gameInfoText);
 
-    // Draw placeholder board
-    sf::RectangleShape boardPlaceholder(sf::Vector2f(600.f, 600.f));
-    boardPlaceholder.setPosition(sf::Vector2f(212.f, 150.f));
-    boardPlaceholder.setFillColor(sf::Color(100, 100, 100));
-    boardPlaceholder.setOutlineColor(sf::Color::White);
-    boardPlaceholder.setOutlineThickness(3.f);
-    t_window.draw(boardPlaceholder);
-
-    // Temp text for placeholder
-    sf::Text placeholderText(*m_sharedFont);
-    placeholderText.setString("Game Board Goes Here");
-    placeholderText.setCharacterSize(32);
-    placeholderText.setFillColor(sf::Color::White);
-    placeholderText.setPosition(sf::Vector2f(350.f, 420.f));
-    t_window.draw(placeholderText);
+    m_board.render(t_window, *m_sharedFont);
 
     // Draw pause menu if paused
-    if (m_isPaused) {
+    if (m_isPaused) 
+    {
         renderPauseMenu(t_window);
     }
 
     // Draw winner text if game is over
-    if (!m_winner.empty()) {
+    if (!m_winner.empty()) 
+    {
         sf::Text winText(*m_sharedFont);
         winText.setString(m_winner + " Wins!");
         winText.setCharacterSize(64);
@@ -121,7 +112,8 @@ void GamePlayState::renderPauseMenu(sf::RenderWindow& t_window)
 {
     // Semi-transparent overlay
     sf::RectangleShape overlay(sf::Vector2f(static_cast<float>(t_window.getSize().x),
-        static_cast<float>(t_window.getSize().y)));
+                                            static_cast<float>(t_window.getSize().y)));
+
     overlay.setFillColor(sf::Color(0, 0, 0, 180));
     t_window.draw(overlay);
 
@@ -181,12 +173,80 @@ void GamePlayState::handleGameInput(const sf::Event& t_event)
         return;
     }
 
-    // Test: click to show winner
-    if (t_event.getIf<sf::Event::MouseButtonPressed>())
+    // Handle mouse clicks for game interaction
+    if (const auto* mousePress = t_event.getIf<sf::Event::MouseButtonPressed>())
     {
-        if (m_winner.empty()) {
-            m_winner = "Player 1";
-            std::cout << "Test: Setting winner to Player 1\n";
+        if (mousePress->button == sf::Mouse::Button::Left)
+        {
+            sf::Vector2f mousePos(static_cast<float>(mousePress->position.x),
+                static_cast<float>(mousePress->position.y));
+
+            // PLACEMENT PHASE
+            if (m_board.isPlacementPhase())
+            {
+                // First check if clicking on unplaced piece selector
+                PieceType clickedPiece = m_board.getClickedUnplacedPiece(mousePos, m_board.getCurrentPlayer());
+                if (clickedPiece != PieceType::None)
+                {
+                    m_board.selectPieceType(clickedPiece);
+                    std::cout << "Selected piece type: " << (int)clickedPiece << "\n";
+                }
+                // Then check if clicking on board to place
+                else if (m_board.isPositionOnBoard(mousePos))
+                {
+                    auto [row, col] = m_board.screenToGrid(mousePos);
+                    PieceType selectedType = m_board.getSelectedPieceType();
+
+                    if (selectedType != PieceType::None)
+                    {
+                        if (m_board.placePiece(row, col, selectedType, m_board.getCurrentPlayer()))
+                        {
+                            std::cout << "Placed piece at (" << row << ", " << col << ")\n";
+                            // Reset selection after successful placement
+                            m_board.selectPieceType(PieceType::None);
+                        }
+                        else
+                        {
+                            std::cout << "Cannot place piece at (" << row << ", " << col << ")\n";
+                        }
+                    }
+                    else
+                    {
+                        std::cout << "No piece type selected!\n";
+                    }
+                }
+            }
+            // MOVEMENT PHASE
+            else
+            {
+                if (m_board.isPositionOnBoard(mousePos))
+                {
+                    auto [row, col] = m_board.screenToGrid(mousePos);
+
+                    // If no piece is selected, try to select one
+                    if (!m_board.isPieceSelected())
+                    {
+                        if (m_board.selectPieceForMove(row, col))
+                        {
+                            std::cout << "Selected piece at (" << row << ", " << col << ")\n";
+                        }
+                    }
+                    // If piece is selected, try to move it
+                    else
+                    {
+                        if (m_board.movePiece(row, col))
+                        {
+                            std::cout << "Moved piece to (" << row << ", " << col << ")\n";
+                        }
+                        else
+                        {
+                            // Click elsewhere - deselect or select new piece
+                            m_board.deselectPiece();
+                            m_board.selectPieceForMove(row, col);
+                        }
+                    }
+                }
+            }
         }
     }
 }
@@ -216,7 +276,7 @@ void GamePlayState::handlePauseInput(const sf::Event& t_event)
         if (mousePress->button == sf::Mouse::Button::Left)
         {
             sf::Vector2f mousePos(static_cast<float>(mousePress->position.x),
-                static_cast<float>(mousePress->position.y));
+                                  static_cast<float>(mousePress->position.y));
 
             if (isMouseOver(m_resumeButton, mousePos))
             {
@@ -247,4 +307,43 @@ std::unique_ptr<GameState> GamePlayState::getNextState()
 bool GamePlayState::isMouseOver(const sf::Text& t_text, sf::Vector2f t_mousePos) const
 {
     return t_text.getGlobalBounds().contains(t_mousePos);
+}
+
+void GamePlayState::updateGameInfoText()
+{
+    std::string modeText = (m_mode == GameMode::VsAI) ? "vs AI" : "PvP";
+    std::string playerText = (m_board.getCurrentPlayer() == Player::Player1) ? "Player 1" : "Player 2";
+    std::string phaseText = m_board.isPlacementPhase() ? "PLACEMENT" : "MOVEMENT";
+
+    std::string info = "Mode: " + modeText + " | " + playerText + "'s Turn | Phase: " + phaseText;
+
+    if (m_board.isPlacementPhase()) 
+    {
+        info += " | Click piece, then click board";
+    }
+    else 
+    {
+        info += " | Click piece, then click destination";
+    }
+
+    info += " | ESC to pause";
+
+    m_gameInfoText.setString(info);
+}
+
+void GamePlayState::checkForWinner()
+{
+    if (m_winner.empty() && !m_board.isPlacementPhase()) 
+    {
+        if (m_board.checkWin(Player::Player1)) 
+        {
+            m_winner = "Player 1";
+            std::cout << "Player 1 wins!\n";
+        }
+        else if (m_board.checkWin(Player::Player2)) 
+        {
+            m_winner = "Player 2";
+            std::cout << "Player 2 wins!\n";
+        }
+    }
 }
