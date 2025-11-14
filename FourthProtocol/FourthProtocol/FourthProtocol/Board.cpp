@@ -43,13 +43,13 @@ sf::Color Board::getPieceColor(PieceType type, Player player) const
     case PieceType::Donkey: return baseColor;
     case PieceType::Snake:
         // Darker shade
-        return sf::Color(baseColor.r * 0.7f, baseColor.g * 0.7f, baseColor.b * 0.7f);
+        return sf::Color(baseColor.r * 0.3f, baseColor.g * 0.3f, baseColor.b * 0.3f);
     case PieceType::Frog:
         // Lighter shade
         return sf::Color(
-            std::min(255, (int)(baseColor.r * 1.3f)),
-            std::min(255, (int)(baseColor.g * 1.3f)),
-            std::min(255, (int)(baseColor.b * 1.3f))
+            std::min(255, (int)(baseColor.r * 1.6f)),
+            std::min(255, (int)(baseColor.g * 1.6f)),
+            std::min(255, (int)(baseColor.b * 1.6f))
         );
     default: return sf::Color::White;
     }
@@ -125,10 +125,9 @@ std::vector<std::pair<int, int>> Board::getDonkeyMoves(int row, int col) const
 {
     std::vector<std::pair<int, int>> moves;
 
-    // 8 directions: up, down, left, right, and 4 diagonals
-    int directions[8][2] = {
-        {-1, 0}, {1, 0}, {0, -1}, {0, 1},      // orthogonal
-        {-1, -1}, {-1, 1}, {1, -1}, {1, 1}     // diagonal
+    // 4 directions: up, down, left, right
+    int directions[4][2] = {
+        {-1, 0}, {1, 0}, {0, -1}, {0, 1}      // cardinal
     };
 
     for (auto& dir : directions) 
@@ -191,14 +190,20 @@ std::vector<std::pair<int, int>> Board::getFrogMoves(int row, int col) const
         // Check if there's a piece adjacent (to jump over)
         if (isValidPosition(adjacentRow, adjacentCol) && !m_grid[adjacentRow][adjacentCol].isEmpty()) 
         {
+            int landRow;
+            int landCol;
 
-            // Check landing spot (2 spaces away)
-            int landRow = row + dir[0] * 2;
-            int landCol = col + dir[1] * 2;
-
-            if (isValidPosition(landRow, landCol) && m_grid[landRow][landCol].isEmpty()) 
+            for (int i = 2; i < Globals::GRID_SIZE; i++)
             {
-                moves.push_back({ landRow, landCol });
+                // Check landing spot (2 or further spaces away)
+                landRow = row + dir[0] * i;
+                landCol = col + dir[1] * i;
+
+                if (isValidPosition(landRow, landCol) && m_grid[landRow][landCol].isEmpty())
+                {
+                    moves.push_back({ landRow, landCol });
+                    break;  // Prevents frog being able to jump over more than 1 empty space
+                }
             }
         }
     }
