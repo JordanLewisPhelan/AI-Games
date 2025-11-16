@@ -72,7 +72,7 @@ int AIOpponent::miniMax(Board& t_board, int t_depth, int t_alpha, int t_beta, bo
             t_board.undoMove(backup);
 
             // Alpha-Beta pruning
-            t_alpha = std::max(t_alpha, t_beta);
+            t_alpha = std::max(t_alpha, eval);
             if (t_beta <= t_alpha)
                 break; // Prunes any remaining moves that stem from this stem
         }
