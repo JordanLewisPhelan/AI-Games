@@ -28,6 +28,15 @@ private:
         }
     };
 
+    // Tracks a direction line of pieces e.g. Is this diagonal close to a winning sequence?
+    struct LineInfo {
+        int consecutiveCount;     // How many pieces are in a row
+        bool hasSpace;              // Is there anymore points in this line
+        bool isBlocked;             // Does the opponent block our line?
+
+        LineInfo() : consecutiveCount(0), hasSpace(false), isBlocked(false) {}
+    };
+
     PlayerPieces m_player1Pieces;
     PlayerPieces m_player2Pieces;
 
@@ -97,4 +106,49 @@ public:
 
     // Check if clicking on unplaced piece panel
     PieceType getClickedUnplacedPiece(sf::Vector2f screenPos, Player player) const;
+
+
+    /* -- Additions for AI and clarity -- */
+
+    // struct to allow AI to maximize depth searching 
+    struct MoveBackup {
+
+        // For movement
+        Piece movedPiece;
+        Piece destinationPiece;
+        int fromRow, fromCol;
+        int toRow, toCol;
+
+        // For placement
+        PieceType placedType;
+        int placedRow, placedCol;
+
+        // State tracking
+        Player previousPlayer;
+        bool wasPlacementPhase;
+        PlayerPieces player1State;
+        PlayerPieces player2State;
+
+        bool isPlacement;
+
+        MoveBackup() : fromRow(-1), fromCol(-1), toRow(-1), toCol(-1),
+            placedType(PieceType::None), placedRow(-1), placedCol(-1),
+            previousPlayer(Player::None), wasPlacementPhase(false),
+            isPlacement(false) {}
+    };
+
+
+    // Methods to simulate moves and placements
+    MoveBackup simulatePlacement(PieceType t_type, int t_row, int t_col, Player t_player);
+    MoveBackup simulateMove(int t_fromRow, int t_fromCol, int t_toRow, int t_toCol);
+    void undoMove(const MoveBackup& t_backup);
+
+
+    // Helper function for AI to analyze board for line sequences
+    std::vector<LineInfo> analyzeLines(Player t_player) const;
+
+
+    // How many other player pieces are left to place based on queried input type (for placement segment)
+    int getRemainingPieceCount(Player t_player, PieceType t_type) const;
+
 };

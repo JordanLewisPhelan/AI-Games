@@ -2,9 +2,10 @@
 #include "MainMenuState.h"
 #include <iostream>
 
-GamePlayState::GamePlayState(sf::Font* t_font, GameMode t_mode)
+GamePlayState::GamePlayState(sf::Font* t_font, GameMode t_mode, AIDifficulty t_difficulty)
     : GameState(t_font)
     , m_mode(t_mode)
+    , m_aiDifficulty(t_difficulty)
     , m_gameInfoText(*m_sharedFont)
     , m_pausedText(*m_sharedFont)
     , m_resumeButton(*m_sharedFont)
@@ -13,7 +14,14 @@ GamePlayState::GamePlayState(sf::Font* t_font, GameMode t_mode)
     , m_isPaused(false)
     , m_transitionRequested(false)
     , m_pauseHover(PauseButtonHover::None)
+    , m_aiIsThinking(false)
 {
+    // Create AI if in AI mode
+    if (m_mode == GameMode::VsAI) 
+    {
+        m_ai = std::make_unique<AIOpponent>(m_aiDifficulty, Player::Player2);
+        std::cout << "Created AI opponent with difficulty: " << (int)m_aiDifficulty << "\n";
+    }
 }
 
 void GamePlayState::onEnter()
@@ -68,10 +76,17 @@ void GamePlayState::update(sf::Time t_deltaTime)
     // Update UI text
     updateGameInfoText();
 
-    // TODO: AI logic here if in AI mode
-    if (m_mode == GameMode::VsAI && m_board.getCurrentPlayer() == Player::Player2 && !m_board.isPlacementPhase()) {
-        // AI would make a move here
-        // For now, AI functionality is a placeholder
+    // AI logic
+    //// AI is always player 2 currently, but adding a mode where the AI can be both means it may need a local 
+    //// Awareness of what player is playing - so it is aware to wait - mild refactoring to 
+    //// Opponent to ensure it doesnt try to just move player 2s pieces
+    if (m_mode == GameMode::VsAI && m_board.getCurrentPlayer() == Player::Player2 && !m_aiIsThinking) 
+    {
+        // Small delay so player can see board state
+        if (m_aiThinkTimer.getElapsedTime().asSeconds() > 2.7f) 
+        {
+            executeAIMove();
+        }
     }
 }
 
@@ -346,4 +361,47 @@ void GamePlayState::checkForWinner()
             std::cout << "Player 2 wins!\n";
         }
     }
+}
+
+// AI move
+
+void GamePlayState::executeAIMove()
+{
+    if (!m_ai || m_aiIsThinking) return;
+
+    m_aiIsThinking = true;
+    std::cout << "=== AI TURN ===" << "\n";
+
+    AIMove move = m_ai->calculateBestMove(m_board);
+
+    if (move.isInPlacement) 
+    {
+        if (m_board.placePiece(move.row, move.col, move.pieceType, Player::Player2)) {
+            std::cout << "AI placed " << (int)move.pieceType << " at (" << move.row << ", " << move.col << ")\n";
+        }
+        else 
+        {
+            std::cout << "ERROR: AI tried invalid placement!\n";
+        }
+    }
+    else {
+        if (m_board.selectPieceForMove(move.fromRow, move.fromCol)) 
+        {
+            if (m_board.movePiece(move.toRow, move.toCol)) 
+            {
+                std::cout << "AI moved from (" << move.fromRow << ", " << move.fromCol << ") to (" << move.toRow << ", " << move.toCol << ")\n";
+            }
+            else 
+            {
+                std::cout << "ERROR: AI tried invalid move!\n";
+            }
+        }
+        else 
+        {
+            std::cout << "ERROR: AI couldn't select piece!\n";
+        }
+    }
+
+    m_aiIsThinking = false;
+    m_aiThinkTimer.restart();
 }

@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "AI Games Project.md",
+                "file": "Progression Plan.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "AI Games Project"
+              "title": "Progression Plan"
             }
           }
         ]
@@ -168,11 +168,11 @@
   },
   "active": "edf77a0a7a656a8a",
   "lastOpenFiles": [
-    "Progression Plan.md",
-    "Game Layout & Description.md",
     "Workflow.md",
-    "Game Features.md",
+    "Game Layout & Description.md",
+    "Progression Plan.md",
     "AI Games Project.md",
+    "Game Features.md",
     "Lab3 Additions.md",
     "Lab2 Additions.md",
     "Lab4 Additions.md",

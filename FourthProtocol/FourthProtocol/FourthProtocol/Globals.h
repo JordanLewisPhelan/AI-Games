@@ -13,5 +13,4 @@ struct Globals {
     static constexpr float BOARD_OFFSET_Y = 150.f;
     static constexpr float UNPLACED_PANEL_X = 50.f;
     static constexpr float UNPLACED_PANEL_Y = 200.f;
-
 };

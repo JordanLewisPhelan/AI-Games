@@ -1,6 +1,7 @@
 #pragma once
 #include "GameState.h"
 #include "Board.h"
+#include "AIOpponent.h"
 #include <SFML/Graphics.hpp>
 
 enum class GameMode { VsAI, VsPvP };
@@ -9,11 +10,17 @@ class GamePlayState : public GameState {
 private:
     GameMode m_mode;
     Board m_board;
+    AIDifficulty m_aiDifficulty;
+    std::unique_ptr<AIOpponent> m_ai;
 
     // Game data
     int m_currentPlayer;
     bool m_isPaused;
     std::string m_winner;
+
+    // AI timing
+    sf::Clock m_aiThinkTimer;
+    bool m_aiIsThinking;
 
     // UI elements
     sf::Text m_gameInfoText;
@@ -34,9 +41,10 @@ private:
     bool isMouseOver(const sf::Text& t_text, sf::Vector2f t_mousePos) const;
     void updateGameInfoText();
     void checkForWinner();
+    void executeAIMove();
 
 public:
-    GamePlayState(sf::Font* t_font, GameMode t_mode);
+    GamePlayState(sf::Font* t_font, GameMode t_mode, AIDifficulty t_difficulty = AIDifficulty::Easy);
 
     void onEnter() override;
     void onExit() override;

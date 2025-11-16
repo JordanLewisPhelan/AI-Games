@@ -15,4 +15,4 @@ Game Rules:
 
 Players start with 0 placed pieces - each turn they are permitted to place one new piece until all 5 are placed.  Once all entities are placed they can be moved - One piece moved per turn only.
 
-Goal is to achieve 4 in a row, not diagonally, not vertically. 
+Goal is to achieve 4 in a row, diagonally or vertically. 

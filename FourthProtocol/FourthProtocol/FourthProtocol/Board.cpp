@@ -638,3 +638,160 @@ const Piece& Board::getPiece(int row, int col) const
     if (!isValidPosition(row, col)) return emptyPiece;
     return m_grid[row][col];
 }
+
+
+// ==================== AI SIMULATION METHODS ====================
+
+
+Board::MoveBackup Board::simulatePlacement(PieceType t_type, int t_row, int t_col, Player t_player)
+{
+    MoveBackup backup;
+    backup.isPlacement = true;
+    backup.placedType = t_type;
+    backup.placedRow = t_row;
+    backup.placedCol = t_col;
+    backup.previousPlayer = m_currentPlayer;
+    backup.wasPlacementPhase = m_placementPhase;
+    backup.player1State = m_player1Pieces;
+    backup.player2State = m_player2Pieces;
+    backup.destinationPiece = m_grid[t_row][t_col];
+
+    // Apply placement
+    m_grid[t_row][t_col] = Piece(t_type, t_player);
+
+    // Decrement piece count
+    PlayerPieces& pieces = (t_player == Player::Player1) ? m_player1Pieces : m_player2Pieces;
+    switch (t_type) {
+    case PieceType::Donkey: pieces.donkeys--; break;
+    case PieceType::Snake: pieces.snakes--; break;
+    case PieceType::Frog: pieces.frogs--; break;
+    default: break;
+    }
+
+    // Check if placement complete
+    if (m_player1Pieces.allPlaced() && m_player2Pieces.allPlaced()) {
+        m_placementPhase = false;
+    }
+
+    // Switch player
+    m_currentPlayer = (m_currentPlayer == Player::Player1) ? Player::Player2 : Player::Player1;
+
+    return backup;
+}
+
+Board::MoveBackup Board::simulateMove(int t_fromRow, int t_fromCol, int t_toRow, int t_toCol)
+{
+    MoveBackup backup;
+    backup.isPlacement = false;
+    backup.fromRow = t_fromRow;
+    backup.fromCol = t_fromCol;
+    backup.toRow = t_toRow;
+    backup.toCol = t_toCol;
+    backup.movedPiece = m_grid[t_fromRow][t_fromCol];
+    backup.destinationPiece = m_grid[t_toRow][t_toCol];
+    backup.previousPlayer = m_currentPlayer;
+    backup.wasPlacementPhase = m_placementPhase;
+    backup.player1State = m_player1Pieces;
+    backup.player2State = m_player2Pieces;
+
+    // Apply movement
+    m_grid[t_toRow][t_toCol] = m_grid[t_fromRow][t_fromCol];
+    m_grid[t_fromRow][t_fromCol] = Piece();
+
+    // Switch player
+    m_currentPlayer = (m_currentPlayer == Player::Player1) ? Player::Player2 : Player::Player1;
+
+    return backup;
+}
+
+void Board::undoMove(const MoveBackup& t_backup)
+{
+    if (t_backup.isPlacement) {
+        // Restore grid
+        m_grid[t_backup.placedRow][t_backup.placedCol] = t_backup.destinationPiece;
+    }
+    else {
+        // Restore movement
+        m_grid[t_backup.fromRow][t_backup.fromCol] = t_backup.movedPiece;
+        m_grid[t_backup.toRow][t_backup.toCol] = t_backup.destinationPiece;
+    }
+
+    // Restore all state
+    m_currentPlayer = t_backup.previousPlayer;
+    m_placementPhase = t_backup.wasPlacementPhase;
+    m_player1Pieces = t_backup.player1State;
+    m_player2Pieces = t_backup.player2State;
+}
+
+std::vector<Board::LineInfo> Board::analyzeLines(Player t_player) const
+{
+    std::vector<LineInfo> lines;
+
+    // Helper lambda to analyze a line in any direction
+    auto analyzeLine = [&](int startRow, int startCol, int deltaRow, int deltaCol) {
+        LineInfo info;
+
+        for (int i = 0; i < 4; ++i) {
+            int row = startRow + i * deltaRow;
+            int col = startCol + i * deltaCol;
+
+            const Piece& piece = m_grid[row][col];
+
+            if (piece.isEmpty()) {
+                info.hasSpace = true;
+            }
+            else if (piece.owner == t_player) {
+                info.consecutiveCount++;
+            }
+            else {
+                // Opponent piece blocks this line
+                info.isBlocked = true;
+                break;
+            }
+        }
+
+        // Only add lines that have potential (not completely blocked)
+        if (info.consecutiveCount > 0 && !info.isBlocked) {
+            lines.push_back(info);
+        }
+        };
+
+    // Check all horizontal lines
+    for (int row = 0; row < Globals::GRID_SIZE; ++row) {
+        for (int col = 0; col <= Globals::GRID_SIZE - 4; ++col) {
+            analyzeLine(row, col, 0, 1);
+        }
+    }
+
+    // Check all vertical lines
+    for (int col = 0; col < Globals::GRID_SIZE; ++col) {
+        for (int row = 0; row <= Globals::GRID_SIZE - 4; ++row) {
+            analyzeLine(row, col, 1, 0);
+        }
+    }
+
+    // Check all diagonal lines (top-left to bottom-right)
+    for (int row = 0; row <= Globals::GRID_SIZE - 4; ++row) {
+        for (int col = 0; col <= Globals::GRID_SIZE - 4; ++col) {
+            analyzeLine(row, col, 1, 1);
+        }
+    }
+
+    // Check all diagonal lines (top-right to bottom-left)
+    for (int row = 0; row <= Globals::GRID_SIZE - 4; ++row) {
+        for (int col = 3; col < Globals::GRID_SIZE; ++col) {
+            analyzeLine(row, col, 1, -1);
+        }
+    }
+
+    return lines;
+}
+
+
+// ==================== AI ANALYSIS METHODS ====================
+
+int Board::getRemainingPieceCount(Player t_player, PieceType t_type) const
+{
+    const PlayerPieces& pieces = (t_player == Player::Player1) ? m_player1Pieces : m_player2Pieces;
+    return pieces.getPieceCount(t_type);
+}
