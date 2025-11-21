@@ -12,4 +12,9 @@
 ##### **{ COMPLETED }**
 
 4. Add in AI functionality when playing versus AI opponent and allow for scalable difficulty based on options in the main menu.
+
+##### **{ COMPLETED }**
+
 5. Add on the connection and network system and replace AI with player input - if base game works this should be easy.
+   
+##### **{ NOT YET COMPLETED }**
