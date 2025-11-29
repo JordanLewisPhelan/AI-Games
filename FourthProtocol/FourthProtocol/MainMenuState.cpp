@@ -1,12 +1,19 @@
 #include "MainMenuState.h"
 #include "GamePlayState.h"
+#include "LobbyState.h"
+#include "NetworkManager.h"
 #include <iostream>
 
-MainMenuState::MainMenuState(sf::Font* t_font)
+
+
+MainMenuState::MainMenuState(sf::Font* t_font, std::shared_ptr<NetworkManager> t_networkManager)
     : GameState(t_font)
+    , m_networkManager(t_networkManager)
     , m_titleText(*m_sharedFont)
     , m_vsAIButton(*m_sharedFont)
     , m_vsPvPButton(*m_sharedFont)
+    , m_hostGameButton(*m_sharedFont)
+    , m_joinGameButton(*m_sharedFont)
     , m_quitButton(*m_sharedFont)
     , m_easyText(*m_sharedFont)      
     , m_mediumText(*m_sharedFont)    
@@ -77,11 +84,23 @@ void MainMenuState::onEnter()
     m_vsPvPButton.setFillColor(sf::Color::White);
     m_vsPvPButton.setPosition(sf::Vector2f(400.f, 400.f));
 
+    // Host Game button
+    m_hostGameButton.setString("Host Network Game");
+    m_hostGameButton.setCharacterSize(36);
+    m_hostGameButton.setFillColor(sf::Color::Cyan);
+    m_hostGameButton.setPosition(sf::Vector2f(400.f, 500.f));
+
+    // Join Game button
+    m_joinGameButton.setString("Join Network Game");
+    m_joinGameButton.setCharacterSize(36);
+    m_joinGameButton.setFillColor(sf::Color::Cyan);
+    m_joinGameButton.setPosition(sf::Vector2(400.f, 600.f));
+
     // Setup "Quit" button
     m_quitButton.setString("Quit");
     m_quitButton.setCharacterSize(36);
     m_quitButton.setFillColor(sf::Color::White);
-    m_quitButton.setPosition(sf::Vector2f(400.f, 500.f));
+    m_quitButton.setPosition(sf::Vector2f(400.f, 700.f));
 }
 
 void MainMenuState::onExit()
@@ -115,6 +134,22 @@ void MainMenuState::render(sf::RenderWindow& t_window)
         m_vsPvPButton.setFillColor(sf::Color::White);
     }
     t_window.draw(m_vsPvPButton);
+
+    if (m_currentHover == ButtonHover::HostGame) {
+        m_hostGameButton.setFillColor(sf::Color::Yellow);
+    }
+    else {
+        m_hostGameButton.setFillColor(sf::Color::Cyan);
+    }
+    t_window.draw(m_hostGameButton);
+
+    if (m_currentHover == ButtonHover::JoinGame) {
+        m_joinGameButton.setFillColor(sf::Color::Yellow);
+    }
+    else {
+        m_joinGameButton.setFillColor(sf::Color::Cyan);
+    }
+    t_window.draw(m_joinGameButton);
 
     if (m_currentHover == ButtonHover::Quit) {
         m_quitButton.setFillColor(sf::Color::Red);
@@ -169,6 +204,12 @@ void MainMenuState::handleEvent(const sf::Event& t_event)
         else if (isMouseOver(m_vsPvPButton, mousePos)) {
             m_currentHover = ButtonHover::VsPvP;
         }
+        else if (isMouseOver(m_hostGameButton, mousePos)) {
+            m_currentHover = ButtonHover::HostGame;
+        }
+        else if (isMouseOver(m_joinGameButton, mousePos)) {
+            m_currentHover = ButtonHover::JoinGame;
+        }
         else if (isMouseOver(m_quitButton, mousePos)) {
             m_currentHover = ButtonHover::Quit;
         }
@@ -184,7 +225,7 @@ void MainMenuState::handleEvent(const sf::Event& t_event)
         }
         else {
             m_currentHover = ButtonHover::None;
-    }
+        }
     }
 
     // Handle mouse clicks
@@ -220,6 +261,46 @@ void MainMenuState::handleEvent(const sf::Event& t_event)
                 m_nextState = std::make_unique<GamePlayState>(m_sharedFont, GameMode::VsPvP);
                 m_transitionRequested = true;
             }
+            else if (isMouseOver(m_hostGameButton, mousePos))
+            {
+                std::cout << "Hosting network game\n";
+
+                // Non-blocking start
+                if (m_networkManager->startHostAsync()) 
+                {
+                    m_nextState = std::make_unique<LobbyState>(m_sharedFont, m_networkManager, true);
+                    m_transitionRequested = true;
+                }
+                else 
+                {
+                    std::cout << "Failed to start host!\n";
+                }
+            }
+            else if (isMouseOver(m_joinGameButton, mousePos))
+            {
+                std::cout << "\n=== Join Network Game ===\n";
+                std::cout << "Enter host IP address: ";
+
+                std::string l_ipInput;
+                std::cin >> l_ipInput;
+
+                std::cout << "Connecting to " << l_ipInput << "...\n";
+
+                // Non-blocking connect
+                if (m_networkManager->connectAsClientAsync(l_ipInput)) 
+                {
+                    m_nextState = std::make_unique<LobbyState>(m_sharedFont, m_networkManager, false);
+                    m_transitionRequested = true;
+                }
+                else 
+                {
+                    std::cout << "Failed to connect! Check IP and try again.\n";
+                    std::cout << "Press any key to continue...\n";
+                    std::cin.ignore();
+                    std::cin.get();
+                }
+            }
+
             else if (isMouseOver(m_quitButton, mousePos))
             {
                 std::cout << "Quit button clicked\n";

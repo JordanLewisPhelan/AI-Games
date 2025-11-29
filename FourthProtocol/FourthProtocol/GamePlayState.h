@@ -2,9 +2,10 @@
 #include "GameState.h"
 #include "Board.h"
 #include "AIOpponent.h"
+#include "NetworkManager.h"
 #include <SFML/Graphics.hpp>
 
-enum class GameMode { VsAI, VsPvP };
+enum class GameMode { VsAI, VsPvP, VsNetworked };
 
 class GamePlayState : public GameState {
 private:
@@ -12,11 +13,16 @@ private:
     Board m_board;
     AIDifficulty m_aiDifficulty;
     std::unique_ptr<AIOpponent> m_ai;
+    std::shared_ptr<NetworkManager> m_networkManager;
 
     // Game data
     int m_currentPlayer;
     bool m_isPaused;
     std::string m_winner;
+
+    // Network Player Management
+    Player m_localPlayer;   
+    Player m_currentTurn;   
 
     // AI timing
     sf::Clock m_aiThinkTimer;
@@ -43,8 +49,16 @@ private:
     void checkForWinner();
     void executeAIMove();
 
+
+    // Network helpers
+    bool isMyTurn() const;
+    void sendMove(const std::string& t_message);
+    void receiveAndApplyMoves();
+    void applyOpponentMove(const std::string& t_message);
+
 public:
-    GamePlayState(sf::Font* t_font, GameMode t_mode, AIDifficulty t_difficulty = AIDifficulty::Easy);
+    GamePlayState(sf::Font* t_font, GameMode t_mode, AIDifficulty t_difficulty = AIDifficulty::Easy,
+        std::shared_ptr<NetworkManager> t_networkManager = nullptr);
 
     void onEnter() override;
     void onExit() override;

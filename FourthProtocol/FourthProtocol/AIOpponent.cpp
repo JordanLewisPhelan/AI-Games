@@ -8,7 +8,7 @@ AIOpponent::AIOpponent(AIDifficulty t_diff, Player t_aiPlayer)
     setDifficulty(m_difficulty);
 }
 
-
+ 
 
 void AIOpponent::setDifficulty(AIDifficulty t_diff)
 {

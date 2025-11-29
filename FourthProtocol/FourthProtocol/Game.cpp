@@ -7,8 +7,6 @@
 #include "Game.h"
 #include <iostream>
 #include "MainMenuState.h"
-#include "GamePlayState.h"	// only should we want to debug directly in game
-
 
 
 /// <summary>
@@ -20,13 +18,14 @@
 /// </summary>
 Game::Game() :
 	m_window{ sf::VideoMode{ sf::Vector2u{Globals::SCREEN_WIDTH, Globals::SCREEN_HEIGHT}, 32U }, "Fourth Protocol" },
-	m_stateManager() //when true game will exit
+	m_stateManager(), //when true game will exit
+	m_networkManager(std::make_shared<NetworkManager>())
 {
 	setupTexts(); // load font 
 	setupSprites(); // load texture
 	setupAudio(); // load sounds
 
-	auto mainMenu = std::make_unique<MainMenuState>(&m_jerseyFont);
+	auto mainMenu = std::make_unique<MainMenuState>(&m_jerseyFont, m_networkManager);
 
 	m_stateManager.changeState(std::move(mainMenu));
 }

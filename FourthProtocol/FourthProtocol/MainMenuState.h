@@ -1,5 +1,6 @@
 #pragma once
 #include "GameState.h"
+#include "NetworkManager.h"
 #include <SFML/Graphics.hpp>
 
 enum class AIDifficulty;
@@ -18,13 +19,16 @@ private:
     sf::Text m_easyText;
     sf::Text m_mediumText;
     sf::Text m_hardText;
+    sf::Text m_hostGameButton;    
+    sf::Text m_joinGameButton;
 
     AIDifficulty m_selectedDifficulty;
 
+    std::shared_ptr<NetworkManager> m_networkManager;
     std::unique_ptr<GameState> m_nextState;
     bool m_transitionRequested;
 
-    enum class ButtonHover { None, VsAI, VsPvP, Quit, Easy, Medium, Hard };
+    enum class ButtonHover { None, VsAI, VsPvP, HostGame, JoinGame, Quit, Easy, Medium, Hard };
     ButtonHover m_currentHover;
 
     bool isMouseOver(const sf::Text& t_text, sf::Vector2f t_mousePos) const;
@@ -33,7 +37,7 @@ private:
     sf::Color getDifficultyButtonColor(AIDifficulty difficulty, bool isSelected, bool isHovered) const;
 
 public:
-    MainMenuState(sf::Font* t_font);
+    MainMenuState(sf::Font* t_font, std::shared_ptr<NetworkManager> t_networkManager);
 
     void onEnter() override;
     void onExit() override;

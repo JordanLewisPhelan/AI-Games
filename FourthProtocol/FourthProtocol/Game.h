@@ -19,6 +19,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include "StateManager.h"
+#include "NetworkManager.h"
 #include "Globals.h"
 
 
@@ -30,6 +31,8 @@ public:
 	Game();
 	~Game();
 	void run();
+
+	std::shared_ptr<NetworkManager> getNetworkManager() { return m_networkManager; }
 
 private:
 
@@ -50,6 +53,7 @@ private:
 	bool m_quitStatus{ false };
 
 	StateManager m_stateManager;
+	std::shared_ptr<NetworkManager> m_networkManager;
 
 };
 
