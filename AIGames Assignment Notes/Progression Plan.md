@@ -17,4 +17,4 @@
 
 5. Add on the connection and network system and replace AI with player input - if base game works this should be easy.
    
-##### **{ NOT YET COMPLETED }**
+##### **{ COMPLETED }**
