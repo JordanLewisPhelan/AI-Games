@@ -1,0 +1,371 @@
+\doxysection{Main\+Menu\+State.\+cpp}
+\hypertarget{_main_menu_state_8cpp_source}{}\label{_main_menu_state_8cpp_source}\index{FourthProtocol/MainMenuState.cpp@{FourthProtocol/MainMenuState.cpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00001}00001\ \textcolor{preprocessor}{\#include\ "{}MainMenuState.h"{}}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00002}00002\ \textcolor{preprocessor}{\#include\ "{}GamePlayState.h"{}}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00003}00003\ \textcolor{preprocessor}{\#include\ "{}LobbyState.h"{}}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00004}00004\ \textcolor{preprocessor}{\#include\ "{}NetworkManager.h"{}}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00005}00005\ \textcolor{preprocessor}{\#include\ <iostream>}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00006}00006\ }
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00007}00007\ }
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00008}00008\ }
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00009}00009\ MainMenuState::MainMenuState(sf::Font*\ t\_font,\ std::shared\_ptr<NetworkManager>\ t\_networkManager)}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00010}00010\ \ \ \ \ :\ \mbox{\hyperlink{class_game_state}{GameState}}(t\_font)}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00011}00011\ \ \ \ \ ,\ m\_networkManager(t\_networkManager)}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00012}00012\ \ \ \ \ ,\ m\_titleText(*m\_sharedFont)}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00013}00013\ \ \ \ \ ,\ m\_vsAIButton(*m\_sharedFont)}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00014}00014\ \ \ \ \ ,\ m\_vsPvPButton(*m\_sharedFont)}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00015}00015\ \ \ \ \ ,\ m\_hostGameButton(*m\_sharedFont)}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00016}00016\ \ \ \ \ ,\ m\_joinGameButton(*m\_sharedFont)}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00017}00017\ \ \ \ \ ,\ m\_quitButton(*m\_sharedFont)}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00018}00018\ \ \ \ \ ,\ m\_easyText(*m\_sharedFont)\ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00019}00019\ \ \ \ \ ,\ m\_mediumText(*m\_sharedFont)\ \ \ \ }
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00020}00020\ \ \ \ \ ,\ m\_hardText(*m\_sharedFont)\ \ \ \ }
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00021}00021\ \ \ \ \ ,\ m\_selectedDifficulty(AIDifficulty::Medium)}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00022}00022\ \ \ \ \ ,\ m\_transitionRequested(false)}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00023}00023\ \ \ \ \ ,\ m\_currentHover(ButtonHover::None)}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00024}00024\ \{}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00025}00025\ \}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00026}00026\ }
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00027}00027\ \textcolor{keywordtype}{void}\ MainMenuState::onEnter()}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00028}00028\ \{}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00029}00029\ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}Entering\ Main\ Menu\ State\(\backslash\)n"{}};}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00030}00030\ }
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00031}00031\ \ \ \ \ \textcolor{comment}{//\ Setup\ title}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00032}00032\ \ \ \ \ m\_titleText.setString(\textcolor{stringliteral}{"{}Fourth\ Protocol"{}});}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00033}00033\ \ \ \ \ m\_titleText.setCharacterSize(64);}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00034}00034\ \ \ \ \ m\_titleText.setFillColor(sf::Color::White);}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00035}00035\ \ \ \ \ m\_titleText.setPosition(sf::Vector2f(300.f,\ 100.f));}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00036}00036\ }
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00037}00037\ \ \ \ \ \textcolor{comment}{//\ Setup\ difficulty\ buttons\ (to\ the\ right\ of\ Play\ vs\ AI)}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00038}00038\ \ \ \ \ \textcolor{keywordtype}{float}\ difficultyX\ =\ 550.f;}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00039}00039\ \ \ \ \ \textcolor{keywordtype}{float}\ difficultyY\ =\ 305.f;}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00040}00040\ \ \ \ \ \textcolor{keywordtype}{float}\ buttonSize\ =\ 35.f;}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00041}00041\ \ \ \ \ \textcolor{keywordtype}{float}\ buttonSpacing\ =\ 45.f;}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00042}00042\ }
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00043}00043\ \ \ \ \ \textcolor{comment}{//\ Easy\ button\ (Green)}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00044}00044\ \ \ \ \ m\_easyButton.setSize(sf::Vector2f(buttonSize,\ buttonSize));}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00045}00045\ \ \ \ \ m\_easyButton.setPosition(sf::Vector2(difficultyX,\ difficultyY));}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00046}00046\ \ \ \ \ m\_easyButton.setOutlineColor(sf::Color::White);}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00047}00047\ }
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00048}00048\ \ \ \ \ m\_easyText.setString(\textcolor{stringliteral}{"{}E"{}});}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00049}00049\ \ \ \ \ m\_easyText.setCharacterSize(20);}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00050}00050\ \ \ \ \ m\_easyText.setFillColor(sf::Color::White);}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00051}00051\ \ \ \ \ m\_easyText.setPosition(sf::Vector2f(difficultyX\ +\ 10.f,\ difficultyY\ +\ 5.f));}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00052}00052\ }
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00053}00053\ \ \ \ \ \textcolor{comment}{//\ Medium\ button\ (Yellow)}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00054}00054\ \ \ \ \ m\_mediumButton.setSize(sf::Vector2f(buttonSize,\ buttonSize));}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00055}00055\ \ \ \ \ m\_mediumButton.setPosition(sf::Vector2f(difficultyX\ +\ buttonSpacing,\ difficultyY));}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00056}00056\ \ \ \ \ m\_mediumButton.setOutlineColor(sf::Color::White);}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00057}00057\ }
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00058}00058\ \ \ \ \ m\_mediumText.setString(\textcolor{stringliteral}{"{}M"{}});}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00059}00059\ \ \ \ \ m\_mediumText.setCharacterSize(20);}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00060}00060\ \ \ \ \ m\_mediumText.setFillColor(sf::Color::White);}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00061}00061\ \ \ \ \ m\_mediumText.setPosition(sf::Vector2f(difficultyX\ +\ buttonSpacing\ +\ 8.f,\ difficultyY\ +\ 5.f));}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00062}00062\ }
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00063}00063\ \ \ \ \ \textcolor{comment}{//\ Hard\ button\ (Red)}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00064}00064\ \ \ \ \ m\_hardButton.setSize(sf::Vector2f(buttonSize,\ buttonSize));}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00065}00065\ \ \ \ \ m\_hardButton.setPosition(sf::Vector2f(difficultyX\ +\ buttonSpacing\ *\ 2,\ difficultyY));}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00066}00066\ \ \ \ \ m\_hardButton.setOutlineColor(sf::Color::White);}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00067}00067\ }
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00068}00068\ \ \ \ \ m\_hardText.setString(\textcolor{stringliteral}{"{}H"{}});}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00069}00069\ \ \ \ \ m\_hardText.setCharacterSize(20);}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00070}00070\ \ \ \ \ m\_hardText.setFillColor(sf::Color::White);}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00071}00071\ \ \ \ \ m\_hardText.setPosition(sf::Vector2f(difficultyX\ +\ buttonSpacing\ *\ 2\ +\ 9.f,\ difficultyY\ +\ 5.f));}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00072}00072\ }
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00073}00073\ }
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00074}00074\ }
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00075}00075\ \ \ \ \ \textcolor{comment}{//\ Setup\ "{}Play\ vs\ AI"{}\ button}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00076}00076\ \ \ \ \ m\_vsAIButton.setString(\textcolor{stringliteral}{"{}Play\ vs\ AI"{}});}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00077}00077\ \ \ \ \ m\_vsAIButton.setCharacterSize(36);}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00078}00078\ \ \ \ \ m\_vsAIButton.setFillColor(sf::Color::White);}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00079}00079\ \ \ \ \ m\_vsAIButton.setPosition(sf::Vector2f(400.f,\ 300.f));}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00080}00080\ }
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00081}00081\ \ \ \ \ \textcolor{comment}{//\ Setup\ "{}Play\ vs\ Player"{}\ button}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00082}00082\ \ \ \ \ m\_vsPvPButton.setString(\textcolor{stringliteral}{"{}Play\ vs\ Player"{}});}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00083}00083\ \ \ \ \ m\_vsPvPButton.setCharacterSize(36);}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00084}00084\ \ \ \ \ m\_vsPvPButton.setFillColor(sf::Color::White);}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00085}00085\ \ \ \ \ m\_vsPvPButton.setPosition(sf::Vector2f(400.f,\ 400.f));}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00086}00086\ }
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00087}00087\ \ \ \ \ \textcolor{comment}{//\ Host\ Game\ button}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00088}00088\ \ \ \ \ m\_hostGameButton.setString(\textcolor{stringliteral}{"{}Host\ Network\ Game"{}});}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00089}00089\ \ \ \ \ m\_hostGameButton.setCharacterSize(36);}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00090}00090\ \ \ \ \ m\_hostGameButton.setFillColor(sf::Color::Cyan);}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00091}00091\ \ \ \ \ m\_hostGameButton.setPosition(sf::Vector2f(400.f,\ 500.f));}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00092}00092\ }
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00093}00093\ \ \ \ \ \textcolor{comment}{//\ Join\ Game\ button}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00094}00094\ \ \ \ \ m\_joinGameButton.setString(\textcolor{stringliteral}{"{}Join\ Network\ Game"{}});}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00095}00095\ \ \ \ \ m\_joinGameButton.setCharacterSize(36);}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00096}00096\ \ \ \ \ m\_joinGameButton.setFillColor(sf::Color::Cyan);}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00097}00097\ \ \ \ \ m\_joinGameButton.setPosition(sf::Vector2(400.f,\ 600.f));}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00098}00098\ }
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00099}00099\ \ \ \ \ \textcolor{comment}{//\ Setup\ "{}Quit"{}\ button}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00100}00100\ \ \ \ \ m\_quitButton.setString(\textcolor{stringliteral}{"{}Quit"{}});}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00101}00101\ \ \ \ \ m\_quitButton.setCharacterSize(36);}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00102}00102\ \ \ \ \ m\_quitButton.setFillColor(sf::Color::White);}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00103}00103\ \ \ \ \ m\_quitButton.setPosition(sf::Vector2f(400.f,\ 700.f));}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00104}00104\ \}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00105}00105\ }
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00106}00106\ \textcolor{keywordtype}{void}\ MainMenuState::onExit()}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00107}00107\ \{}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00108}00108\ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}Exiting\ Main\ Menu\ State\(\backslash\)n"{}};}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00109}00109\ \}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00110}00110\ }
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00111}00111\ \textcolor{keywordtype}{void}\ MainMenuState::update(sf::Time\ t\_deltaTime)}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00112}00112\ \{}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00113}00113\ \ \ \ \ \textcolor{comment}{//\ Main\ menu\ doesn't\ need\ much\ updating}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00114}00114\ \}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00115}00115\ }
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00116}00116\ \textcolor{keywordtype}{void}\ MainMenuState::render(sf::RenderWindow\&\ t\_window)}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00117}00117\ \{}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00118}00118\ \ \ \ \ \textcolor{comment}{//\ Draw\ title}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00119}00119\ \ \ \ \ t\_window.draw(m\_titleText);}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00120}00120\ }
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00121}00121\ \ \ \ \ \textcolor{comment}{//\ Draw\ buttons\ with\ hover\ effect}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00122}00122\ \ \ \ \ \textcolor{keywordflow}{if}\ (m\_currentHover\ ==\ ButtonHover::VsAI)\ \{}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00123}00123\ \ \ \ \ \ \ \ \ m\_vsAIButton.setFillColor(sf::Color::Yellow);}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00124}00124\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00125}00125\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00126}00126\ \ \ \ \ \ \ \ \ m\_vsAIButton.setFillColor(sf::Color::White);}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00127}00127\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00128}00128\ \ \ \ \ t\_window.draw(m\_vsAIButton);}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00129}00129\ }
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00130}00130\ \ \ \ \ \textcolor{keywordflow}{if}\ (m\_currentHover\ ==\ ButtonHover::VsPvP)\ \{}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00131}00131\ \ \ \ \ \ \ \ \ m\_vsPvPButton.setFillColor(sf::Color::Yellow);}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00132}00132\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00133}00133\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00134}00134\ \ \ \ \ \ \ \ \ m\_vsPvPButton.setFillColor(sf::Color::White);}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00135}00135\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00136}00136\ \ \ \ \ t\_window.draw(m\_vsPvPButton);}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00137}00137\ }
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00138}00138\ \ \ \ \ \textcolor{keywordflow}{if}\ (m\_currentHover\ ==\ ButtonHover::HostGame)\ \{}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00139}00139\ \ \ \ \ \ \ \ \ m\_hostGameButton.setFillColor(sf::Color::Yellow);}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00140}00140\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00141}00141\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00142}00142\ \ \ \ \ \ \ \ \ m\_hostGameButton.setFillColor(sf::Color::Cyan);}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00143}00143\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00144}00144\ \ \ \ \ t\_window.draw(m\_hostGameButton);}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00145}00145\ }
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00146}00146\ \ \ \ \ \textcolor{keywordflow}{if}\ (m\_currentHover\ ==\ ButtonHover::JoinGame)\ \{}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00147}00147\ \ \ \ \ \ \ \ \ m\_joinGameButton.setFillColor(sf::Color::Yellow);}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00148}00148\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00149}00149\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00150}00150\ \ \ \ \ \ \ \ \ m\_joinGameButton.setFillColor(sf::Color::Cyan);}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00151}00151\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00152}00152\ \ \ \ \ t\_window.draw(m\_joinGameButton);}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00153}00153\ }
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00154}00154\ \ \ \ \ \textcolor{keywordflow}{if}\ (m\_currentHover\ ==\ ButtonHover::Quit)\ \{}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00155}00155\ \ \ \ \ \ \ \ \ m\_quitButton.setFillColor(sf::Color::Red);}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00156}00156\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00157}00157\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00158}00158\ \ \ \ \ \ \ \ \ m\_quitButton.setFillColor(sf::Color::White);}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00159}00159\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00160}00160\ \ \ \ \ t\_window.draw(m\_quitButton);}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00161}00161\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00162}00162\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00163}00163\ \ \ \ \ \textcolor{comment}{//\ Drawing\ difficulty\ buttons}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00164}00164\ \ \ \ \ m\_easyButton.setFillColor(getDifficultyButtonColor(}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00165}00165\ \ \ \ \ \ \ \ \ AIDifficulty::Easy,}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00166}00166\ \ \ \ \ \ \ \ \ m\_selectedDifficulty\ ==\ AIDifficulty::Easy,}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00167}00167\ \ \ \ \ \ \ \ \ m\_currentHover\ ==\ ButtonHover::Easy}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00168}00168\ \ \ \ \ ));}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00169}00169\ \ \ \ \ m\_easyButton.setOutlineThickness(m\_selectedDifficulty\ ==\ AIDifficulty::Easy\ ?\ 3.f\ :\ 1.f);}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00170}00170\ \ \ \ \ t\_window.draw(m\_easyButton);}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00171}00171\ \ \ \ \ t\_window.draw(m\_easyText);}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00172}00172\ }
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00173}00173\ \ \ \ \ m\_mediumButton.setFillColor(getDifficultyButtonColor(}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00174}00174\ \ \ \ \ \ \ \ \ AIDifficulty::Medium,}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00175}00175\ \ \ \ \ \ \ \ \ m\_selectedDifficulty\ ==\ AIDifficulty::Medium,}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00176}00176\ \ \ \ \ \ \ \ \ m\_currentHover\ ==\ ButtonHover::Medium}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00177}00177\ \ \ \ \ ));}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00178}00178\ \ \ \ \ m\_mediumButton.setOutlineThickness(m\_selectedDifficulty\ ==\ AIDifficulty::Medium\ ?\ 3.f\ :\ 1.f);}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00179}00179\ \ \ \ \ t\_window.draw(m\_mediumButton);}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00180}00180\ \ \ \ \ t\_window.draw(m\_mediumText);}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00181}00181\ }
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00182}00182\ \ \ \ \ m\_hardButton.setFillColor(getDifficultyButtonColor(}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00183}00183\ \ \ \ \ \ \ \ \ AIDifficulty::Hard,}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00184}00184\ \ \ \ \ \ \ \ \ m\_selectedDifficulty\ ==\ AIDifficulty::Hard,}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00185}00185\ \ \ \ \ \ \ \ \ m\_currentHover\ ==\ ButtonHover::Hard}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00186}00186\ \ \ \ \ ));}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00187}00187\ \ \ \ \ m\_hardButton.setOutlineThickness(m\_selectedDifficulty\ ==\ AIDifficulty::Hard\ ?\ 3.f\ :\ 1.f);}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00188}00188\ \ \ \ \ t\_window.draw(m\_hardButton);}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00189}00189\ \ \ \ \ t\_window.draw(m\_hardText);}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00190}00190\ \}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00191}00191\ }
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00192}00192\ \textcolor{keywordtype}{void}\ MainMenuState::handleEvent(\textcolor{keyword}{const}\ sf::Event\&\ t\_event)}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00193}00193\ \{}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00194}00194\ \ \ \ \ \textcolor{comment}{//\ Handle\ mouse\ movement\ for\ hover\ effects}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00195}00195\ \ \ \ \ \textcolor{keywordflow}{if}\ (\textcolor{keyword}{const}\ \textcolor{keyword}{auto}*\ mouseMove\ =\ t\_event.getIf<sf::Event::MouseMoved>())}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00196}00196\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00197}00197\ \ \ \ \ \ \ \ \ sf::Vector2f\ mousePos(\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(mouseMove-\/>position.x),}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00198}00198\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(mouseMove-\/>position.y));}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00199}00199\ }
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00200}00200\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Check\ which\ button\ is\ being\ hovered}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00201}00201\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (isMouseOver(m\_vsAIButton,\ mousePos))\ \{}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00202}00202\ \ \ \ \ \ \ \ \ \ \ \ \ m\_currentHover\ =\ ButtonHover::VsAI;}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00203}00203\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00204}00204\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (isMouseOver(m\_vsPvPButton,\ mousePos))\ \{}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00205}00205\ \ \ \ \ \ \ \ \ \ \ \ \ m\_currentHover\ =\ ButtonHover::VsPvP;}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00206}00206\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00207}00207\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (isMouseOver(m\_hostGameButton,\ mousePos))\ \{}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00208}00208\ \ \ \ \ \ \ \ \ \ \ \ \ m\_currentHover\ =\ ButtonHover::HostGame;}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00209}00209\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00210}00210\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (isMouseOver(m\_joinGameButton,\ mousePos))\ \{}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00211}00211\ \ \ \ \ \ \ \ \ \ \ \ \ m\_currentHover\ =\ ButtonHover::JoinGame;}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00212}00212\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00213}00213\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (isMouseOver(m\_quitButton,\ mousePos))\ \{}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00214}00214\ \ \ \ \ \ \ \ \ \ \ \ \ m\_currentHover\ =\ ButtonHover::Quit;}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00215}00215\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00216}00216\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Check\ what\ difficulty\ is\ being\ hovered\ over}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00217}00217\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (isMouseOverRectShape(m\_easyButton,\ mousePos))\ \{}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00218}00218\ \ \ \ \ \ \ \ \ \ \ \ \ m\_currentHover\ =\ ButtonHover::Easy;}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00219}00219\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00220}00220\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (isMouseOverRectShape(m\_mediumButton,\ mousePos))\ \{}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00221}00221\ \ \ \ \ \ \ \ \ \ \ \ \ m\_currentHover\ =\ ButtonHover::Medium;}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00222}00222\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00223}00223\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (isMouseOverRectShape(m\_hardButton,\ mousePos))\ \{}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00224}00224\ \ \ \ \ \ \ \ \ \ \ \ \ m\_currentHover\ =\ ButtonHover::Hard;}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00225}00225\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00226}00226\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00227}00227\ \ \ \ \ \ \ \ \ \ \ \ \ m\_currentHover\ =\ ButtonHover::None;}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00228}00228\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00229}00229\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00230}00230\ }
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00231}00231\ \ \ \ \ \textcolor{comment}{//\ Handle\ mouse\ clicks}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00232}00232\ \ \ \ \ \textcolor{keywordflow}{if}\ (\textcolor{keyword}{const}\ \textcolor{keyword}{auto}*\ mousePress\ =\ t\_event.getIf<sf::Event::MouseButtonPressed>())}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00233}00233\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00234}00234\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (mousePress-\/>button\ ==\ sf::Mouse::Button::Left)}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00235}00235\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00236}00236\ \ \ \ \ \ \ \ \ \ \ \ \ sf::Vector2f\ mousePos(\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(mousePress-\/>position.x),}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00237}00237\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(mousePress-\/>position.y));}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00238}00238\ }
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00239}00239\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (isMouseOverRectShape(m\_easyButton,\ mousePos))\ \{}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00240}00240\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m\_selectedDifficulty\ =\ AIDifficulty::Easy;}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00241}00241\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}Selected\ difficulty:\ Easy\(\backslash\)n"{}};}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00242}00242\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00243}00243\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (isMouseOverRectShape(m\_mediumButton,\ mousePos))\ \{}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00244}00244\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m\_selectedDifficulty\ =\ AIDifficulty::Medium;}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00245}00245\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}Selected\ difficulty:\ Medium\(\backslash\)n"{}};}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00246}00246\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00247}00247\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (isMouseOverRectShape(m\_hardButton,\ mousePos))\ \{}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00248}00248\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m\_selectedDifficulty\ =\ AIDifficulty::Hard;}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00249}00249\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}Selected\ difficulty:\ Hard\(\backslash\)n"{}};}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00250}00250\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00251}00251\ }
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00252}00252\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (isMouseOver(m\_vsAIButton,\ mousePos))}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00253}00253\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00254}00254\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}Starting\ game\ vs\ AI\(\backslash\)n"{}};}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00255}00255\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m\_nextState\ =\ std::make\_unique<GamePlayState>(m\_sharedFont,\ GameMode::VsAI,\ m\_selectedDifficulty);}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00256}00256\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m\_transitionRequested\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00257}00257\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00258}00258\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (isMouseOver(m\_vsPvPButton,\ mousePos))}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00259}00259\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00260}00260\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}Starting\ game\ vs\ Player\(\backslash\)n"{}};}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00261}00261\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m\_nextState\ =\ std::make\_unique<GamePlayState>(m\_sharedFont,\ GameMode::VsPvP);}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00262}00262\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m\_transitionRequested\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00263}00263\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00264}00264\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (isMouseOver(m\_hostGameButton,\ mousePos))}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00265}00265\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00266}00266\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}Hosting\ network\ game\(\backslash\)n"{}};}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00267}00267\ }
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00268}00268\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Non-\/blocking\ start}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00269}00269\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (m\_networkManager-\/>startHostAsync())\ }
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00270}00270\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00271}00271\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m\_nextState\ =\ std::make\_unique<LobbyState>(m\_sharedFont,\ m\_networkManager,\ \textcolor{keyword}{true});}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00272}00272\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m\_transitionRequested\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00273}00273\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00274}00274\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ }
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00275}00275\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00276}00276\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}Failed\ to\ start\ host!\(\backslash\)n"{}};}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00277}00277\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00278}00278\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00279}00279\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (isMouseOver(m\_joinGameButton,\ mousePos))}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00280}00280\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00281}00281\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}\(\backslash\)n===\ Join\ Network\ Game\ ===\(\backslash\)n"{}};}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00282}00282\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}Enter\ host\ IP\ address:\ "{}};}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00283}00283\ }
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00284}00284\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ l\_ipInput;}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00285}00285\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cin\ >>\ l\_ipInput;}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00286}00286\ }
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00287}00287\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}Connecting\ to\ "{}}\ <<\ l\_ipInput\ <<\ \textcolor{stringliteral}{"{}...\(\backslash\)n"{}};}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00288}00288\ }
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00289}00289\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Non-\/blocking\ connect}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00290}00290\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (m\_networkManager-\/>connectAsClientAsync(l\_ipInput))\ }
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00291}00291\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00292}00292\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m\_nextState\ =\ std::make\_unique<LobbyState>(m\_sharedFont,\ m\_networkManager,\ \textcolor{keyword}{false});}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00293}00293\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m\_transitionRequested\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00294}00294\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00295}00295\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ }
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00296}00296\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00297}00297\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}Failed\ to\ connect!\ Check\ IP\ and\ try\ again.\(\backslash\)n"{}};}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00298}00298\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}Press\ any\ key\ to\ continue...\(\backslash\)n"{}};}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00299}00299\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cin.ignore();}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00300}00300\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cin.get();}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00301}00301\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00302}00302\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00303}00303\ }
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00304}00304\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (isMouseOver(m\_quitButton,\ mousePos))}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00305}00305\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00306}00306\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}Quit\ button\ clicked\(\backslash\)n"{}};}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00307}00307\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m\_nextState\ =\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00308}00308\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m\_transitionRequested\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00309}00309\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00310}00310\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00311}00311\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00312}00312\ \}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00313}00313\ }
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00314}00314\ \textcolor{keywordtype}{bool}\ MainMenuState::shouldTransition()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00315}00315\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00316}00316\ \ \ \ \ \textcolor{keywordflow}{return}\ m\_transitionRequested;}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00317}00317\ \}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00318}00318\ }
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00319}00319\ std::unique\_ptr<GameState>\ MainMenuState::getNextState()}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00320}00320\ \{}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00321}00321\ \ \ \ \ m\_transitionRequested\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00322}00322\ \ \ \ \ \textcolor{keywordflow}{return}\ std::move(m\_nextState);}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00323}00323\ \}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00324}00324\ }
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00325}00325\ \textcolor{keywordtype}{bool}\ MainMenuState::isMouseOver(\textcolor{keyword}{const}\ sf::Text\&\ t\_text,\ sf::Vector2f\ t\_mousePos)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00326}00326\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00327}00327\ \ \ \ \ \textcolor{keywordflow}{return}\ t\_text.getGlobalBounds().contains(t\_mousePos);}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00328}00328\ \}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00329}00329\ }
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00330}00330\ \textcolor{keywordtype}{bool}\ MainMenuState::isMouseOverRectShape(\textcolor{keyword}{const}\ sf::RectangleShape\&\ t\_shape,\ sf::Vector2f\ t\_mousePos)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00331}00331\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00332}00332\ \ \ \ \ \textcolor{keywordflow}{return}\ t\_shape.getGlobalBounds().contains(t\_mousePos);}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00333}00333\ \}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00334}00334\ }
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00335}00335\ }
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00336}00336\ sf::Color\ MainMenuState::getDifficultyButtonColor(AIDifficulty\ t\_difficulty,\ \textcolor{keywordtype}{bool}\ t\_isSelected,\ \textcolor{keywordtype}{bool}\ t\_isHovered)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00337}00337\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00338}00338\ \ \ \ \ \textcolor{comment}{//\ Base\ colors\ for\ each\ difficulty}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00339}00339\ \ \ \ \ sf::Color\ baseColor;}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00340}00340\ \ \ \ \ \textcolor{keywordflow}{switch}\ (t\_difficulty)\ }
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00341}00341\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00342}00342\ \ \ \ \ \textcolor{keywordflow}{case}\ AIDifficulty::Easy:\ \ \ baseColor\ =\ sf::Color(100.f,\ 255.f,\ 150.f);\ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00343}00343\ \ \ \ \ \textcolor{keywordflow}{case}\ AIDifficulty::Medium:\ baseColor\ =\ sf::Color(200.f,\ 200.f,\ 50.f);\ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00344}00344\ \ \ \ \ \textcolor{keywordflow}{case}\ AIDifficulty::Hard:\ \ \ baseColor\ =\ sf::Color(255.f,\ 100.f,\ 100.f);\ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00345}00345\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00346}00346\ }
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00347}00347\ \ \ \ \ \textcolor{comment}{//\ If\ selected,\ make\ brighter}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00348}00348\ \ \ \ \ \textcolor{keywordflow}{if}\ (t\_isSelected)}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00349}00349\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00350}00350\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ baseColor;}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00351}00351\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00352}00352\ }
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00353}00353\ \ \ \ \ \textcolor{comment}{//\ If\ hovered\ (but\ not\ selected),\ make\ slightly\ brighter}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00354}00354\ \ \ \ \ \textcolor{keywordflow}{if}\ (t\_isHovered)\ }
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00355}00355\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00356}00356\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ sf::Color(}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00357}00357\ \ \ \ \ \ \ \ \ \ \ \ \ std::min(255,\ baseColor.r\ +\ 50),}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00358}00358\ \ \ \ \ \ \ \ \ \ \ \ \ std::min(255,\ baseColor.g\ +\ 50),}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00359}00359\ \ \ \ \ \ \ \ \ \ \ \ \ std::min(255,\ baseColor.b\ +\ 50)}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00360}00360\ \ \ \ \ \ \ \ \ );}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00361}00361\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00362}00362\ }
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00363}00363\ \ \ \ \ \textcolor{comment}{//\ Otherwise,\ make\ darker}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00364}00364\ \ \ \ \ \textcolor{keywordflow}{return}\ sf::Color(baseColor.r\ /\ 2,\ baseColor.g\ /\ 2,\ baseColor.b\ /\ 2);}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8cpp_source_l00365}00365\ \}}
+
+\end{DoxyCode}

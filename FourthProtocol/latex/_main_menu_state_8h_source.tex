@@ -1,0 +1,55 @@
+\doxysection{Main\+Menu\+State.\+h}
+\hypertarget{_main_menu_state_8h_source}{}\label{_main_menu_state_8h_source}\index{FourthProtocol/MainMenuState.h@{FourthProtocol/MainMenuState.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8h_source_l00001}00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8h_source_l00002}00002\ \textcolor{preprocessor}{\#include\ "{}GameState.h"{}}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8h_source_l00003}00003\ \textcolor{preprocessor}{\#include\ "{}NetworkManager.h"{}}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8h_source_l00004}00004\ \textcolor{preprocessor}{\#include\ <SFML/Graphics.hpp>}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8h_source_l00005}00005\ }
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8h_source_l00006}00006\ \textcolor{keyword}{enum\ class}\ AIDifficulty;}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8h_source_l00007}00007\ }
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8h_source_l00008}\mbox{\hyperlink{class_main_menu_state}{00008}}\ \textcolor{keyword}{class\ }MainMenuState\ :\ \textcolor{keyword}{public}\ GameState\ \{}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8h_source_l00009}00009\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8h_source_l00010}00010\ \ \ \ \ sf::Text\ m\_titleText;}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8h_source_l00011}00011\ \ \ \ \ sf::Text\ m\_vsAIButton;}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8h_source_l00012}00012\ \ \ \ \ sf::Text\ m\_vsPvPButton;}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8h_source_l00013}00013\ \ \ \ \ sf::Text\ m\_quitButton;}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8h_source_l00014}00014\ }
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8h_source_l00015}00015\ \ \ \ \ \textcolor{comment}{//\ Difficulty\ selector\ variables}}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8h_source_l00016}00016\ \ \ \ \ sf::RectangleShape\ m\_easyButton;}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8h_source_l00017}00017\ \ \ \ \ sf::RectangleShape\ m\_mediumButton;}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8h_source_l00018}00018\ \ \ \ \ sf::RectangleShape\ m\_hardButton;}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8h_source_l00019}00019\ \ \ \ \ sf::Text\ m\_easyText;}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8h_source_l00020}00020\ \ \ \ \ sf::Text\ m\_mediumText;}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8h_source_l00021}00021\ \ \ \ \ sf::Text\ m\_hardText;}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8h_source_l00022}00022\ \ \ \ \ sf::Text\ m\_hostGameButton;\ \ \ \ }
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8h_source_l00023}00023\ \ \ \ \ sf::Text\ m\_joinGameButton;}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8h_source_l00024}00024\ }
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8h_source_l00025}00025\ \ \ \ \ AIDifficulty\ m\_selectedDifficulty;}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8h_source_l00026}00026\ }
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8h_source_l00027}00027\ \ \ \ \ std::shared\_ptr<NetworkManager>\ m\_networkManager;}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8h_source_l00028}00028\ \ \ \ \ std::unique\_ptr<GameState>\ m\_nextState;}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8h_source_l00029}00029\ \ \ \ \ \textcolor{keywordtype}{bool}\ m\_transitionRequested;}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8h_source_l00030}00030\ }
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8h_source_l00031}00031\ \ \ \ \ \textcolor{keyword}{enum\ class}\ ButtonHover\ \{\ None,\ VsAI,\ VsPvP,\ HostGame,\ JoinGame,\ Quit,\ Easy,\ Medium,\ Hard\ \};}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8h_source_l00032}00032\ \ \ \ \ ButtonHover\ m\_currentHover;}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8h_source_l00033}00033\ }
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8h_source_l00034}00034\ \ \ \ \ \textcolor{keywordtype}{bool}\ isMouseOver(\textcolor{keyword}{const}\ sf::Text\&\ t\_text,\ sf::Vector2f\ t\_mousePos)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8h_source_l00035}00035\ \ \ \ \ \textcolor{keywordtype}{bool}\ isMouseOverRectShape(\textcolor{keyword}{const}\ sf::RectangleShape\&\ shape,\ sf::Vector2f\ mousePos)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8h_source_l00036}00036\ }
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8h_source_l00037}00037\ \ \ \ \ sf::Color\ getDifficultyButtonColor(AIDifficulty\ difficulty,\ \textcolor{keywordtype}{bool}\ isSelected,\ \textcolor{keywordtype}{bool}\ isHovered)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8h_source_l00038}00038\ }
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8h_source_l00039}00039\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8h_source_l00040}00040\ \ \ \ \ MainMenuState(sf::Font*\ t\_font,\ std::shared\_ptr<NetworkManager>\ t\_networkManager);}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8h_source_l00041}00041\ }
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8h_source_l00042}00042\ \ \ \ \ \textcolor{keywordtype}{void}\ onEnter()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8h_source_l00043}00043\ \ \ \ \ \textcolor{keywordtype}{void}\ onExit()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8h_source_l00044}00044\ \ \ \ \ \textcolor{keywordtype}{void}\ update(sf::Time\ t\_deltaTime)\ \textcolor{keyword}{override};}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8h_source_l00045}00045\ \ \ \ \ \textcolor{keywordtype}{void}\ render(sf::RenderWindow\&\ t\_window)\ \textcolor{keyword}{override};}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8h_source_l00046}00046\ \ \ \ \ \textcolor{keywordtype}{void}\ handleEvent(\textcolor{keyword}{const}\ sf::Event\&\ t\_event)\ \textcolor{keyword}{override};}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8h_source_l00047}00047\ \ \ \ \ \textcolor{keywordtype}{bool}\ shouldTransition()\ \textcolor{keyword}{const\ override};}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8h_source_l00048}00048\ \ \ \ \ std::unique\_ptr<GameState>\ getNextState()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{\Hypertarget{_main_menu_state_8h_source_l00049}00049\ \};}
+
+\end{DoxyCode}

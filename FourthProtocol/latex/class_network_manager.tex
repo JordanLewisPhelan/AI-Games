@@ -1,0 +1,156 @@
+\doxysection{Network\+Manager Class Reference}
+\hypertarget{class_network_manager}{}\label{class_network_manager}\index{NetworkManager@{NetworkManager}}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{class_network_manager_aa4ae7e6c8d75884eec7a13aae44aaab0}{start\+Host\+Async}} (unsigned short port=53000)
+\item 
+bool \mbox{\hyperlink{class_network_manager_ae0bfda361512ea3ea2beac57bcca4c94}{connect\+As\+Client\+Async}} (const std\+::string \&ip, unsigned short port=53000)
+\item 
+void \mbox{\hyperlink{class_network_manager_a3d24948e8f66b02a7fc04ca8dc38e429}{update\+Connection}} ()
+\item 
+Connection\+State \mbox{\hyperlink{class_network_manager_a20c4fa54d65e6af936bdc4dbbfa64bb1}{get\+Connection\+State}} () const
+\item 
+bool \mbox{\hyperlink{class_network_manager_a97d1fb741f609c2442efdfd92e944ed2}{is\+Connected}} () const
+\item 
+bool \mbox{\hyperlink{class_network_manager_ab507342924f786e91010302d43c37fe7}{is\+Host}} () const
+\item 
+bool \mbox{\hyperlink{class_network_manager_a60127b7a8d3f26446b76c0fb3807a59e}{send\+Message}} (const std\+::string \&message)
+\item 
+std\+::optional$<$ std\+::string $>$ \mbox{\hyperlink{class_network_manager_a75c5cee92944eebe08ca9205ef59fefd}{receive\+Message}} ()
+\item 
+void \mbox{\hyperlink{class_network_manager_a751f87add468a5ddc70c4087ab80533f}{disconnect}} ()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+
+
+Definition at line \mbox{\hyperlink{_network_manager_8h_source_l00014}{14}} of file \mbox{\hyperlink{_network_manager_8h_source}{Network\+Manager.\+h}}.
+
+
+
+\label{doc-constructors}
+\Hypertarget{class_network_manager_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_network_manager_a5aaf71c4aa7a2efab7f1dbae02312280}\index{NetworkManager@{NetworkManager}!NetworkManager@{NetworkManager}}
+\index{NetworkManager@{NetworkManager}!NetworkManager@{NetworkManager}}
+\doxysubsubsection{\texorpdfstring{NetworkManager()}{NetworkManager()}}
+{\footnotesize\ttfamily \label{class_network_manager_a5aaf71c4aa7a2efab7f1dbae02312280} 
+Network\+Manager\+::\+Network\+Manager (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{_network_manager_8cpp_source_l00004}{4}} of file \mbox{\hyperlink{_network_manager_8cpp_source}{Network\+Manager.\+cpp}}.
+
+\Hypertarget{class_network_manager_a2cfe4223139cf58587a9f066b956cb23}\index{NetworkManager@{NetworkManager}!````~NetworkManager@{\texorpdfstring{$\sim$}{\string~}NetworkManager}}
+\index{````~NetworkManager@{\texorpdfstring{$\sim$}{\string~}NetworkManager}!NetworkManager@{NetworkManager}}
+\doxysubsubsection{\texorpdfstring{\texorpdfstring{$\sim$}{\string~}NetworkManager()}{\string~NetworkManager()}}
+{\footnotesize\ttfamily \label{class_network_manager_a2cfe4223139cf58587a9f066b956cb23} 
+Network\+Manager\+::\texorpdfstring{$\sim$}{\string~}\+Network\+Manager (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{_network_manager_8cpp_source_l00010}{10}} of file \mbox{\hyperlink{_network_manager_8cpp_source}{Network\+Manager.\+cpp}}.
+
+
+
+\label{doc-func-members}
+\Hypertarget{class_network_manager_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_network_manager_ae0bfda361512ea3ea2beac57bcca4c94}\index{NetworkManager@{NetworkManager}!connectAsClientAsync@{connectAsClientAsync}}
+\index{connectAsClientAsync@{connectAsClientAsync}!NetworkManager@{NetworkManager}}
+\doxysubsubsection{\texorpdfstring{connectAsClientAsync()}{connectAsClientAsync()}}
+{\footnotesize\ttfamily \label{class_network_manager_ae0bfda361512ea3ea2beac57bcca4c94} 
+bool Network\+Manager\+::connect\+As\+Client\+Async (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{ip}{, }\item[{unsigned short}]{port}{ = {\ttfamily 53000}}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{_network_manager_8cpp_source_l00042}{42}} of file \mbox{\hyperlink{_network_manager_8cpp_source}{Network\+Manager.\+cpp}}.
+
+\Hypertarget{class_network_manager_a751f87add468a5ddc70c4087ab80533f}\index{NetworkManager@{NetworkManager}!disconnect@{disconnect}}
+\index{disconnect@{disconnect}!NetworkManager@{NetworkManager}}
+\doxysubsubsection{\texorpdfstring{disconnect()}{disconnect()}}
+{\footnotesize\ttfamily \label{class_network_manager_a751f87add468a5ddc70c4087ab80533f} 
+void Network\+Manager\+::disconnect (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{_network_manager_8cpp_source_l00198}{198}} of file \mbox{\hyperlink{_network_manager_8cpp_source}{Network\+Manager.\+cpp}}.
+
+\Hypertarget{class_network_manager_a20c4fa54d65e6af936bdc4dbbfa64bb1}\index{NetworkManager@{NetworkManager}!getConnectionState@{getConnectionState}}
+\index{getConnectionState@{getConnectionState}!NetworkManager@{NetworkManager}}
+\doxysubsubsection{\texorpdfstring{getConnectionState()}{getConnectionState()}}
+{\footnotesize\ttfamily \label{class_network_manager_a20c4fa54d65e6af936bdc4dbbfa64bb1} 
+Connection\+State Network\+Manager\+::get\+Connection\+State (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{_network_manager_8h_source_l00036}{36}} of file \mbox{\hyperlink{_network_manager_8h_source}{Network\+Manager.\+h}}.
+
+\Hypertarget{class_network_manager_a97d1fb741f609c2442efdfd92e944ed2}\index{NetworkManager@{NetworkManager}!isConnected@{isConnected}}
+\index{isConnected@{isConnected}!NetworkManager@{NetworkManager}}
+\doxysubsubsection{\texorpdfstring{isConnected()}{isConnected()}}
+{\footnotesize\ttfamily \label{class_network_manager_a97d1fb741f609c2442efdfd92e944ed2} 
+bool Network\+Manager\+::is\+Connected (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{_network_manager_8h_source_l00037}{37}} of file \mbox{\hyperlink{_network_manager_8h_source}{Network\+Manager.\+h}}.
+
+\Hypertarget{class_network_manager_ab507342924f786e91010302d43c37fe7}\index{NetworkManager@{NetworkManager}!isHost@{isHost}}
+\index{isHost@{isHost}!NetworkManager@{NetworkManager}}
+\doxysubsubsection{\texorpdfstring{isHost()}{isHost()}}
+{\footnotesize\ttfamily \label{class_network_manager_ab507342924f786e91010302d43c37fe7} 
+bool Network\+Manager\+::is\+Host (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{_network_manager_8h_source_l00038}{38}} of file \mbox{\hyperlink{_network_manager_8h_source}{Network\+Manager.\+h}}.
+
+\Hypertarget{class_network_manager_a75c5cee92944eebe08ca9205ef59fefd}\index{NetworkManager@{NetworkManager}!receiveMessage@{receiveMessage}}
+\index{receiveMessage@{receiveMessage}!NetworkManager@{NetworkManager}}
+\doxysubsubsection{\texorpdfstring{receiveMessage()}{receiveMessage()}}
+{\footnotesize\ttfamily \label{class_network_manager_a75c5cee92944eebe08ca9205ef59fefd} 
+std\+::optional$<$ std\+::string $>$ Network\+Manager\+::receive\+Message (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{_network_manager_8cpp_source_l00163}{163}} of file \mbox{\hyperlink{_network_manager_8cpp_source}{Network\+Manager.\+cpp}}.
+
+\Hypertarget{class_network_manager_a60127b7a8d3f26446b76c0fb3807a59e}\index{NetworkManager@{NetworkManager}!sendMessage@{sendMessage}}
+\index{sendMessage@{sendMessage}!NetworkManager@{NetworkManager}}
+\doxysubsubsection{\texorpdfstring{sendMessage()}{sendMessage()}}
+{\footnotesize\ttfamily \label{class_network_manager_a60127b7a8d3f26446b76c0fb3807a59e} 
+bool Network\+Manager\+::send\+Message (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{message}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{_network_manager_8cpp_source_l00132}{132}} of file \mbox{\hyperlink{_network_manager_8cpp_source}{Network\+Manager.\+cpp}}.
+
+\Hypertarget{class_network_manager_aa4ae7e6c8d75884eec7a13aae44aaab0}\index{NetworkManager@{NetworkManager}!startHostAsync@{startHostAsync}}
+\index{startHostAsync@{startHostAsync}!NetworkManager@{NetworkManager}}
+\doxysubsubsection{\texorpdfstring{startHostAsync()}{startHostAsync()}}
+{\footnotesize\ttfamily \label{class_network_manager_aa4ae7e6c8d75884eec7a13aae44aaab0} 
+bool Network\+Manager\+::start\+Host\+Async (\begin{DoxyParamCaption}\item[{unsigned short}]{port}{ = {\ttfamily 53000}}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{_network_manager_8cpp_source_l00020}{20}} of file \mbox{\hyperlink{_network_manager_8cpp_source}{Network\+Manager.\+cpp}}.
+
+\Hypertarget{class_network_manager_a3d24948e8f66b02a7fc04ca8dc38e429}\index{NetworkManager@{NetworkManager}!updateConnection@{updateConnection}}
+\index{updateConnection@{updateConnection}!NetworkManager@{NetworkManager}}
+\doxysubsubsection{\texorpdfstring{updateConnection()}{updateConnection()}}
+{\footnotesize\ttfamily \label{class_network_manager_a3d24948e8f66b02a7fc04ca8dc38e429} 
+void Network\+Manager\+::update\+Connection (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{_network_manager_8cpp_source_l00089}{89}} of file \mbox{\hyperlink{_network_manager_8cpp_source}{Network\+Manager.\+cpp}}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Fourth\+Protocol/Network\+Manager.\+h\item 
+Fourth\+Protocol/Network\+Manager.\+cpp\end{DoxyCompactItemize}

@@ -1,0 +1,343 @@
+\doxysection{Board Class Reference}
+\hypertarget{class_board}{}\label{class_board}\index{Board@{Board}}
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{struct_board_1_1_move_backup}{Move\+Backup}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{class_board_a4b6d9b88087c2aeb37fcd92ab43b2cf1}{can\+Place\+Piece}} (int row, int col, Piece\+Type type, Player player) const
+\item 
+bool \mbox{\hyperlink{class_board_a505ce329d826dbe580d14af89707662c}{place\+Piece}} (int row, int col, Piece\+Type type, Player player)
+\item 
+void \mbox{\hyperlink{class_board_aecb4693dde35c13e02523aa7c5d77aa9}{select\+Piece\+Type}} (Piece\+Type type)
+\item 
+Piece\+Type \mbox{\hyperlink{class_board_a2eff4d1df8dbdbe8f64d0f0803b0b605}{get\+Selected\+Piece\+Type}} () const
+\item 
+bool \mbox{\hyperlink{class_board_a05294f6ad79a980889c7d3ac71b53a3f}{is\+Placement\+Complete}} () const
+\item 
+std\+::vector$<$ std\+::pair$<$ int, int $>$ $>$ \mbox{\hyperlink{class_board_afbd947c257fa3127f6ffd14b23b585b0}{get\+Valid\+Moves}} (int row, int col) const
+\item 
+bool \mbox{\hyperlink{class_board_afa390a28317f89d17649305c03d5710a}{select\+Piece\+For\+Move}} (int row, int col)
+\item 
+bool \mbox{\hyperlink{class_board_a5cbf5d2dd3d248343cc899ecdb3d4d2f}{move\+Piece}} (int to\+Row, int to\+Col)
+\item 
+void \mbox{\hyperlink{class_board_a8155c3c78f2ada33b70358f77823b592}{deselect\+Piece}} ()
+\item 
+bool \mbox{\hyperlink{class_board_a9e76261b3ee3ce000bcd6f57be4174d7}{is\+Piece\+Selected}} () const
+\item 
+std\+::pair$<$ int, int $>$ \mbox{\hyperlink{class_board_a914ee355bf7e143f4187739f0baac26c}{get\+Selected\+Piece\+Position}} () const
+\item 
+bool \mbox{\hyperlink{class_board_ac070cfc43df17ac6696ab06a5c183a84}{check\+Win}} (Player player) const
+\item 
+Player \mbox{\hyperlink{class_board_adc2a7ba1ae8be70d3e75ece858f134d4}{get\+Current\+Player}} () const
+\item 
+void \mbox{\hyperlink{class_board_a6443db7c16e3b023e9f0ebd106a89e2c}{switch\+Player}} ()
+\item 
+void \mbox{\hyperlink{class_board_a6aad2f9dc402b6433dc8282fa60c62b5}{render}} (sf\+::\+Render\+Window \&window, sf\+::\+Font \&font) const
+\item 
+const \mbox{\hyperlink{struct_piece}{Piece}} \& \mbox{\hyperlink{class_board_a5d08b790aa592ef813c3953c5c415401}{get\+Piece}} (int row, int col) const
+\item 
+bool \mbox{\hyperlink{class_board_a522f550eae48b55db71c72d5ad259d9b}{is\+Placement\+Phase}} () const
+\item 
+std\+::pair$<$ int, int $>$ \mbox{\hyperlink{class_board_aa636c68aabcbece1aa7e9147b2ca341c}{screen\+To\+Grid}} (sf\+::\+Vector2f screen\+Pos) const
+\item 
+bool \mbox{\hyperlink{class_board_ac9beb8a57e6fafe58c6eb3207fea7e2a}{is\+Position\+On\+Board}} (sf\+::\+Vector2f screen\+Pos) const
+\item 
+Piece\+Type \mbox{\hyperlink{class_board_ab6ed5abeb5ee3e17b3cc233a0f1b6c96}{get\+Clicked\+Unplaced\+Piece}} (sf\+::\+Vector2f screen\+Pos, Player player) const
+\item 
+\mbox{\hyperlink{struct_board_1_1_move_backup}{Move\+Backup}} \mbox{\hyperlink{class_board_a021f2f6f4aa441516fade2a431ea4330}{simulate\+Placement}} (Piece\+Type t\+\_\+type, int t\+\_\+row, int t\+\_\+col, Player t\+\_\+player)
+\item 
+\mbox{\hyperlink{struct_board_1_1_move_backup}{Move\+Backup}} \mbox{\hyperlink{class_board_a270303b4d90d428e873a00bcb09a49c3}{simulate\+Move}} (int t\+\_\+from\+Row, int t\+\_\+from\+Col, int t\+\_\+to\+Row, int t\+\_\+to\+Col)
+\item 
+void \mbox{\hyperlink{class_board_a2c9998d0d826c9faf51bacff41930aa3}{undo\+Move}} (const \mbox{\hyperlink{struct_board_1_1_move_backup}{Move\+Backup}} \&t\+\_\+backup)
+\item 
+std\+::vector$<$ Line\+Info $>$ \mbox{\hyperlink{class_board_abe90f6c8dd31fa958dc616f01b8a7313}{analyze\+Lines}} (Player t\+\_\+player) const
+\item 
+int \mbox{\hyperlink{class_board_a1038a115a6010b1536491be877a4778f}{get\+Remaining\+Piece\+Count}} (Player t\+\_\+player, Piece\+Type t\+\_\+type) const
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+
+
+Definition at line \mbox{\hyperlink{_board_8h_source_l00009}{9}} of file \mbox{\hyperlink{_board_8h_source}{Board.\+h}}.
+
+
+
+\label{doc-constructors}
+\Hypertarget{class_board_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_board_a9ee491d4fea680cf69b033374a9fdfcb}\index{Board@{Board}!Board@{Board}}
+\index{Board@{Board}!Board@{Board}}
+\doxysubsubsection{\texorpdfstring{Board()}{Board()}}
+{\footnotesize\ttfamily \label{class_board_a9ee491d4fea680cf69b033374a9fdfcb} 
+Board\+::\+Board (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{_board_8cpp_source_l00004}{4}} of file \mbox{\hyperlink{_board_8cpp_source}{Board.\+cpp}}.
+
+
+
+\label{doc-func-members}
+\Hypertarget{class_board_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_board_abe90f6c8dd31fa958dc616f01b8a7313}\index{Board@{Board}!analyzeLines@{analyzeLines}}
+\index{analyzeLines@{analyzeLines}!Board@{Board}}
+\doxysubsubsection{\texorpdfstring{analyzeLines()}{analyzeLines()}}
+{\footnotesize\ttfamily \label{class_board_abe90f6c8dd31fa958dc616f01b8a7313} 
+std\+::vector$<$ Board\+::\+Line\+Info $>$ Board\+::analyze\+Lines (\begin{DoxyParamCaption}\item[{Player}]{t\+\_\+player}{}\end{DoxyParamCaption}) const}
+
+
+
+Definition at line \mbox{\hyperlink{_board_8cpp_source_l00726}{726}} of file \mbox{\hyperlink{_board_8cpp_source}{Board.\+cpp}}.
+
+\Hypertarget{class_board_a4b6d9b88087c2aeb37fcd92ab43b2cf1}\index{Board@{Board}!canPlacePiece@{canPlacePiece}}
+\index{canPlacePiece@{canPlacePiece}!Board@{Board}}
+\doxysubsubsection{\texorpdfstring{canPlacePiece()}{canPlacePiece()}}
+{\footnotesize\ttfamily \label{class_board_a4b6d9b88087c2aeb37fcd92ab43b2cf1} 
+bool Board\+::can\+Place\+Piece (\begin{DoxyParamCaption}\item[{int}]{row}{, }\item[{int}]{col}{, }\item[{Piece\+Type}]{type}{, }\item[{Player}]{player}{}\end{DoxyParamCaption}) const}
+
+
+
+Definition at line \mbox{\hyperlink{_board_8cpp_source_l00060}{60}} of file \mbox{\hyperlink{_board_8cpp_source}{Board.\+cpp}}.
+
+\Hypertarget{class_board_ac070cfc43df17ac6696ab06a5c183a84}\index{Board@{Board}!checkWin@{checkWin}}
+\index{checkWin@{checkWin}!Board@{Board}}
+\doxysubsubsection{\texorpdfstring{checkWin()}{checkWin()}}
+{\footnotesize\ttfamily \label{class_board_ac070cfc43df17ac6696ab06a5c183a84} 
+bool Board\+::check\+Win (\begin{DoxyParamCaption}\item[{Player}]{player}{}\end{DoxyParamCaption}) const}
+
+
+
+Definition at line \mbox{\hyperlink{_board_8cpp_source_l00327}{327}} of file \mbox{\hyperlink{_board_8cpp_source}{Board.\+cpp}}.
+
+\Hypertarget{class_board_a8155c3c78f2ada33b70358f77823b592}\index{Board@{Board}!deselectPiece@{deselectPiece}}
+\index{deselectPiece@{deselectPiece}!Board@{Board}}
+\doxysubsubsection{\texorpdfstring{deselectPiece()}{deselectPiece()}}
+{\footnotesize\ttfamily \label{class_board_a8155c3c78f2ada33b70358f77823b592} 
+void Board\+::deselect\+Piece (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{_board_8cpp_source_l00293}{293}} of file \mbox{\hyperlink{_board_8cpp_source}{Board.\+cpp}}.
+
+\Hypertarget{class_board_ab6ed5abeb5ee3e17b3cc233a0f1b6c96}\index{Board@{Board}!getClickedUnplacedPiece@{getClickedUnplacedPiece}}
+\index{getClickedUnplacedPiece@{getClickedUnplacedPiece}!Board@{Board}}
+\doxysubsubsection{\texorpdfstring{getClickedUnplacedPiece()}{getClickedUnplacedPiece()}}
+{\footnotesize\ttfamily \label{class_board_ab6ed5abeb5ee3e17b3cc233a0f1b6c96} 
+Piece\+Type Board\+::get\+Clicked\+Unplaced\+Piece (\begin{DoxyParamCaption}\item[{sf\+::\+Vector2f}]{screen\+Pos}{, }\item[{Player}]{player}{}\end{DoxyParamCaption}) const}
+
+
+
+Definition at line \mbox{\hyperlink{_board_8cpp_source_l00595}{595}} of file \mbox{\hyperlink{_board_8cpp_source}{Board.\+cpp}}.
+
+\Hypertarget{class_board_adc2a7ba1ae8be70d3e75ece858f134d4}\index{Board@{Board}!getCurrentPlayer@{getCurrentPlayer}}
+\index{getCurrentPlayer@{getCurrentPlayer}!Board@{Board}}
+\doxysubsubsection{\texorpdfstring{getCurrentPlayer()}{getCurrentPlayer()}}
+{\footnotesize\ttfamily \label{class_board_adc2a7ba1ae8be70d3e75ece858f134d4} 
+Player Board\+::get\+Current\+Player (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{_board_8h_source_l00093}{93}} of file \mbox{\hyperlink{_board_8h_source}{Board.\+h}}.
+
+\Hypertarget{class_board_a5d08b790aa592ef813c3953c5c415401}\index{Board@{Board}!getPiece@{getPiece}}
+\index{getPiece@{getPiece}!Board@{Board}}
+\doxysubsubsection{\texorpdfstring{getPiece()}{getPiece()}}
+{\footnotesize\ttfamily \label{class_board_a5d08b790aa592ef813c3953c5c415401} 
+const \mbox{\hyperlink{struct_piece}{Piece}} \& Board\+::get\+Piece (\begin{DoxyParamCaption}\item[{int}]{row}{, }\item[{int}]{col}{}\end{DoxyParamCaption}) const}
+
+
+
+Definition at line \mbox{\hyperlink{_board_8cpp_source_l00635}{635}} of file \mbox{\hyperlink{_board_8cpp_source}{Board.\+cpp}}.
+
+\Hypertarget{class_board_a1038a115a6010b1536491be877a4778f}\index{Board@{Board}!getRemainingPieceCount@{getRemainingPieceCount}}
+\index{getRemainingPieceCount@{getRemainingPieceCount}!Board@{Board}}
+\doxysubsubsection{\texorpdfstring{getRemainingPieceCount()}{getRemainingPieceCount()}}
+{\footnotesize\ttfamily \label{class_board_a1038a115a6010b1536491be877a4778f} 
+int Board\+::get\+Remaining\+Piece\+Count (\begin{DoxyParamCaption}\item[{Player}]{t\+\_\+player}{, }\item[{Piece\+Type}]{t\+\_\+type}{}\end{DoxyParamCaption}) const}
+
+
+
+Definition at line \mbox{\hyperlink{_board_8cpp_source_l00793}{793}} of file \mbox{\hyperlink{_board_8cpp_source}{Board.\+cpp}}.
+
+\Hypertarget{class_board_a914ee355bf7e143f4187739f0baac26c}\index{Board@{Board}!getSelectedPiecePosition@{getSelectedPiecePosition}}
+\index{getSelectedPiecePosition@{getSelectedPiecePosition}!Board@{Board}}
+\doxysubsubsection{\texorpdfstring{getSelectedPiecePosition()}{getSelectedPiecePosition()}}
+{\footnotesize\ttfamily \label{class_board_a914ee355bf7e143f4187739f0baac26c} 
+std\+::pair$<$ int, int $>$ Board\+::get\+Selected\+Piece\+Position (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{_board_8h_source_l00087}{87}} of file \mbox{\hyperlink{_board_8h_source}{Board.\+h}}.
+
+\Hypertarget{class_board_a2eff4d1df8dbdbe8f64d0f0803b0b605}\index{Board@{Board}!getSelectedPieceType@{getSelectedPieceType}}
+\index{getSelectedPieceType@{getSelectedPieceType}!Board@{Board}}
+\doxysubsubsection{\texorpdfstring{getSelectedPieceType()}{getSelectedPieceType()}}
+{\footnotesize\ttfamily \label{class_board_a2eff4d1df8dbdbe8f64d0f0803b0b605} 
+Piece\+Type Board\+::get\+Selected\+Piece\+Type (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{_board_8h_source_l00078}{78}} of file \mbox{\hyperlink{_board_8h_source}{Board.\+h}}.
+
+\Hypertarget{class_board_afbd947c257fa3127f6ffd14b23b585b0}\index{Board@{Board}!getValidMoves@{getValidMoves}}
+\index{getValidMoves@{getValidMoves}!Board@{Board}}
+\doxysubsubsection{\texorpdfstring{getValidMoves()}{getValidMoves()}}
+{\footnotesize\ttfamily \label{class_board_afbd947c257fa3127f6ffd14b23b585b0} 
+std\+::vector$<$ std\+::pair$<$ int, int $>$ $>$ Board\+::get\+Valid\+Moves (\begin{DoxyParamCaption}\item[{int}]{row}{, }\item[{int}]{col}{}\end{DoxyParamCaption}) const}
+
+
+
+Definition at line \mbox{\hyperlink{_board_8cpp_source_l00214}{214}} of file \mbox{\hyperlink{_board_8cpp_source}{Board.\+cpp}}.
+
+\Hypertarget{class_board_a9e76261b3ee3ce000bcd6f57be4174d7}\index{Board@{Board}!isPieceSelected@{isPieceSelected}}
+\index{isPieceSelected@{isPieceSelected}!Board@{Board}}
+\doxysubsubsection{\texorpdfstring{isPieceSelected()}{isPieceSelected()}}
+{\footnotesize\ttfamily \label{class_board_a9e76261b3ee3ce000bcd6f57be4174d7} 
+bool Board\+::is\+Piece\+Selected (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{_board_8h_source_l00086}{86}} of file \mbox{\hyperlink{_board_8h_source}{Board.\+h}}.
+
+\Hypertarget{class_board_a05294f6ad79a980889c7d3ac71b53a3f}\index{Board@{Board}!isPlacementComplete@{isPlacementComplete}}
+\index{isPlacementComplete@{isPlacementComplete}!Board@{Board}}
+\doxysubsubsection{\texorpdfstring{isPlacementComplete()}{isPlacementComplete()}}
+{\footnotesize\ttfamily \label{class_board_a05294f6ad79a980889c7d3ac71b53a3f} 
+bool Board\+::is\+Placement\+Complete (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+
+
+Definition at line \mbox{\hyperlink{_board_8cpp_source_l00117}{117}} of file \mbox{\hyperlink{_board_8cpp_source}{Board.\+cpp}}.
+
+\Hypertarget{class_board_a522f550eae48b55db71c72d5ad259d9b}\index{Board@{Board}!isPlacementPhase@{isPlacementPhase}}
+\index{isPlacementPhase@{isPlacementPhase}!Board@{Board}}
+\doxysubsubsection{\texorpdfstring{isPlacementPhase()}{isPlacementPhase()}}
+{\footnotesize\ttfamily \label{class_board_a522f550eae48b55db71c72d5ad259d9b} 
+bool Board\+::is\+Placement\+Phase (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{_board_8h_source_l00101}{101}} of file \mbox{\hyperlink{_board_8h_source}{Board.\+h}}.
+
+\Hypertarget{class_board_ac9beb8a57e6fafe58c6eb3207fea7e2a}\index{Board@{Board}!isPositionOnBoard@{isPositionOnBoard}}
+\index{isPositionOnBoard@{isPositionOnBoard}!Board@{Board}}
+\doxysubsubsection{\texorpdfstring{isPositionOnBoard()}{isPositionOnBoard()}}
+{\footnotesize\ttfamily \label{class_board_ac9beb8a57e6fafe58c6eb3207fea7e2a} 
+bool Board\+::is\+Position\+On\+Board (\begin{DoxyParamCaption}\item[{sf\+::\+Vector2f}]{screen\+Pos}{}\end{DoxyParamCaption}) const}
+
+
+
+Definition at line \mbox{\hyperlink{_board_8cpp_source_l00589}{589}} of file \mbox{\hyperlink{_board_8cpp_source}{Board.\+cpp}}.
+
+\Hypertarget{class_board_a5cbf5d2dd3d248343cc899ecdb3d4d2f}\index{Board@{Board}!movePiece@{movePiece}}
+\index{movePiece@{movePiece}!Board@{Board}}
+\doxysubsubsection{\texorpdfstring{movePiece()}{movePiece()}}
+{\footnotesize\ttfamily \label{class_board_a5cbf5d2dd3d248343cc899ecdb3d4d2f} 
+bool Board\+::move\+Piece (\begin{DoxyParamCaption}\item[{int}]{to\+Row}{, }\item[{int}]{to\+Col}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{_board_8cpp_source_l00257}{257}} of file \mbox{\hyperlink{_board_8cpp_source}{Board.\+cpp}}.
+
+\Hypertarget{class_board_a505ce329d826dbe580d14af89707662c}\index{Board@{Board}!placePiece@{placePiece}}
+\index{placePiece@{placePiece}!Board@{Board}}
+\doxysubsubsection{\texorpdfstring{placePiece()}{placePiece()}}
+{\footnotesize\ttfamily \label{class_board_a505ce329d826dbe580d14af89707662c} 
+bool Board\+::place\+Piece (\begin{DoxyParamCaption}\item[{int}]{row}{, }\item[{int}]{col}{, }\item[{Piece\+Type}]{type}{, }\item[{Player}]{player}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{_board_8cpp_source_l00073}{73}} of file \mbox{\hyperlink{_board_8cpp_source}{Board.\+cpp}}.
+
+\Hypertarget{class_board_a6aad2f9dc402b6433dc8282fa60c62b5}\index{Board@{Board}!render@{render}}
+\index{render@{render}!Board@{Board}}
+\doxysubsubsection{\texorpdfstring{render()}{render()}}
+{\footnotesize\ttfamily \label{class_board_a6aad2f9dc402b6433dc8282fa60c62b5} 
+void Board\+::render (\begin{DoxyParamCaption}\item[{sf\+::\+Render\+Window \&}]{window}{, }\item[{sf\+::\+Font \&}]{font}{}\end{DoxyParamCaption}) const}
+
+
+
+Definition at line \mbox{\hyperlink{_board_8cpp_source_l00559}{559}} of file \mbox{\hyperlink{_board_8cpp_source}{Board.\+cpp}}.
+
+\Hypertarget{class_board_aa636c68aabcbece1aa7e9147b2ca341c}\index{Board@{Board}!screenToGrid@{screenToGrid}}
+\index{screenToGrid@{screenToGrid}!Board@{Board}}
+\doxysubsubsection{\texorpdfstring{screenToGrid()}{screenToGrid()}}
+{\footnotesize\ttfamily \label{class_board_aa636c68aabcbece1aa7e9147b2ca341c} 
+std\+::pair$<$ int, int $>$ Board\+::screen\+To\+Grid (\begin{DoxyParamCaption}\item[{sf\+::\+Vector2f}]{screen\+Pos}{}\end{DoxyParamCaption}) const}
+
+
+
+Definition at line \mbox{\hyperlink{_board_8cpp_source_l00582}{582}} of file \mbox{\hyperlink{_board_8cpp_source}{Board.\+cpp}}.
+
+\Hypertarget{class_board_afa390a28317f89d17649305c03d5710a}\index{Board@{Board}!selectPieceForMove@{selectPieceForMove}}
+\index{selectPieceForMove@{selectPieceForMove}!Board@{Board}}
+\doxysubsubsection{\texorpdfstring{selectPieceForMove()}{selectPieceForMove()}}
+{\footnotesize\ttfamily \label{class_board_afa390a28317f89d17649305c03d5710a} 
+bool Board\+::select\+Piece\+For\+Move (\begin{DoxyParamCaption}\item[{int}]{row}{, }\item[{int}]{col}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{_board_8cpp_source_l00232}{232}} of file \mbox{\hyperlink{_board_8cpp_source}{Board.\+cpp}}.
+
+\Hypertarget{class_board_aecb4693dde35c13e02523aa7c5d77aa9}\index{Board@{Board}!selectPieceType@{selectPieceType}}
+\index{selectPieceType@{selectPieceType}!Board@{Board}}
+\doxysubsubsection{\texorpdfstring{selectPieceType()}{selectPieceType()}}
+{\footnotesize\ttfamily \label{class_board_aecb4693dde35c13e02523aa7c5d77aa9} 
+void Board\+::select\+Piece\+Type (\begin{DoxyParamCaption}\item[{Piece\+Type}]{type}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{_board_8cpp_source_l00111}{111}} of file \mbox{\hyperlink{_board_8cpp_source}{Board.\+cpp}}.
+
+\Hypertarget{class_board_a270303b4d90d428e873a00bcb09a49c3}\index{Board@{Board}!simulateMove@{simulateMove}}
+\index{simulateMove@{simulateMove}!Board@{Board}}
+\doxysubsubsection{\texorpdfstring{simulateMove()}{simulateMove()}}
+{\footnotesize\ttfamily \label{class_board_a270303b4d90d428e873a00bcb09a49c3} 
+\mbox{\hyperlink{struct_board_1_1_move_backup}{Board\+::\+Move\+Backup}} Board\+::simulate\+Move (\begin{DoxyParamCaption}\item[{int}]{t\+\_\+from\+Row}{, }\item[{int}]{t\+\_\+from\+Col}{, }\item[{int}]{t\+\_\+to\+Row}{, }\item[{int}]{t\+\_\+to\+Col}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{_board_8cpp_source_l00682}{682}} of file \mbox{\hyperlink{_board_8cpp_source}{Board.\+cpp}}.
+
+\Hypertarget{class_board_a021f2f6f4aa441516fade2a431ea4330}\index{Board@{Board}!simulatePlacement@{simulatePlacement}}
+\index{simulatePlacement@{simulatePlacement}!Board@{Board}}
+\doxysubsubsection{\texorpdfstring{simulatePlacement()}{simulatePlacement()}}
+{\footnotesize\ttfamily \label{class_board_a021f2f6f4aa441516fade2a431ea4330} 
+\mbox{\hyperlink{struct_board_1_1_move_backup}{Board\+::\+Move\+Backup}} Board\+::simulate\+Placement (\begin{DoxyParamCaption}\item[{Piece\+Type}]{t\+\_\+type}{, }\item[{int}]{t\+\_\+row}{, }\item[{int}]{t\+\_\+col}{, }\item[{Player}]{t\+\_\+player}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{_board_8cpp_source_l00646}{646}} of file \mbox{\hyperlink{_board_8cpp_source}{Board.\+cpp}}.
+
+\Hypertarget{class_board_a6443db7c16e3b023e9f0ebd106a89e2c}\index{Board@{Board}!switchPlayer@{switchPlayer}}
+\index{switchPlayer@{switchPlayer}!Board@{Board}}
+\doxysubsubsection{\texorpdfstring{switchPlayer()}{switchPlayer()}}
+{\footnotesize\ttfamily \label{class_board_a6443db7c16e3b023e9f0ebd106a89e2c} 
+void Board\+::switch\+Player (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{_board_8cpp_source_l00384}{384}} of file \mbox{\hyperlink{_board_8cpp_source}{Board.\+cpp}}.
+
+\Hypertarget{class_board_a2c9998d0d826c9faf51bacff41930aa3}\index{Board@{Board}!undoMove@{undoMove}}
+\index{undoMove@{undoMove}!Board@{Board}}
+\doxysubsubsection{\texorpdfstring{undoMove()}{undoMove()}}
+{\footnotesize\ttfamily \label{class_board_a2c9998d0d826c9faf51bacff41930aa3} 
+void Board\+::undo\+Move (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{struct_board_1_1_move_backup}{Move\+Backup}} \&}]{t\+\_\+backup}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{_board_8cpp_source_l00707}{707}} of file \mbox{\hyperlink{_board_8cpp_source}{Board.\+cpp}}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Fourth\+Protocol/Board.\+h\item 
+Fourth\+Protocol/Board.\+cpp\end{DoxyCompactItemize}

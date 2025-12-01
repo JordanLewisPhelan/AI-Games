@@ -1,0 +1,88 @@
+\doxysection{Game Class Reference}
+\hypertarget{class_game}{}\label{class_game}\index{Game@{Game}}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_game_ad59df6562a58a614fda24622d3715b65}{Game}} ()
+\begin{DoxyCompactList}\small\item\em author Pete Lowe May 2025 you need to change the above line or lose marks \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_game_ae3d112ca6e0e55150d2fdbc704474530}{\texorpdfstring{$\sim$}{\string~}\+Game}} ()
+\begin{DoxyCompactList}\small\item\em default destructor we didn\textquotesingle{}t dynamically allocate anything so we don\textquotesingle{}t need to free it, but mthod needs to be here \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_game_a1ab78f5ed0d5ea879157357cf2fb2afa}{run}} ()
+\begin{DoxyCompactList}\small\item\em main game loop update 60 times per second, process update as often as possible and at least 60 times per second draw as often as possible but only updates are on time if updates run slow then don\textquotesingle{}t render frames \end{DoxyCompactList}\item 
+std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_network_manager}{Network\+Manager}} $>$ \mbox{\hyperlink{class_game_acd7dd18d8ead01201b19ca80503e54a8}{get\+Network\+Manager}} ()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+
+
+Definition at line \mbox{\hyperlink{_game_8h_source_l00028}{28}} of file \mbox{\hyperlink{_game_8h_source}{Game.\+h}}.
+
+
+
+\label{doc-constructors}
+\Hypertarget{class_game_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_game_ad59df6562a58a614fda24622d3715b65}\index{Game@{Game}!Game@{Game}}
+\index{Game@{Game}!Game@{Game}}
+\doxysubsubsection{\texorpdfstring{Game()}{Game()}}
+{\footnotesize\ttfamily \label{class_game_ad59df6562a58a614fda24622d3715b65} 
+Game\+::\+Game (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+author Pete Lowe May 2025 you need to change the above line or lose marks 
+
+default constructor setup the window properties load and setup the texts load and setup the images load and setup the sounds 
+
+Definition at line \mbox{\hyperlink{_game_8cpp_source_l00019}{19}} of file \mbox{\hyperlink{_game_8cpp_source}{Game.\+cpp}}.
+
+\Hypertarget{class_game_ae3d112ca6e0e55150d2fdbc704474530}\index{Game@{Game}!````~Game@{\texorpdfstring{$\sim$}{\string~}Game}}
+\index{````~Game@{\texorpdfstring{$\sim$}{\string~}Game}!Game@{Game}}
+\doxysubsubsection{\texorpdfstring{\texorpdfstring{$\sim$}{\string~}Game()}{\string~Game()}}
+{\footnotesize\ttfamily \label{class_game_ae3d112ca6e0e55150d2fdbc704474530} 
+Game\+::\texorpdfstring{$\sim$}{\string~}\+Game (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+default destructor we didn\textquotesingle{}t dynamically allocate anything so we don\textquotesingle{}t need to free it, but mthod needs to be here 
+
+
+
+Definition at line \mbox{\hyperlink{_game_8cpp_source_l00037}{37}} of file \mbox{\hyperlink{_game_8cpp_source}{Game.\+cpp}}.
+
+
+
+\label{doc-func-members}
+\Hypertarget{class_game_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_game_acd7dd18d8ead01201b19ca80503e54a8}\index{Game@{Game}!getNetworkManager@{getNetworkManager}}
+\index{getNetworkManager@{getNetworkManager}!Game@{Game}}
+\doxysubsubsection{\texorpdfstring{getNetworkManager()}{getNetworkManager()}}
+{\footnotesize\ttfamily \label{class_game_acd7dd18d8ead01201b19ca80503e54a8} 
+std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_network_manager}{Network\+Manager}} $>$ Game\+::get\+Network\+Manager (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{_game_8h_source_l00035}{35}} of file \mbox{\hyperlink{_game_8h_source}{Game.\+h}}.
+
+\Hypertarget{class_game_a1ab78f5ed0d5ea879157357cf2fb2afa}\index{Game@{Game}!run@{run}}
+\index{run@{run}!Game@{Game}}
+\doxysubsubsection{\texorpdfstring{run()}{run()}}
+{\footnotesize\ttfamily \label{class_game_a1ab78f5ed0d5ea879157357cf2fb2afa} 
+void Game\+::run (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+main game loop update 60 times per second, process update as often as possible and at least 60 times per second draw as often as possible but only updates are on time if updates run slow then don\textquotesingle{}t render frames 
+
+
+
+Definition at line \mbox{\hyperlink{_game_8cpp_source_l00049}{49}} of file \mbox{\hyperlink{_game_8cpp_source}{Game.\+cpp}}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Fourth\+Protocol/Game.\+h\item 
+Fourth\+Protocol/Game.\+cpp\end{DoxyCompactItemize}

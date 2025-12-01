@@ -1,0 +1,169 @@
+\doxysection{Lobby\+State Class Reference}
+\hypertarget{class_lobby_state}{}\label{class_lobby_state}\index{LobbyState@{LobbyState}}
+Inheritance diagram for Lobby\+State\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_lobby_state}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_lobby_state_ae0922f17bfffc25f03bcb7cc2e53ab3f}{Lobby\+State}} (sf\+::\+Font \texorpdfstring{$\ast$}{*}font, std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_network_manager}{Network\+Manager}} $>$ t\+\_\+network\+Manager, bool t\+\_\+is\+Host)
+\item 
+void \mbox{\hyperlink{class_lobby_state_a1731a8d84ecd23fe6d18ede40d820a04}{on\+Enter}} () override
+\item 
+void \mbox{\hyperlink{class_lobby_state_ae5093d07e37615755a30df8351178cff}{on\+Exit}} () override
+\item 
+void \mbox{\hyperlink{class_lobby_state_a3de7efa5f24224c3693b2541e84538c1}{update}} (sf\+::\+Time t\+\_\+delta\+Time) override
+\item 
+void \mbox{\hyperlink{class_lobby_state_a8e5a00967d234c5da7bc7705637a7bbd}{render}} (sf\+::\+Render\+Window \&t\+\_\+window) override
+\item 
+void \mbox{\hyperlink{class_lobby_state_a4fdb555bcfcf4963697af11eaf35d953}{handle\+Event}} (const sf\+::\+Event \&t\+\_\+event) override
+\item 
+bool \mbox{\hyperlink{class_lobby_state_abf8d2233896a1379a093e0c3bb260726}{should\+Transition}} () const override
+\item 
+std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{class_game_state}{Game\+State}} $>$ \mbox{\hyperlink{class_lobby_state_aa2cb0326dd6dbc182174e7e2cc7e9b6d}{get\+Next\+State}} () override
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{class_game_state}{Game\+State}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_game_state_a214203e573a5c6477d8d432eda504199}{Game\+State}} (sf\+::\+Font \texorpdfstring{$\ast$}{*}t\+\_\+font)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Additional Inherited Members}
+\doxysubsection*{Protected Attributes inherited from \mbox{\hyperlink{class_game_state}{Game\+State}}}
+\begin{DoxyCompactItemize}
+\item 
+sf\+::\+Font \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{class_game_state_a8c99491bd534552442c65f644bbf51f8}{m\+\_\+shared\+Font}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+
+
+Definition at line \mbox{\hyperlink{_lobby_state_8h_source_l00010}{10}} of file \mbox{\hyperlink{_lobby_state_8h_source}{Lobby\+State.\+h}}.
+
+
+
+\label{doc-constructors}
+\Hypertarget{class_lobby_state_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_lobby_state_ae0922f17bfffc25f03bcb7cc2e53ab3f}\index{LobbyState@{LobbyState}!LobbyState@{LobbyState}}
+\index{LobbyState@{LobbyState}!LobbyState@{LobbyState}}
+\doxysubsubsection{\texorpdfstring{LobbyState()}{LobbyState()}}
+{\footnotesize\ttfamily \label{class_lobby_state_ae0922f17bfffc25f03bcb7cc2e53ab3f} 
+Lobby\+State\+::\+Lobby\+State (\begin{DoxyParamCaption}\item[{sf\+::\+Font \texorpdfstring{$\ast$}{*}}]{font}{, }\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_network_manager}{Network\+Manager}} $>$}]{t\+\_\+network\+Manager}{, }\item[{bool}]{t\+\_\+is\+Host}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{_lobby_state_8cpp_source_l00006}{6}} of file \mbox{\hyperlink{_lobby_state_8cpp_source}{Lobby\+State.\+cpp}}.
+
+
+
+\label{doc-func-members}
+\Hypertarget{class_lobby_state_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_lobby_state_aa2cb0326dd6dbc182174e7e2cc7e9b6d}\index{LobbyState@{LobbyState}!getNextState@{getNextState}}
+\index{getNextState@{getNextState}!LobbyState@{LobbyState}}
+\doxysubsubsection{\texorpdfstring{getNextState()}{getNextState()}}
+{\footnotesize\ttfamily \label{class_lobby_state_aa2cb0326dd6dbc182174e7e2cc7e9b6d} 
+std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{class_game_state}{Game\+State}} $>$ Lobby\+State\+::get\+Next\+State (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented from \mbox{\hyperlink{class_game_state}{Game\+State}}.
+
+
+
+Definition at line \mbox{\hyperlink{_lobby_state_8cpp_source_l00177}{177}} of file \mbox{\hyperlink{_lobby_state_8cpp_source}{Lobby\+State.\+cpp}}.
+
+\Hypertarget{class_lobby_state_a4fdb555bcfcf4963697af11eaf35d953}\index{LobbyState@{LobbyState}!handleEvent@{handleEvent}}
+\index{handleEvent@{handleEvent}!LobbyState@{LobbyState}}
+\doxysubsubsection{\texorpdfstring{handleEvent()}{handleEvent()}}
+{\footnotesize\ttfamily \label{class_lobby_state_a4fdb555bcfcf4963697af11eaf35d953} 
+void Lobby\+State\+::handle\+Event (\begin{DoxyParamCaption}\item[{const sf\+::\+Event \&}]{t\+\_\+event}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_game_state}{Game\+State}}.
+
+
+
+Definition at line \mbox{\hyperlink{_lobby_state_8cpp_source_l00138}{138}} of file \mbox{\hyperlink{_lobby_state_8cpp_source}{Lobby\+State.\+cpp}}.
+
+\Hypertarget{class_lobby_state_a1731a8d84ecd23fe6d18ede40d820a04}\index{LobbyState@{LobbyState}!onEnter@{onEnter}}
+\index{onEnter@{onEnter}!LobbyState@{LobbyState}}
+\doxysubsubsection{\texorpdfstring{onEnter()}{onEnter()}}
+{\footnotesize\ttfamily \label{class_lobby_state_a1731a8d84ecd23fe6d18ede40d820a04} 
+void Lobby\+State\+::on\+Enter (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_game_state}{Game\+State}}.
+
+
+
+Definition at line \mbox{\hyperlink{_lobby_state_8cpp_source_l00018}{18}} of file \mbox{\hyperlink{_lobby_state_8cpp_source}{Lobby\+State.\+cpp}}.
+
+\Hypertarget{class_lobby_state_ae5093d07e37615755a30df8351178cff}\index{LobbyState@{LobbyState}!onExit@{onExit}}
+\index{onExit@{onExit}!LobbyState@{LobbyState}}
+\doxysubsubsection{\texorpdfstring{onExit()}{onExit()}}
+{\footnotesize\ttfamily \label{class_lobby_state_ae5093d07e37615755a30df8351178cff} 
+void Lobby\+State\+::on\+Exit (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_game_state}{Game\+State}}.
+
+
+
+Definition at line \mbox{\hyperlink{_lobby_state_8cpp_source_l00058}{58}} of file \mbox{\hyperlink{_lobby_state_8cpp_source}{Lobby\+State.\+cpp}}.
+
+\Hypertarget{class_lobby_state_a8e5a00967d234c5da7bc7705637a7bbd}\index{LobbyState@{LobbyState}!render@{render}}
+\index{render@{render}!LobbyState@{LobbyState}}
+\doxysubsubsection{\texorpdfstring{render()}{render()}}
+{\footnotesize\ttfamily \label{class_lobby_state_a8e5a00967d234c5da7bc7705637a7bbd} 
+void Lobby\+State\+::render (\begin{DoxyParamCaption}\item[{sf\+::\+Render\+Window \&}]{t\+\_\+window}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_game_state}{Game\+State}}.
+
+
+
+Definition at line \mbox{\hyperlink{_lobby_state_8cpp_source_l00131}{131}} of file \mbox{\hyperlink{_lobby_state_8cpp_source}{Lobby\+State.\+cpp}}.
+
+\Hypertarget{class_lobby_state_abf8d2233896a1379a093e0c3bb260726}\index{LobbyState@{LobbyState}!shouldTransition@{shouldTransition}}
+\index{shouldTransition@{shouldTransition}!LobbyState@{LobbyState}}
+\doxysubsubsection{\texorpdfstring{shouldTransition()}{shouldTransition()}}
+{\footnotesize\ttfamily \label{class_lobby_state_abf8d2233896a1379a093e0c3bb260726} 
+bool Lobby\+State\+::should\+Transition (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented from \mbox{\hyperlink{class_game_state}{Game\+State}}.
+
+
+
+Definition at line \mbox{\hyperlink{_lobby_state_8cpp_source_l00172}{172}} of file \mbox{\hyperlink{_lobby_state_8cpp_source}{Lobby\+State.\+cpp}}.
+
+\Hypertarget{class_lobby_state_a3de7efa5f24224c3693b2541e84538c1}\index{LobbyState@{LobbyState}!update@{update}}
+\index{update@{update}!LobbyState@{LobbyState}}
+\doxysubsubsection{\texorpdfstring{update()}{update()}}
+{\footnotesize\ttfamily \label{class_lobby_state_a3de7efa5f24224c3693b2541e84538c1} 
+void Lobby\+State\+::update (\begin{DoxyParamCaption}\item[{sf\+::\+Time}]{t\+\_\+delta\+Time}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_game_state}{Game\+State}}.
+
+
+
+Definition at line \mbox{\hyperlink{_lobby_state_8cpp_source_l00063}{63}} of file \mbox{\hyperlink{_lobby_state_8cpp_source}{Lobby\+State.\+cpp}}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Fourth\+Protocol/Lobby\+State.\+h\item 
+Fourth\+Protocol/Lobby\+State.\+cpp\end{DoxyCompactItemize}

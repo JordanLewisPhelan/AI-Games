@@ -1,0 +1,217 @@
+\doxysection{Network\+Manager.\+cpp}
+\hypertarget{_network_manager_8cpp_source}{}\label{_network_manager_8cpp_source}\index{FourthProtocol/NetworkManager.cpp@{FourthProtocol/NetworkManager.cpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00001}00001\ \textcolor{preprocessor}{\#include\ "{}NetworkManager.h"{}}}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00002}00002\ \textcolor{preprocessor}{\#include\ <iostream>}}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00003}00003\ }
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00004}00004\ NetworkManager::NetworkManager()}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00005}00005\ \ \ \ \ :\ m\_isHost(false)}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00006}00006\ \ \ \ \ ,\ m\_connectionState(ConnectionState::Idle)}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00007}00007\ \{}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00008}00008\ \}}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00009}00009\ }
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00010}00010\ NetworkManager::\string~NetworkManager()}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00011}00011\ \{}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00012}00012\ \ \ \ \ disconnect();}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00013}00013\ \}}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00014}00014\ }
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00015}00015\ \textcolor{keywordtype}{void}\ NetworkManager::setNonBlocking(\textcolor{keywordtype}{bool}\ t\_nonBlocking)}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00016}00016\ \{}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00017}00017\ \ \ \ \ m\_socket.setBlocking(!t\_nonBlocking);}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00018}00018\ \}}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00019}00019\ }
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00020}00020\ \textcolor{keywordtype}{bool}\ NetworkManager::startHostAsync(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{short}\ t\_port)}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00021}00021\ \{}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00022}00022\ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}[NetworkManager]\ Starting\ host\ on\ port\ "{}}\ <<\ t\_port\ <<\ \textcolor{stringliteral}{"{}\(\backslash\)n"{}};}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00023}00023\ }
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00024}00024\ \ \ \ \ m\_isHost\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00025}00025\ }
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00026}00026\ \ \ \ \ \textcolor{comment}{//\ Bind\ listener\ to\ port}}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00027}00027\ \ \ \ \ \textcolor{keywordflow}{if}\ (m\_listener.listen(t\_port)\ !=\ sf::Socket::Status::Done)\ \{}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00028}00028\ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}[NetworkManager]\ ERROR:\ Could\ not\ bind\ to\ port\ "{}}\ <<\ t\_port\ <<\ \textcolor{stringliteral}{"{}\(\backslash\)n"{}};}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00029}00029\ \ \ \ \ \ \ \ \ m\_connectionState\ =\ ConnectionState::Failed;}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00030}00030\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00031}00031\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00032}00032\ }
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00033}00033\ \ \ \ \ \textcolor{comment}{//\ Make\ listener\ non-\/blocking\ so\ accept()\ doesn't\ freeze\ the\ game}}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00034}00034\ \ \ \ \ m\_listener.setBlocking(\textcolor{keyword}{false});}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00035}00035\ }
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00036}00036\ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}[NetworkManager]\ Listening\ on\ port\ "{}}\ <<\ t\_port\ <<\ \textcolor{stringliteral}{"{}...\(\backslash\)n"{}};}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00037}00037\ \ \ \ \ m\_connectionState\ =\ ConnectionState::Listening;}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00038}00038\ }
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00039}00039\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00040}00040\ \}}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00041}00041\ }
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00042}00042\ \textcolor{keywordtype}{bool}\ NetworkManager::connectAsClientAsync(\textcolor{keyword}{const}\ std::string\&\ t\_ip,\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{short}\ t\_port)}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00043}00043\ \{}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00044}00044\ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}[NetworkManager]\ Connecting\ to\ "{}}\ <<\ t\_ip\ <<\ \textcolor{stringliteral}{"{}:"{}}\ <<\ t\_port\ <<\ \textcolor{stringliteral}{"{}\(\backslash\)n"{}};}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00045}00045\ }
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00046}00046\ \ \ \ \ m\_isHost\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00047}00047\ }
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00048}00048\ \ \ \ \ \textcolor{comment}{//\ Resolve\ IP\ address}}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00049}00049\ \ \ \ \ \textcolor{keyword}{auto}\ addressOpt\ =\ sf::IpAddress::resolve(t\_ip);}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00050}00050\ \ \ \ \ \textcolor{keywordflow}{if}\ (!addressOpt.has\_value())}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00051}00051\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00052}00052\ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}[NetworkManager]\ ERROR:\ Invalid\ IP\ address:\ "{}}\ <<\ t\_ip\ <<\ \textcolor{stringliteral}{"{}\(\backslash\)n"{}};}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00053}00053\ \ \ \ \ \ \ \ \ m\_connectionState\ =\ ConnectionState::Failed;}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00054}00054\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00055}00055\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00056}00056\ }
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00057}00057\ \ \ \ \ sf::IpAddress\ address\ =\ addressOpt.value();}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00058}00058\ }
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00059}00059\ \ \ \ \ \textcolor{comment}{//\ Set\ socket\ non-\/blocking\ BEFORE\ connecting}}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00060}00060\ \ \ \ \ m\_socket.setBlocking(\textcolor{keyword}{false});}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00061}00061\ }
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00062}00062\ \ \ \ \ m\_connectionState\ =\ ConnectionState::Connecting;}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00063}00063\ }
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00064}00064\ \ \ \ \ \textcolor{comment}{//\ Attempt\ connection\ (returns\ immediately\ in\ non-\/blocking\ mode)}}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00065}00065\ \ \ \ \ sf::Socket::Status\ status\ =\ m\_socket.connect(address,\ t\_port);}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00066}00066\ }
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00067}00067\ \ \ \ \ \textcolor{keywordflow}{if}\ (status\ ==\ sf::Socket::Status::Done)\ }
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00068}00068\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00069}00069\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Connected\ immediately\ (rare,\ but\ possible\ on\ localhost)}}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00070}00070\ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}[NetworkManager]\ Connected\ immediately!\(\backslash\)n"{}};}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00071}00071\ \ \ \ \ \ \ \ \ m\_connectionState\ =\ ConnectionState::Connected;}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00072}00072\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00073}00073\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00074}00074\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (status\ ==\ sf::Socket::Status::NotReady)}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00075}00075\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00076}00076\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Connection\ in\ progress\ (normal\ for\ non-\/blocking)}}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00077}00077\ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}[NetworkManager]\ Connection\ in\ progress...\(\backslash\)n"{}};}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00078}00078\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};\ \ \textcolor{comment}{//\ Not\ failed,\ just\ pending}}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00079}00079\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00080}00080\ \ \ \ \ \textcolor{keywordflow}{else}\ }
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00081}00081\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00082}00082\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Connection\ failed}}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00083}00083\ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}[NetworkManager]\ ERROR:\ Connection\ failed\(\backslash\)n"{}};}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00084}00084\ \ \ \ \ \ \ \ \ m\_connectionState\ =\ ConnectionState::Failed;}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00085}00085\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00086}00086\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00087}00087\ \}}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00088}00088\ }
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00089}00089\ \textcolor{keywordtype}{void}\ NetworkManager::updateConnection()}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00090}00090\ \{}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00091}00091\ \ \ \ \ \textcolor{keywordflow}{if}\ (m\_connectionState\ ==\ ConnectionState::Listening)\ }
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00092}00092\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00093}00093\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Host:\ Check\ if\ client\ connected}}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00094}00094\ \ \ \ \ \ \ \ \ sf::Socket::Status\ status\ =\ m\_listener.accept(m\_socket);}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00095}00095\ }
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00096}00096\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (status\ ==\ sf::Socket::Status::Done)\ }
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00097}00097\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00098}00098\ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}[NetworkManager]\ Client\ connected!\(\backslash\)n"{}};}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00099}00099\ \ \ \ \ \ \ \ \ \ \ \ \ m\_socket.setBlocking(\textcolor{keyword}{false});\ \ \textcolor{comment}{//\ Make\ socket\ non-\/blocking}}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00100}00100\ \ \ \ \ \ \ \ \ \ \ \ \ m\_connectionState\ =\ ConnectionState::Connected;}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00101}00101\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00102}00102\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (status\ ==\ sf::Socket::Status::Error)}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00103}00103\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00104}00104\ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}[NetworkManager]\ ERROR:\ Accept\ failed\(\backslash\)n"{}};}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00105}00105\ \ \ \ \ \ \ \ \ \ \ \ \ m\_connectionState\ =\ ConnectionState::Failed;}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00106}00106\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00107}00107\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Status::NotReady\ means\ no\ connection\ yet\ (normal)}}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00108}00108\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00109}00109\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (m\_connectionState\ ==\ ConnectionState::Connecting)}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00110}00110\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00111}00111\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Client:\ Check\ if\ connection\ completed}}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00112}00112\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Try\ sending\ a\ test\ packet\ to\ check\ if\ connected}}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00113}00113\ \ \ \ \ \ \ \ \ sf::Packet\ testPacket;}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00114}00114\ \ \ \ \ \ \ \ \ testPacket\ <<\ std::string(\textcolor{stringliteral}{"{}PING"{}});}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00115}00115\ }
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00116}00116\ \ \ \ \ \ \ \ \ sf::Socket::Status\ status\ =\ m\_socket.send(testPacket);}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00117}00117\ }
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00118}00118\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (status\ ==\ sf::Socket::Status::Done)}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00119}00119\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00120}00120\ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}[NetworkManager]\ Connection\ established!\(\backslash\)n"{}};}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00121}00121\ \ \ \ \ \ \ \ \ \ \ \ \ m\_connectionState\ =\ ConnectionState::Connected;}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00122}00122\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00123}00123\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (status\ ==\ sf::Socket::Status::Error\ ||\ status\ ==\ sf::Socket::Status::Disconnected)\ }
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00124}00124\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00125}00125\ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}[NetworkManager]\ Connection\ failed\(\backslash\)n"{}};}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00126}00126\ \ \ \ \ \ \ \ \ \ \ \ \ m\_connectionState\ =\ ConnectionState::Failed;}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00127}00127\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00128}00128\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Status::NotReady\ means\ still\ connecting}}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00129}00129\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00130}00130\ \}}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00131}00131\ }
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00132}00132\ \textcolor{keywordtype}{bool}\ NetworkManager::sendMessage(\textcolor{keyword}{const}\ std::string\&\ message)}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00133}00133\ \{}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00134}00134\ \ \ \ \ \textcolor{keywordflow}{if}\ (m\_connectionState\ !=\ ConnectionState::Connected)}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00135}00135\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00136}00136\ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}[NetworkManager]\ ERROR:\ Not\ connected,\ cannot\ send\(\backslash\)n"{}};}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00137}00137\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00138}00138\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00139}00139\ }
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00140}00140\ \ \ \ \ sf::Packet\ packet;}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00141}00141\ \ \ \ \ packet\ <<\ message;}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00142}00142\ }
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00143}00143\ \ \ \ \ sf::Socket::Status\ status\ =\ m\_socket.send(packet);}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00144}00144\ }
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00145}00145\ \ \ \ \ \textcolor{keywordflow}{if}\ (status\ ==\ sf::Socket::Status::Done)\ }
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00146}00146\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00147}00147\ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}[NetworkManager]\ Sent:\ "{}}\ <<\ message\ <<\ \textcolor{stringliteral}{"{}\(\backslash\)n"{}};}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00148}00148\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00149}00149\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00150}00150\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (status\ ==\ sf::Socket::Status::Disconnected)}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00151}00151\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00152}00152\ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}[NetworkManager]\ Connection\ lost\ while\ sending\(\backslash\)n"{}};}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00153}00153\ \ \ \ \ \ \ \ \ m\_connectionState\ =\ ConnectionState::Failed;}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00154}00154\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00155}00155\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00156}00156\ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00157}00157\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00158}00158\ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}[NetworkManager]\ ERROR:\ Failed\ to\ send\ message\(\backslash\)n"{}};}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00159}00159\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00160}00160\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00161}00161\ \}}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00162}00162\ }
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00163}00163\ std::optional<std::string>\ NetworkManager::receiveMessage()}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00164}00164\ \{}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00165}00165\ \ \ \ \ \textcolor{keywordflow}{if}\ (m\_connectionState\ !=\ ConnectionState::Connected)}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00166}00166\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00167}00167\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ std::nullopt;}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00168}00168\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00169}00169\ }
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00170}00170\ \ \ \ \ sf::Packet\ packet;}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00171}00171\ \ \ \ \ sf::Socket::Status\ status\ =\ m\_socket.receive(packet);}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00172}00172\ }
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00173}00173\ \ \ \ \ \textcolor{keywordflow}{if}\ (status\ ==\ sf::Socket::Status::Done)\ }
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00174}00174\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00175}00175\ \ \ \ \ \ \ \ \ std::string\ message;}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00176}00176\ \ \ \ \ \ \ \ \ packet\ >>\ message;}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00177}00177\ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}[NetworkManager]\ Received:\ "{}}\ <<\ message\ <<\ \textcolor{stringliteral}{"{}\(\backslash\)n"{}};}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00178}00178\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ message;}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00179}00179\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00180}00180\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (status\ ==\ sf::Socket::Status::Disconnected)\ }
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00181}00181\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00182}00182\ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}[NetworkManager]\ Connection\ lost\(\backslash\)n"{}};}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00183}00183\ \ \ \ \ \ \ \ \ m\_connectionState\ =\ ConnectionState::Failed;}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00184}00184\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ std::nullopt;}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00185}00185\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00186}00186\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (status\ ==\ sf::Socket::Status::NotReady)}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00187}00187\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00188}00188\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ No\ data\ available\ (normal\ in\ non-\/blocking\ mode)}}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00189}00189\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ std::nullopt;}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00190}00190\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00191}00191\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00192}00192\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Error}}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00193}00193\ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}[NetworkManager]\ ERROR:\ Socket\ error\(\backslash\)n"{}};}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00194}00194\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ std::nullopt;}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00195}00195\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00196}00196\ \}}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00197}00197\ }
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00198}00198\ \textcolor{keywordtype}{void}\ NetworkManager::disconnect()}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00199}00199\ \{}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00200}00200\ \ \ \ \ \textcolor{keywordflow}{if}\ (m\_connectionState\ !=\ ConnectionState::Idle)\ }
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00201}00201\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00202}00202\ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}[NetworkManager]\ Disconnecting...\(\backslash\)n"{}};}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00203}00203\ \ \ \ \ \ \ \ \ m\_socket.disconnect();}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00204}00204\ \ \ \ \ \ \ \ \ m\_connectionState\ =\ ConnectionState::Idle;}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00205}00205\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00206}00206\ }
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00207}00207\ \ \ \ \ \textcolor{keywordflow}{if}\ (m\_isHost)\ }
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00208}00208\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00209}00209\ \ \ \ \ \ \ \ \ m\_listener.close();}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00210}00210\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_network_manager_8cpp_source_l00211}00211\ \}}
+
+\end{DoxyCode}

@@ -1,0 +1,169 @@
+\doxysection{Game\+Play\+State Class Reference}
+\hypertarget{class_game_play_state}{}\label{class_game_play_state}\index{GamePlayState@{GamePlayState}}
+Inheritance diagram for Game\+Play\+State\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_game_play_state}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_game_play_state_a226e67c270983395b874194a04355d10}{Game\+Play\+State}} (sf\+::\+Font \texorpdfstring{$\ast$}{*}t\+\_\+font, Game\+Mode t\+\_\+mode, AIDifficulty t\+\_\+difficulty=AIDifficulty\+::\+Easy, std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_network_manager}{Network\+Manager}} $>$ t\+\_\+network\+Manager=nullptr)
+\item 
+void \mbox{\hyperlink{class_game_play_state_a37847fbea2f5f73e262b91d3a2f2353d}{on\+Enter}} () override
+\item 
+void \mbox{\hyperlink{class_game_play_state_a3dea5b264f679559bc836867e8c37df4}{on\+Exit}} () override
+\item 
+void \mbox{\hyperlink{class_game_play_state_a4330f249a40da4d10a60342a47c76ea4}{update}} (sf\+::\+Time t\+\_\+delta\+Time) override
+\item 
+void \mbox{\hyperlink{class_game_play_state_ad6e96925bc1ba04ae3cd553c02befb8b}{render}} (sf\+::\+Render\+Window \&t\+\_\+window) override
+\item 
+void \mbox{\hyperlink{class_game_play_state_a3a5a5b20550f004e6cdcc2c222f5f870}{handle\+Event}} (const sf\+::\+Event \&t\+\_\+event) override
+\item 
+bool \mbox{\hyperlink{class_game_play_state_a4144c0597bab5c8f72ce527bff4ab8d1}{should\+Transition}} () const override
+\item 
+std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{class_game_state}{Game\+State}} $>$ \mbox{\hyperlink{class_game_play_state_a4e0358791786fac5b3458dc4dba9949b}{get\+Next\+State}} () override
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{class_game_state}{Game\+State}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_game_state_a214203e573a5c6477d8d432eda504199}{Game\+State}} (sf\+::\+Font \texorpdfstring{$\ast$}{*}t\+\_\+font)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Additional Inherited Members}
+\doxysubsection*{Protected Attributes inherited from \mbox{\hyperlink{class_game_state}{Game\+State}}}
+\begin{DoxyCompactItemize}
+\item 
+sf\+::\+Font \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{class_game_state_a8c99491bd534552442c65f644bbf51f8}{m\+\_\+shared\+Font}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+
+
+Definition at line \mbox{\hyperlink{_game_play_state_8h_source_l00010}{10}} of file \mbox{\hyperlink{_game_play_state_8h_source}{Game\+Play\+State.\+h}}.
+
+
+
+\label{doc-constructors}
+\Hypertarget{class_game_play_state_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_game_play_state_a226e67c270983395b874194a04355d10}\index{GamePlayState@{GamePlayState}!GamePlayState@{GamePlayState}}
+\index{GamePlayState@{GamePlayState}!GamePlayState@{GamePlayState}}
+\doxysubsubsection{\texorpdfstring{GamePlayState()}{GamePlayState()}}
+{\footnotesize\ttfamily \label{class_game_play_state_a226e67c270983395b874194a04355d10} 
+Game\+Play\+State\+::\+Game\+Play\+State (\begin{DoxyParamCaption}\item[{sf\+::\+Font \texorpdfstring{$\ast$}{*}}]{t\+\_\+font}{, }\item[{Game\+Mode}]{t\+\_\+mode}{, }\item[{AIDifficulty}]{t\+\_\+difficulty}{ = {\ttfamily AIDifficulty\+:\+:Easy}, }\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_network_manager}{Network\+Manager}} $>$}]{t\+\_\+network\+Manager}{ = {\ttfamily nullptr}}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{_game_play_state_8cpp_source_l00005}{5}} of file \mbox{\hyperlink{_game_play_state_8cpp_source}{Game\+Play\+State.\+cpp}}.
+
+
+
+\label{doc-func-members}
+\Hypertarget{class_game_play_state_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_game_play_state_a4e0358791786fac5b3458dc4dba9949b}\index{GamePlayState@{GamePlayState}!getNextState@{getNextState}}
+\index{getNextState@{getNextState}!GamePlayState@{GamePlayState}}
+\doxysubsubsection{\texorpdfstring{getNextState()}{getNextState()}}
+{\footnotesize\ttfamily \label{class_game_play_state_a4e0358791786fac5b3458dc4dba9949b} 
+std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{class_game_state}{Game\+State}} $>$ Game\+Play\+State\+::get\+Next\+State (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented from \mbox{\hyperlink{class_game_state}{Game\+State}}.
+
+
+
+Definition at line \mbox{\hyperlink{_game_play_state_8cpp_source_l00391}{391}} of file \mbox{\hyperlink{_game_play_state_8cpp_source}{Game\+Play\+State.\+cpp}}.
+
+\Hypertarget{class_game_play_state_a3a5a5b20550f004e6cdcc2c222f5f870}\index{GamePlayState@{GamePlayState}!handleEvent@{handleEvent}}
+\index{handleEvent@{handleEvent}!GamePlayState@{GamePlayState}}
+\doxysubsubsection{\texorpdfstring{handleEvent()}{handleEvent()}}
+{\footnotesize\ttfamily \label{class_game_play_state_a3a5a5b20550f004e6cdcc2c222f5f870} 
+void Game\+Play\+State\+::handle\+Event (\begin{DoxyParamCaption}\item[{const sf\+::\+Event \&}]{t\+\_\+event}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_game_state}{Game\+State}}.
+
+
+
+Definition at line \mbox{\hyperlink{_game_play_state_8cpp_source_l00191}{191}} of file \mbox{\hyperlink{_game_play_state_8cpp_source}{Game\+Play\+State.\+cpp}}.
+
+\Hypertarget{class_game_play_state_a37847fbea2f5f73e262b91d3a2f2353d}\index{GamePlayState@{GamePlayState}!onEnter@{onEnter}}
+\index{onEnter@{onEnter}!GamePlayState@{GamePlayState}}
+\doxysubsubsection{\texorpdfstring{onEnter()}{onEnter()}}
+{\footnotesize\ttfamily \label{class_game_play_state_a37847fbea2f5f73e262b91d3a2f2353d} 
+void Game\+Play\+State\+::on\+Enter (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_game_state}{Game\+State}}.
+
+
+
+Definition at line \mbox{\hyperlink{_game_play_state_8cpp_source_l00050}{50}} of file \mbox{\hyperlink{_game_play_state_8cpp_source}{Game\+Play\+State.\+cpp}}.
+
+\Hypertarget{class_game_play_state_a3dea5b264f679559bc836867e8c37df4}\index{GamePlayState@{GamePlayState}!onExit@{onExit}}
+\index{onExit@{onExit}!GamePlayState@{GamePlayState}}
+\doxysubsubsection{\texorpdfstring{onExit()}{onExit()}}
+{\footnotesize\ttfamily \label{class_game_play_state_a3dea5b264f679559bc836867e8c37df4} 
+void Game\+Play\+State\+::on\+Exit (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_game_state}{Game\+State}}.
+
+
+
+Definition at line \mbox{\hyperlink{_game_play_state_8cpp_source_l00084}{84}} of file \mbox{\hyperlink{_game_play_state_8cpp_source}{Game\+Play\+State.\+cpp}}.
+
+\Hypertarget{class_game_play_state_ad6e96925bc1ba04ae3cd553c02befb8b}\index{GamePlayState@{GamePlayState}!render@{render}}
+\index{render@{render}!GamePlayState@{GamePlayState}}
+\doxysubsubsection{\texorpdfstring{render()}{render()}}
+{\footnotesize\ttfamily \label{class_game_play_state_ad6e96925bc1ba04ae3cd553c02befb8b} 
+void Game\+Play\+State\+::render (\begin{DoxyParamCaption}\item[{sf\+::\+Render\+Window \&}]{t\+\_\+window}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_game_state}{Game\+State}}.
+
+
+
+Definition at line \mbox{\hyperlink{_game_play_state_8cpp_source_l00129}{129}} of file \mbox{\hyperlink{_game_play_state_8cpp_source}{Game\+Play\+State.\+cpp}}.
+
+\Hypertarget{class_game_play_state_a4144c0597bab5c8f72ce527bff4ab8d1}\index{GamePlayState@{GamePlayState}!shouldTransition@{shouldTransition}}
+\index{shouldTransition@{shouldTransition}!GamePlayState@{GamePlayState}}
+\doxysubsubsection{\texorpdfstring{shouldTransition()}{shouldTransition()}}
+{\footnotesize\ttfamily \label{class_game_play_state_a4144c0597bab5c8f72ce527bff4ab8d1} 
+bool Game\+Play\+State\+::should\+Transition (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented from \mbox{\hyperlink{class_game_state}{Game\+State}}.
+
+
+
+Definition at line \mbox{\hyperlink{_game_play_state_8cpp_source_l00386}{386}} of file \mbox{\hyperlink{_game_play_state_8cpp_source}{Game\+Play\+State.\+cpp}}.
+
+\Hypertarget{class_game_play_state_a4330f249a40da4d10a60342a47c76ea4}\index{GamePlayState@{GamePlayState}!update@{update}}
+\index{update@{update}!GamePlayState@{GamePlayState}}
+\doxysubsubsection{\texorpdfstring{update()}{update()}}
+{\footnotesize\ttfamily \label{class_game_play_state_a4330f249a40da4d10a60342a47c76ea4} 
+void Game\+Play\+State\+::update (\begin{DoxyParamCaption}\item[{sf\+::\+Time}]{t\+\_\+delta\+Time}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_game_state}{Game\+State}}.
+
+
+
+Definition at line \mbox{\hyperlink{_game_play_state_8cpp_source_l00089}{89}} of file \mbox{\hyperlink{_game_play_state_8cpp_source}{Game\+Play\+State.\+cpp}}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Fourth\+Protocol/Game\+Play\+State.\+h\item 
+Fourth\+Protocol/Game\+Play\+State.\+cpp\end{DoxyCompactItemize}

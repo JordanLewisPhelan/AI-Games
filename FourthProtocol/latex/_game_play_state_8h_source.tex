@@ -1,0 +1,76 @@
+\doxysection{Game\+Play\+State.\+h}
+\hypertarget{_game_play_state_8h_source}{}\label{_game_play_state_8h_source}\index{FourthProtocol/GamePlayState.h@{FourthProtocol/GamePlayState.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8h_source_l00001}00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8h_source_l00002}00002\ \textcolor{preprocessor}{\#include\ "{}GameState.h"{}}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8h_source_l00003}00003\ \textcolor{preprocessor}{\#include\ "{}Board.h"{}}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8h_source_l00004}00004\ \textcolor{preprocessor}{\#include\ "{}AIOpponent.h"{}}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8h_source_l00005}00005\ \textcolor{preprocessor}{\#include\ "{}NetworkManager.h"{}}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8h_source_l00006}00006\ \textcolor{preprocessor}{\#include\ <SFML/Graphics.hpp>}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8h_source_l00007}00007\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8h_source_l00008}00008\ \textcolor{keyword}{enum\ class}\ GameMode\ \{\ VsAI,\ VsPvP,\ VsNetworked\ \};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8h_source_l00009}00009\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8h_source_l00010}\mbox{\hyperlink{class_game_play_state}{00010}}\ \textcolor{keyword}{class\ }GamePlayState\ :\ \textcolor{keyword}{public}\ GameState\ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8h_source_l00011}00011\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8h_source_l00012}00012\ \ \ \ \ GameMode\ m\_mode;}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8h_source_l00013}00013\ \ \ \ \ \mbox{\hyperlink{class_board}{Board}}\ m\_board;}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8h_source_l00014}00014\ \ \ \ \ AIDifficulty\ m\_aiDifficulty;}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8h_source_l00015}00015\ \ \ \ \ std::unique\_ptr<AIOpponent>\ m\_ai;}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8h_source_l00016}00016\ \ \ \ \ std::shared\_ptr<NetworkManager>\ m\_networkManager;}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8h_source_l00017}00017\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8h_source_l00018}00018\ \ \ \ \ \textcolor{comment}{//\ Game\ data}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8h_source_l00019}00019\ \ \ \ \ \textcolor{keywordtype}{int}\ m\_currentPlayer;}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8h_source_l00020}00020\ \ \ \ \ \textcolor{keywordtype}{bool}\ m\_isPaused;}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8h_source_l00021}00021\ \ \ \ \ std::string\ m\_winner;}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8h_source_l00022}00022\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8h_source_l00023}00023\ \ \ \ \ \textcolor{comment}{//\ Network\ Player\ Management}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8h_source_l00024}00024\ \ \ \ \ Player\ m\_localPlayer;\ \ \ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8h_source_l00025}00025\ \ \ \ \ Player\ m\_currentTurn;\ \ \ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8h_source_l00026}00026\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8h_source_l00027}00027\ \ \ \ \ \textcolor{comment}{//\ AI\ timing}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8h_source_l00028}00028\ \ \ \ \ sf::Clock\ m\_aiThinkTimer;}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8h_source_l00029}00029\ \ \ \ \ \textcolor{keywordtype}{bool}\ m\_aiIsThinking;}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8h_source_l00030}00030\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8h_source_l00031}00031\ \ \ \ \ \textcolor{comment}{//\ UI\ elements}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8h_source_l00032}00032\ \ \ \ \ sf::Text\ m\_gameInfoText;}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8h_source_l00033}00033\ \ \ \ \ sf::Text\ m\_pausedText;}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8h_source_l00034}00034\ \ \ \ \ sf::Text\ m\_resumeButton;}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8h_source_l00035}00035\ \ \ \ \ sf::Text\ m\_mainMenuButton;}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8h_source_l00036}00036\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8h_source_l00037}00037\ \ \ \ \ std::unique\_ptr<GameState>\ m\_nextState;}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8h_source_l00038}00038\ \ \ \ \ \textcolor{keywordtype}{bool}\ m\_transitionRequested;}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8h_source_l00039}00039\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8h_source_l00040}00040\ \ \ \ \ \textcolor{keyword}{enum\ class}\ PauseButtonHover\ \{\ None,\ Resume,\ MainMenu\ \};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8h_source_l00041}00041\ \ \ \ \ PauseButtonHover\ m\_pauseHover;}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8h_source_l00042}00042\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8h_source_l00043}00043\ \ \ \ \ \textcolor{comment}{//\ Helper\ methods}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8h_source_l00044}00044\ \ \ \ \ \textcolor{keywordtype}{void}\ renderPauseMenu(sf::RenderWindow\&\ t\_window);}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8h_source_l00045}00045\ \ \ \ \ \textcolor{keywordtype}{void}\ handleGameInput(\textcolor{keyword}{const}\ sf::Event\&\ t\_event);}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8h_source_l00046}00046\ \ \ \ \ \textcolor{keywordtype}{void}\ handlePauseInput(\textcolor{keyword}{const}\ sf::Event\&\ t\_event);}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8h_source_l00047}00047\ \ \ \ \ \textcolor{keywordtype}{bool}\ isMouseOver(\textcolor{keyword}{const}\ sf::Text\&\ t\_text,\ sf::Vector2f\ t\_mousePos)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8h_source_l00048}00048\ \ \ \ \ \textcolor{keywordtype}{void}\ updateGameInfoText();}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8h_source_l00049}00049\ \ \ \ \ \textcolor{keywordtype}{void}\ checkForWinner();}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8h_source_l00050}00050\ \ \ \ \ \textcolor{keywordtype}{void}\ executeAIMove();}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8h_source_l00051}00051\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8h_source_l00052}00052\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8h_source_l00053}00053\ \ \ \ \ \textcolor{comment}{//\ Network\ helpers}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8h_source_l00054}00054\ \ \ \ \ \textcolor{keywordtype}{bool}\ isMyTurn()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8h_source_l00055}00055\ \ \ \ \ \textcolor{keywordtype}{void}\ sendMove(\textcolor{keyword}{const}\ std::string\&\ t\_message);}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8h_source_l00056}00056\ \ \ \ \ \textcolor{keywordtype}{void}\ receiveAndApplyMoves();}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8h_source_l00057}00057\ \ \ \ \ \textcolor{keywordtype}{void}\ applyOpponentMove(\textcolor{keyword}{const}\ std::string\&\ t\_message);}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8h_source_l00058}00058\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8h_source_l00059}00059\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8h_source_l00060}00060\ \ \ \ \ GamePlayState(sf::Font*\ t\_font,\ GameMode\ t\_mode,\ AIDifficulty\ t\_difficulty\ =\ AIDifficulty::Easy,}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8h_source_l00061}00061\ \ \ \ \ \ \ \ \ std::shared\_ptr<NetworkManager>\ t\_networkManager\ =\ \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8h_source_l00062}00062\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8h_source_l00063}00063\ \ \ \ \ \textcolor{keywordtype}{void}\ onEnter()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8h_source_l00064}00064\ \ \ \ \ \textcolor{keywordtype}{void}\ onExit()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8h_source_l00065}00065\ \ \ \ \ \textcolor{keywordtype}{void}\ update(sf::Time\ t\_deltaTime)\ \textcolor{keyword}{override};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8h_source_l00066}00066\ \ \ \ \ \textcolor{keywordtype}{void}\ render(sf::RenderWindow\&\ t\_window)\ \textcolor{keyword}{override};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8h_source_l00067}00067\ \ \ \ \ \textcolor{keywordtype}{void}\ handleEvent(\textcolor{keyword}{const}\ sf::Event\&\ t\_event)\ \textcolor{keyword}{override};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8h_source_l00068}00068\ \ \ \ \ \textcolor{keywordtype}{bool}\ shouldTransition()\ \textcolor{keyword}{const\ override};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8h_source_l00069}00069\ \ \ \ \ std::unique\_ptr<GameState>\ getNextState()\ \textcolor{keyword}{override};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8h_source_l00070}00070\ \};}
+
+\end{DoxyCode}

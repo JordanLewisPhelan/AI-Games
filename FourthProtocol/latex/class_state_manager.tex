@@ -1,0 +1,98 @@
+\doxysection{State\+Manager Class Reference}
+\hypertarget{class_state_manager}{}\label{class_state_manager}\index{StateManager@{StateManager}}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{class_state_manager_ab51b26508ac3668dd4e8b02527eeb7fd}{change\+State}} (std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{class_game_state}{Game\+State}} $>$ t\+\_\+new\+State)
+\item 
+void \mbox{\hyperlink{class_state_manager_a55f0fba5432f0e2e7806e5252bfcb832}{update}} (sf\+::\+Time t\+\_\+delta\+Time)
+\item 
+void \mbox{\hyperlink{class_state_manager_a2deceee764ab81195312d3fbcfc3bb62}{render}} (sf\+::\+Render\+Window \&t\+\_\+window)
+\item 
+void \mbox{\hyperlink{class_state_manager_a230305bc5a836e98a749f65b31174f52}{handle\+Event}} (const sf\+::\+Event \&t\+\_\+event)
+\item 
+bool \mbox{\hyperlink{class_state_manager_afd312660a615a886daf068afce260a94}{has\+No\+State}} () const
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+
+
+Definition at line \mbox{\hyperlink{_state_manager_8h_source_l00007}{7}} of file \mbox{\hyperlink{_state_manager_8h_source}{State\+Manager.\+h}}.
+
+
+
+\label{doc-constructors}
+\Hypertarget{class_state_manager_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_state_manager_a3e2be96d935eb56813b096a885d58587}\index{StateManager@{StateManager}!StateManager@{StateManager}}
+\index{StateManager@{StateManager}!StateManager@{StateManager}}
+\doxysubsubsection{\texorpdfstring{StateManager()}{StateManager()}}
+{\footnotesize\ttfamily \label{class_state_manager_a3e2be96d935eb56813b096a885d58587} 
+State\+Manager\+::\+State\+Manager (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{_state_manager_8cpp_source_l00004}{4}} of file \mbox{\hyperlink{_state_manager_8cpp_source}{State\+Manager.\+cpp}}.
+
+
+
+\label{doc-func-members}
+\Hypertarget{class_state_manager_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_state_manager_ab51b26508ac3668dd4e8b02527eeb7fd}\index{StateManager@{StateManager}!changeState@{changeState}}
+\index{changeState@{changeState}!StateManager@{StateManager}}
+\doxysubsubsection{\texorpdfstring{changeState()}{changeState()}}
+{\footnotesize\ttfamily \label{class_state_manager_ab51b26508ac3668dd4e8b02527eeb7fd} 
+void State\+Manager\+::change\+State (\begin{DoxyParamCaption}\item[{std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{class_game_state}{Game\+State}} $>$}]{t\+\_\+new\+State}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{_state_manager_8cpp_source_l00008}{8}} of file \mbox{\hyperlink{_state_manager_8cpp_source}{State\+Manager.\+cpp}}.
+
+\Hypertarget{class_state_manager_a230305bc5a836e98a749f65b31174f52}\index{StateManager@{StateManager}!handleEvent@{handleEvent}}
+\index{handleEvent@{handleEvent}!StateManager@{StateManager}}
+\doxysubsubsection{\texorpdfstring{handleEvent()}{handleEvent()}}
+{\footnotesize\ttfamily \label{class_state_manager_a230305bc5a836e98a749f65b31174f52} 
+void State\+Manager\+::handle\+Event (\begin{DoxyParamCaption}\item[{const sf\+::\+Event \&}]{t\+\_\+event}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{_state_manager_8cpp_source_l00049}{49}} of file \mbox{\hyperlink{_state_manager_8cpp_source}{State\+Manager.\+cpp}}.
+
+\Hypertarget{class_state_manager_afd312660a615a886daf068afce260a94}\index{StateManager@{StateManager}!hasNoState@{hasNoState}}
+\index{hasNoState@{hasNoState}!StateManager@{StateManager}}
+\doxysubsubsection{\texorpdfstring{hasNoState()}{hasNoState()}}
+{\footnotesize\ttfamily \label{class_state_manager_afd312660a615a886daf068afce260a94} 
+bool State\+Manager\+::has\+No\+State (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+
+
+Definition at line \mbox{\hyperlink{_state_manager_8cpp_source_l00059}{59}} of file \mbox{\hyperlink{_state_manager_8cpp_source}{State\+Manager.\+cpp}}.
+
+\Hypertarget{class_state_manager_a2deceee764ab81195312d3fbcfc3bb62}\index{StateManager@{StateManager}!render@{render}}
+\index{render@{render}!StateManager@{StateManager}}
+\doxysubsubsection{\texorpdfstring{render()}{render()}}
+{\footnotesize\ttfamily \label{class_state_manager_a2deceee764ab81195312d3fbcfc3bb62} 
+void State\+Manager\+::render (\begin{DoxyParamCaption}\item[{sf\+::\+Render\+Window \&}]{t\+\_\+window}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{_state_manager_8cpp_source_l00039}{39}} of file \mbox{\hyperlink{_state_manager_8cpp_source}{State\+Manager.\+cpp}}.
+
+\Hypertarget{class_state_manager_a55f0fba5432f0e2e7806e5252bfcb832}\index{StateManager@{StateManager}!update@{update}}
+\index{update@{update}!StateManager@{StateManager}}
+\doxysubsubsection{\texorpdfstring{update()}{update()}}
+{\footnotesize\ttfamily \label{class_state_manager_a55f0fba5432f0e2e7806e5252bfcb832} 
+void State\+Manager\+::update (\begin{DoxyParamCaption}\item[{sf\+::\+Time}]{t\+\_\+delta\+Time}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{_state_manager_8cpp_source_l00023}{23}} of file \mbox{\hyperlink{_state_manager_8cpp_source}{State\+Manager.\+cpp}}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Fourth\+Protocol/State\+Manager.\+h\item 
+Fourth\+Protocol/State\+Manager.\+cpp\end{DoxyCompactItemize}

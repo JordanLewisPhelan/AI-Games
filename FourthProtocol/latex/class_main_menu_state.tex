@@ -1,0 +1,169 @@
+\doxysection{Main\+Menu\+State Class Reference}
+\hypertarget{class_main_menu_state}{}\label{class_main_menu_state}\index{MainMenuState@{MainMenuState}}
+Inheritance diagram for Main\+Menu\+State\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_main_menu_state}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_main_menu_state_aaa7a4db01c06de0db0e475f1d828e0ab}{Main\+Menu\+State}} (sf\+::\+Font \texorpdfstring{$\ast$}{*}t\+\_\+font, std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_network_manager}{Network\+Manager}} $>$ t\+\_\+network\+Manager)
+\item 
+void \mbox{\hyperlink{class_main_menu_state_a97f5163e69692a50f7f0b99b47d1bcd5}{on\+Enter}} () override
+\item 
+void \mbox{\hyperlink{class_main_menu_state_a36c8fc991501017025eefe74cf145612}{on\+Exit}} () override
+\item 
+void \mbox{\hyperlink{class_main_menu_state_a5dd93875c24a79e5b1f4f39a50b81c2d}{update}} (sf\+::\+Time t\+\_\+delta\+Time) override
+\item 
+void \mbox{\hyperlink{class_main_menu_state_a9075a0e8a2eb50e227d2bc00c23b5b64}{render}} (sf\+::\+Render\+Window \&t\+\_\+window) override
+\item 
+void \mbox{\hyperlink{class_main_menu_state_ac04d553e9fab5ebc472074f59fdbb5cf}{handle\+Event}} (const sf\+::\+Event \&t\+\_\+event) override
+\item 
+bool \mbox{\hyperlink{class_main_menu_state_ab410acab6aa0a460ccec9b7040aadbbc}{should\+Transition}} () const override
+\item 
+std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{class_game_state}{Game\+State}} $>$ \mbox{\hyperlink{class_main_menu_state_aae18f6d05181d0972304febe2375a3c9}{get\+Next\+State}} () override
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{class_game_state}{Game\+State}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_game_state_a214203e573a5c6477d8d432eda504199}{Game\+State}} (sf\+::\+Font \texorpdfstring{$\ast$}{*}t\+\_\+font)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Additional Inherited Members}
+\doxysubsection*{Protected Attributes inherited from \mbox{\hyperlink{class_game_state}{Game\+State}}}
+\begin{DoxyCompactItemize}
+\item 
+sf\+::\+Font \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{class_game_state_a8c99491bd534552442c65f644bbf51f8}{m\+\_\+shared\+Font}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+
+
+Definition at line \mbox{\hyperlink{_main_menu_state_8h_source_l00008}{8}} of file \mbox{\hyperlink{_main_menu_state_8h_source}{Main\+Menu\+State.\+h}}.
+
+
+
+\label{doc-constructors}
+\Hypertarget{class_main_menu_state_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_main_menu_state_aaa7a4db01c06de0db0e475f1d828e0ab}\index{MainMenuState@{MainMenuState}!MainMenuState@{MainMenuState}}
+\index{MainMenuState@{MainMenuState}!MainMenuState@{MainMenuState}}
+\doxysubsubsection{\texorpdfstring{MainMenuState()}{MainMenuState()}}
+{\footnotesize\ttfamily \label{class_main_menu_state_aaa7a4db01c06de0db0e475f1d828e0ab} 
+Main\+Menu\+State\+::\+Main\+Menu\+State (\begin{DoxyParamCaption}\item[{sf\+::\+Font \texorpdfstring{$\ast$}{*}}]{t\+\_\+font}{, }\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_network_manager}{Network\+Manager}} $>$}]{t\+\_\+network\+Manager}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{_main_menu_state_8cpp_source_l00009}{9}} of file \mbox{\hyperlink{_main_menu_state_8cpp_source}{Main\+Menu\+State.\+cpp}}.
+
+
+
+\label{doc-func-members}
+\Hypertarget{class_main_menu_state_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_main_menu_state_aae18f6d05181d0972304febe2375a3c9}\index{MainMenuState@{MainMenuState}!getNextState@{getNextState}}
+\index{getNextState@{getNextState}!MainMenuState@{MainMenuState}}
+\doxysubsubsection{\texorpdfstring{getNextState()}{getNextState()}}
+{\footnotesize\ttfamily \label{class_main_menu_state_aae18f6d05181d0972304febe2375a3c9} 
+std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{class_game_state}{Game\+State}} $>$ Main\+Menu\+State\+::get\+Next\+State (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented from \mbox{\hyperlink{class_game_state}{Game\+State}}.
+
+
+
+Definition at line \mbox{\hyperlink{_main_menu_state_8cpp_source_l00319}{319}} of file \mbox{\hyperlink{_main_menu_state_8cpp_source}{Main\+Menu\+State.\+cpp}}.
+
+\Hypertarget{class_main_menu_state_ac04d553e9fab5ebc472074f59fdbb5cf}\index{MainMenuState@{MainMenuState}!handleEvent@{handleEvent}}
+\index{handleEvent@{handleEvent}!MainMenuState@{MainMenuState}}
+\doxysubsubsection{\texorpdfstring{handleEvent()}{handleEvent()}}
+{\footnotesize\ttfamily \label{class_main_menu_state_ac04d553e9fab5ebc472074f59fdbb5cf} 
+void Main\+Menu\+State\+::handle\+Event (\begin{DoxyParamCaption}\item[{const sf\+::\+Event \&}]{t\+\_\+event}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_game_state}{Game\+State}}.
+
+
+
+Definition at line \mbox{\hyperlink{_main_menu_state_8cpp_source_l00192}{192}} of file \mbox{\hyperlink{_main_menu_state_8cpp_source}{Main\+Menu\+State.\+cpp}}.
+
+\Hypertarget{class_main_menu_state_a97f5163e69692a50f7f0b99b47d1bcd5}\index{MainMenuState@{MainMenuState}!onEnter@{onEnter}}
+\index{onEnter@{onEnter}!MainMenuState@{MainMenuState}}
+\doxysubsubsection{\texorpdfstring{onEnter()}{onEnter()}}
+{\footnotesize\ttfamily \label{class_main_menu_state_a97f5163e69692a50f7f0b99b47d1bcd5} 
+void Main\+Menu\+State\+::on\+Enter (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_game_state}{Game\+State}}.
+
+
+
+Definition at line \mbox{\hyperlink{_main_menu_state_8cpp_source_l00027}{27}} of file \mbox{\hyperlink{_main_menu_state_8cpp_source}{Main\+Menu\+State.\+cpp}}.
+
+\Hypertarget{class_main_menu_state_a36c8fc991501017025eefe74cf145612}\index{MainMenuState@{MainMenuState}!onExit@{onExit}}
+\index{onExit@{onExit}!MainMenuState@{MainMenuState}}
+\doxysubsubsection{\texorpdfstring{onExit()}{onExit()}}
+{\footnotesize\ttfamily \label{class_main_menu_state_a36c8fc991501017025eefe74cf145612} 
+void Main\+Menu\+State\+::on\+Exit (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_game_state}{Game\+State}}.
+
+
+
+Definition at line \mbox{\hyperlink{_main_menu_state_8cpp_source_l00106}{106}} of file \mbox{\hyperlink{_main_menu_state_8cpp_source}{Main\+Menu\+State.\+cpp}}.
+
+\Hypertarget{class_main_menu_state_a9075a0e8a2eb50e227d2bc00c23b5b64}\index{MainMenuState@{MainMenuState}!render@{render}}
+\index{render@{render}!MainMenuState@{MainMenuState}}
+\doxysubsubsection{\texorpdfstring{render()}{render()}}
+{\footnotesize\ttfamily \label{class_main_menu_state_a9075a0e8a2eb50e227d2bc00c23b5b64} 
+void Main\+Menu\+State\+::render (\begin{DoxyParamCaption}\item[{sf\+::\+Render\+Window \&}]{t\+\_\+window}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_game_state}{Game\+State}}.
+
+
+
+Definition at line \mbox{\hyperlink{_main_menu_state_8cpp_source_l00116}{116}} of file \mbox{\hyperlink{_main_menu_state_8cpp_source}{Main\+Menu\+State.\+cpp}}.
+
+\Hypertarget{class_main_menu_state_ab410acab6aa0a460ccec9b7040aadbbc}\index{MainMenuState@{MainMenuState}!shouldTransition@{shouldTransition}}
+\index{shouldTransition@{shouldTransition}!MainMenuState@{MainMenuState}}
+\doxysubsubsection{\texorpdfstring{shouldTransition()}{shouldTransition()}}
+{\footnotesize\ttfamily \label{class_main_menu_state_ab410acab6aa0a460ccec9b7040aadbbc} 
+bool Main\+Menu\+State\+::should\+Transition (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented from \mbox{\hyperlink{class_game_state}{Game\+State}}.
+
+
+
+Definition at line \mbox{\hyperlink{_main_menu_state_8cpp_source_l00314}{314}} of file \mbox{\hyperlink{_main_menu_state_8cpp_source}{Main\+Menu\+State.\+cpp}}.
+
+\Hypertarget{class_main_menu_state_a5dd93875c24a79e5b1f4f39a50b81c2d}\index{MainMenuState@{MainMenuState}!update@{update}}
+\index{update@{update}!MainMenuState@{MainMenuState}}
+\doxysubsubsection{\texorpdfstring{update()}{update()}}
+{\footnotesize\ttfamily \label{class_main_menu_state_a5dd93875c24a79e5b1f4f39a50b81c2d} 
+void Main\+Menu\+State\+::update (\begin{DoxyParamCaption}\item[{sf\+::\+Time}]{t\+\_\+delta\+Time}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_game_state}{Game\+State}}.
+
+
+
+Definition at line \mbox{\hyperlink{_main_menu_state_8cpp_source_l00111}{111}} of file \mbox{\hyperlink{_main_menu_state_8cpp_source}{Main\+Menu\+State.\+cpp}}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Fourth\+Protocol/Main\+Menu\+State.\+h\item 
+Fourth\+Protocol/Main\+Menu\+State.\+cpp\end{DoxyCompactItemize}

@@ -1,0 +1,103 @@
+\doxysection{AIOpponent.\+h}
+\hypertarget{_a_i_opponent_8h_source}{}\label{_a_i_opponent_8h_source}\index{FourthProtocol/AIOpponent.h@{FourthProtocol/AIOpponent.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00001}00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00002}00002\ \textcolor{preprocessor}{\#include\ "{}Board.h"{}}}
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00003}00003\ \textcolor{preprocessor}{\#include\ "{}Globals.h"{}}}
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00004}00004\ \textcolor{preprocessor}{\#include\ <limits>}}
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00005}00005\ \textcolor{preprocessor}{\#include\ <algorithm>}}
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00006}00006\ \textcolor{preprocessor}{\#include\ <random>}}
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00007}00007\ \textcolor{preprocessor}{\#include\ <iostream>}}
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00008}00008\ }
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00009}00009\ }
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00010}00010\ \textcolor{keyword}{enum\ class}\ AIDifficulty\ \{}
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00011}00011\ \ \ \ \ Easy,\ \ \ \textcolor{comment}{//\ Some\ randomness,\ doesnt\ look\ far\ ahead}}
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00012}00012\ \ \ \ \ Medium,\ \textcolor{comment}{//\ Depth\ 2,\ looks\ mildly\ ahead}}
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00013}00013\ \ \ \ \ Hard\ \ \ \ \textcolor{comment}{//\ Depth\ 3,\ will\ look\ a\ few\ moves\ ahead\ to\ make\ a\ better\ decision}}
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00014}00014\ \};}
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00015}00015\ }
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00016}00016\ }
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00017}\mbox{\hyperlink{struct_a_i_move}{00017}}\ \textcolor{keyword}{struct\ }AIMove\ \{}
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00018}00018\ }
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00019}00019\ \ \ \ \ \textcolor{keywordtype}{bool}\ isInPlacement;}
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00020}00020\ }
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00021}00021\ \ \ \ \ \textcolor{comment}{//\ For\ placement}}
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00022}00022\ \ \ \ \ PieceType\ pieceType;}
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00023}00023\ \ \ \ \ \textcolor{keywordtype}{int}\ row;}
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00024}00024\ \ \ \ \ \textcolor{keywordtype}{int}\ col;}
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00025}00025\ }
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00026}00026\ \ \ \ \ \textcolor{comment}{//\ For\ movement}}
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00027}00027\ \ \ \ \ \textcolor{keywordtype}{int}\ fromRow;}
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00028}00028\ \ \ \ \ \textcolor{keywordtype}{int}\ fromCol;}
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00029}00029\ \ \ \ \ \textcolor{keywordtype}{int}\ toRow;}
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00030}00030\ \ \ \ \ \textcolor{keywordtype}{int}\ toCol;}
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00031}00031\ }
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00032}00032\ }
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00033}00033\ \ \ \ \ AIMove()\ :\ isInPlacement(\textcolor{keyword}{false}),\ pieceType(PieceType::None),}
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00034}00034\ \ \ \ \ \ \ \ \ row(-\/1),\ col(-\/1),\ fromRow(-\/1),\ fromCol(-\/1),}
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00035}00035\ \ \ \ \ \ \ \ \ toRow(-\/1),\ toCol(-\/1)\ \{\}}
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00036}00036\ }
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00037}00037\ \ \ \ \ \textcolor{keyword}{static}\ AIMove\ createPlacement(PieceType\ type,\ \textcolor{keywordtype}{int}\ r,\ \textcolor{keywordtype}{int}\ c)\ \{}
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00038}00038\ \ \ \ \ \ \ \ \ AIMove\ move;}
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00039}00039\ \ \ \ \ \ \ \ \ move.isInPlacement\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00040}00040\ \ \ \ \ \ \ \ \ move.pieceType\ =\ type;}
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00041}00041\ \ \ \ \ \ \ \ \ move.row\ =\ r;}
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00042}00042\ \ \ \ \ \ \ \ \ move.col\ =\ c;}
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00043}00043\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ move;}
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00044}00044\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00045}00045\ }
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00046}00046\ \ \ \ \ \textcolor{keyword}{static}\ AIMove\ createMovement(\textcolor{keywordtype}{int}\ fr,\ \textcolor{keywordtype}{int}\ fc,\ \textcolor{keywordtype}{int}\ tr,\ \textcolor{keywordtype}{int}\ tc)\ \{}
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00047}00047\ \ \ \ \ \ \ \ \ AIMove\ move;}
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00048}00048\ \ \ \ \ \ \ \ \ move.isInPlacement\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00049}00049\ \ \ \ \ \ \ \ \ move.fromRow\ =\ fr;}
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00050}00050\ \ \ \ \ \ \ \ \ move.fromCol\ =\ fc;}
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00051}00051\ \ \ \ \ \ \ \ \ move.toRow\ =\ tr;}
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00052}00052\ \ \ \ \ \ \ \ \ move.toCol\ =\ tc;}
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00053}00053\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ move;}
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00054}00054\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00055}00055\ \};}
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00056}00056\ }
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00057}00057\ }
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00058}00058\ }
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00059}\mbox{\hyperlink{class_a_i_opponent}{00059}}\ \textcolor{keyword}{class\ }AIOpponent}
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00060}00060\ \{}
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00061}00061\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00062}00062\ \ \ \ \ AIDifficulty\ m\_difficulty;}
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00063}00063\ \ \ \ \ Player\ m\_aiPlayer;}
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00064}00064\ \ \ \ \ \textcolor{keywordtype}{int}\ m\_maxDepth;\ \ \ \ \ \textcolor{comment}{//\ how\ many\ moves\ it\ will\ \ investigate\ through}}
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00065}00065\ }
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00066}00066\ \ \ \ \ \textcolor{comment}{//\ Evaluation\ weights}}
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00067}00067\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{int}\ WIN\_SCORE\ =\ 100000;}
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00068}00068\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{int}\ THREE\_IN\_ROW\_OPEN\ =\ 500;\ \ \ \textcolor{comment}{//\ 3\ in\ row\ with\ space}}
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00069}00069\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{int}\ TWO\_IN\_ROW\_OPEN\ =\ 50;\ \ \ \ \ \ \textcolor{comment}{//\ 2\ in\ row\ with\ space}}
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00070}00070\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{int}\ CENTER\_CONTROL\ =\ 10;\ \ \ \ \ \ \ \textcolor{comment}{//\ Bonus\ for\ center\ pieces}}
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00071}00071\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{int}\ PIECE\_MOBILITY\ =\ 5;\ \ \ \ \ \ \ \ \textcolor{comment}{//\ Bonus\ for\ mobile\ pieces}}
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00072}00072\ }
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00073}00073\ }
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00081}00081\ \ \ \ \ \textcolor{keywordtype}{int}\ miniMax(\mbox{\hyperlink{class_board}{Board}}\&\ t\_board,\ \textcolor{keywordtype}{int}\ t\_depth,\ \textcolor{keywordtype}{int}\ t\_alpha,\ \textcolor{keywordtype}{int}\ t\_beta,\ \textcolor{keywordtype}{bool}\ t\_maximizingPlayer);}
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00082}00082\ }
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00083}00083\ }
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00084}00084\ \ \ \ \ \textcolor{comment}{//\ Evaluators}}
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00085}00085\ \ \ \ \ \textcolor{keywordtype}{int}\ evaluateBoard(\mbox{\hyperlink{class_board}{Board}}\&\ t\_board);}
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00086}00086\ \ \ \ \ \textcolor{keywordtype}{int}\ evaluateLines(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_board}{Board}}\&\ t\_board,\ Player\ t\_player)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00087}00087\ \ \ \ \ \textcolor{keywordtype}{int}\ evaluatePiecePlacement(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_board}{Board}}\&\ t\_board,\ Player\ t\_player)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00088}00088\ \ \ \ \ \textcolor{keywordtype}{int}\ evaluateMobility(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_board}{Board}}\&\ t\_board,\ Player\ t\_player)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00089}00089\ }
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00090}00090\ }
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00091}00091\ \ \ \ \ \textcolor{comment}{//\ Move\ generation\ systems}}
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00092}00092\ \ \ \ \ std::vector<AIMove>\ getAllPossibleMoves(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_board}{Board}}\&\ board,\ Player\ player)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00093}00093\ \ \ \ \ std::vector<AIMove>\ getPlacementMoves(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_board}{Board}}\&\ board,\ Player\ player)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00094}00094\ \ \ \ \ std::vector<AIMove>\ getMovementMoves(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_board}{Board}}\&\ board,\ Player\ player)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00095}00095\ }
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00096}00096\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00097}00097\ \ \ \ \ AIOpponent(AIDifficulty\ t\_diff,\ Player\ t\_aiPlayer);}
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00098}00098\ }
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00099}00099\ \ \ \ \ \mbox{\hyperlink{struct_a_i_move}{AIMove}}\ calculateBestMove(\mbox{\hyperlink{class_board}{Board}}\&\ t\_board);}
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00100}00100\ }
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00101}00101\ \ \ \ \ AIDifficulty\ getDifficulty()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_difficulty;\ \}}
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00102}00102\ \ \ \ \ \textcolor{keywordtype}{void}\ setDifficulty(AIDifficulty\ t\_diff);}
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00103}00103\ }
+\DoxyCodeLine{\Hypertarget{_a_i_opponent_8h_source_l00104}00104\ \};}
+
+\end{DoxyCode}

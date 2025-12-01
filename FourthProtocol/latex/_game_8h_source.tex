@@ -1,0 +1,59 @@
+\doxysection{Game.\+h}
+\hypertarget{_game_8h_source}{}\label{_game_8h_source}\index{FourthProtocol/Game.h@{FourthProtocol/Game.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{_game_8h_source_l00001}00001\ }
+\DoxyCodeLine{\Hypertarget{_game_8h_source_l00006}00006\ \textcolor{preprocessor}{\#ifndef\ GAME\_HPP}}
+\DoxyCodeLine{\Hypertarget{_game_8h_source_l00007}00007\ \textcolor{preprocessor}{\#define\ GAME\_HPP}}
+\DoxyCodeLine{\Hypertarget{_game_8h_source_l00008}00008\ \textcolor{preprocessor}{\#pragma\ warning(\ push\ )}}
+\DoxyCodeLine{\Hypertarget{_game_8h_source_l00009}00009\ \textcolor{preprocessor}{\#pragma\ warning(\ disable\ :\ 4275\ )}}
+\DoxyCodeLine{\Hypertarget{_game_8h_source_l00010}00010\ \textcolor{comment}{//\ ignore\ this\ warning}}
+\DoxyCodeLine{\Hypertarget{_game_8h_source_l00011}00011\ \textcolor{comment}{//\ C:\(\backslash\)SFML\ -\/\ 3.0.0\(\backslash\)include\(\backslash\)SFML\(\backslash\)System\(\backslash\)Exception.hpp(41,\ 47)\ :\ }}
+\DoxyCodeLine{\Hypertarget{_game_8h_source_l00012}00012\ \textcolor{comment}{//\ warning\ C4275\ :\ non\ dll\ -\/\ interface\ class\ 'std::runtime\_error'\ used\ as\ base\ for\ dll\ -\/\ interface\ class\ 'sf::Exception'}}
+\DoxyCodeLine{\Hypertarget{_game_8h_source_l00013}00013\ }
+\DoxyCodeLine{\Hypertarget{_game_8h_source_l00019}00019\ \textcolor{preprocessor}{\#include\ <SFML/Graphics.hpp>}}
+\DoxyCodeLine{\Hypertarget{_game_8h_source_l00020}00020\ \textcolor{preprocessor}{\#include\ <SFML/Audio.hpp>}}
+\DoxyCodeLine{\Hypertarget{_game_8h_source_l00021}00021\ \textcolor{preprocessor}{\#include\ "{}StateManager.h"{}}}
+\DoxyCodeLine{\Hypertarget{_game_8h_source_l00022}00022\ \textcolor{preprocessor}{\#include\ "{}NetworkManager.h"{}}}
+\DoxyCodeLine{\Hypertarget{_game_8h_source_l00023}00023\ \textcolor{preprocessor}{\#include\ "{}Globals.h"{}}}
+\DoxyCodeLine{\Hypertarget{_game_8h_source_l00024}00024\ }
+\DoxyCodeLine{\Hypertarget{_game_8h_source_l00025}00025\ }
+\DoxyCodeLine{\Hypertarget{_game_8h_source_l00026}00026\ \textcolor{keyword}{const}\ sf::Color\ ULTRAMARINE\{\ 5,\ 55,242,255\ \};\ \textcolor{comment}{//\ const\ colour}}
+\DoxyCodeLine{\Hypertarget{_game_8h_source_l00027}00027\ }
+\DoxyCodeLine{\Hypertarget{_game_8h_source_l00028}\mbox{\hyperlink{class_game}{00028}}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_game_ad59df6562a58a614fda24622d3715b65}{Game}}}
+\DoxyCodeLine{\Hypertarget{_game_8h_source_l00029}00029\ \{}
+\DoxyCodeLine{\Hypertarget{_game_8h_source_l00030}00030\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{\Hypertarget{_game_8h_source_l00031}00031\ \ \ \ \ \mbox{\hyperlink{class_game_ad59df6562a58a614fda24622d3715b65}{Game}}();}
+\DoxyCodeLine{\Hypertarget{_game_8h_source_l00032}00032\ \ \ \ \ \mbox{\hyperlink{class_game_ae3d112ca6e0e55150d2fdbc704474530}{\string~Game}}();}
+\DoxyCodeLine{\Hypertarget{_game_8h_source_l00033}00033\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_game_a1ab78f5ed0d5ea879157357cf2fb2afa}{run}}();}
+\DoxyCodeLine{\Hypertarget{_game_8h_source_l00034}00034\ }
+\DoxyCodeLine{\Hypertarget{_game_8h_source_l00035}00035\ \ \ \ \ std::shared\_ptr<NetworkManager>\ getNetworkManager()\ \{\ \textcolor{keywordflow}{return}\ m\_networkManager;\ \}}
+\DoxyCodeLine{\Hypertarget{_game_8h_source_l00036}00036\ }
+\DoxyCodeLine{\Hypertarget{_game_8h_source_l00037}00037\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{\Hypertarget{_game_8h_source_l00038}00038\ }
+\DoxyCodeLine{\Hypertarget{_game_8h_source_l00039}00039\ \ \ \ \ \textcolor{keywordtype}{void}\ processEvents();}
+\DoxyCodeLine{\Hypertarget{_game_8h_source_l00040}00040\ \ \ \ \ \textcolor{keywordtype}{void}\ processKeys(\textcolor{keyword}{const}\ std::optional<sf::Event>\ t\_event);}
+\DoxyCodeLine{\Hypertarget{_game_8h_source_l00041}00041\ \ \ \ \ \textcolor{keywordtype}{void}\ checkKeyboardState();}
+\DoxyCodeLine{\Hypertarget{_game_8h_source_l00042}00042\ \ \ \ \ \textcolor{keywordtype}{void}\ update(sf::Time\ t\_deltaTime);}
+\DoxyCodeLine{\Hypertarget{_game_8h_source_l00043}00043\ \ \ \ \ \textcolor{keywordtype}{void}\ render();}
+\DoxyCodeLine{\Hypertarget{_game_8h_source_l00044}00044\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{_game_8h_source_l00045}00045\ \ \ \ \ \textcolor{keywordtype}{void}\ setupTexts();}
+\DoxyCodeLine{\Hypertarget{_game_8h_source_l00046}00046\ \ \ \ \ \textcolor{keywordtype}{void}\ setupSprites();}
+\DoxyCodeLine{\Hypertarget{_game_8h_source_l00047}00047\ \ \ \ \ \textcolor{keywordtype}{void}\ setupAudio();}
+\DoxyCodeLine{\Hypertarget{_game_8h_source_l00048}00048\ }
+\DoxyCodeLine{\Hypertarget{_game_8h_source_l00049}00049\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{_game_8h_source_l00050}00050\ \ \ \ \ sf::RenderWindow\ m\_window;\ \textcolor{comment}{//\ main\ SFML\ window}}
+\DoxyCodeLine{\Hypertarget{_game_8h_source_l00051}00051\ \ \ \ \ sf::Font\ m\_jerseyFont;\textcolor{comment}{//\ font\ used\ by\ message}}
+\DoxyCodeLine{\Hypertarget{_game_8h_source_l00052}00052\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{_game_8h_source_l00053}00053\ \ \ \ \ \textcolor{keywordtype}{bool}\ m\_quitStatus\{\ \textcolor{keyword}{false}\ \};}
+\DoxyCodeLine{\Hypertarget{_game_8h_source_l00054}00054\ }
+\DoxyCodeLine{\Hypertarget{_game_8h_source_l00055}00055\ \ \ \ \ \mbox{\hyperlink{class_state_manager}{StateManager}}\ m\_stateManager;}
+\DoxyCodeLine{\Hypertarget{_game_8h_source_l00056}00056\ \ \ \ \ std::shared\_ptr<NetworkManager>\ m\_networkManager;}
+\DoxyCodeLine{\Hypertarget{_game_8h_source_l00057}00057\ }
+\DoxyCodeLine{\Hypertarget{_game_8h_source_l00058}00058\ \};}
+\DoxyCodeLine{\Hypertarget{_game_8h_source_l00059}00059\ }
+\DoxyCodeLine{\Hypertarget{_game_8h_source_l00060}00060\ \textcolor{preprocessor}{\#pragma\ warning(\ pop\ )\ }}
+\DoxyCodeLine{\Hypertarget{_game_8h_source_l00061}00061\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ !GAME\_HPP}}
+\DoxyCodeLine{\Hypertarget{_game_8h_source_l00062}00062\ }
+
+\end{DoxyCode}

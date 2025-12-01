@@ -1,0 +1,669 @@
+\doxysection{Game\+Play\+State.\+cpp}
+\hypertarget{_game_play_state_8cpp_source}{}\label{_game_play_state_8cpp_source}\index{FourthProtocol/GamePlayState.cpp@{FourthProtocol/GamePlayState.cpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00001}00001\ \textcolor{preprocessor}{\#include\ "{}GamePlayState.h"{}}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00002}00002\ \textcolor{preprocessor}{\#include\ "{}MainMenuState.h"{}}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00003}00003\ \textcolor{preprocessor}{\#include\ <iostream>}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00004}00004\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00005}00005\ GamePlayState::GamePlayState(sf::Font*\ t\_font,\ GameMode\ t\_mode,\ AIDifficulty\ t\_difficulty,}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00006}00006\ \ \ \ \ std::shared\_ptr<NetworkManager>\ t\_networkManager)}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00007}00007\ \ \ \ \ :\ \mbox{\hyperlink{class_game_state}{GameState}}(t\_font)}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00008}00008\ \ \ \ \ ,\ m\_mode(t\_mode)}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00009}00009\ \ \ \ \ ,\ m\_aiDifficulty(t\_difficulty)}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00010}00010\ \ \ \ \ ,\ m\_networkManager(t\_networkManager)}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00011}00011\ \ \ \ \ ,\ m\_gameInfoText(*m\_sharedFont)}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00012}00012\ \ \ \ \ ,\ m\_pausedText(*m\_sharedFont)}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00013}00013\ \ \ \ \ ,\ m\_resumeButton(*m\_sharedFont)}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00014}00014\ \ \ \ \ ,\ m\_mainMenuButton(*m\_sharedFont)}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00015}00015\ \ \ \ \ ,\ m\_currentPlayer(1)}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00016}00016\ \ \ \ \ ,\ m\_isPaused(false)}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00017}00017\ \ \ \ \ ,\ m\_transitionRequested(false)}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00018}00018\ \ \ \ \ ,\ m\_pauseHover(PauseButtonHover::None)}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00019}00019\ \ \ \ \ ,\ m\_aiIsThinking(false)}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00020}00020\ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00021}00021\ \ \ \ \ \textcolor{comment}{//\ Determine\ local\ player\ based\ on\ mode}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00022}00022\ \ \ \ \ \textcolor{keywordflow}{if}\ (m\_mode\ ==\ GameMode::VsNetworked\ \&\&\ m\_networkManager)\ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00023}00023\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Host\ is\ Player1,\ Client\ is\ Player2}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00024}00024\ \ \ \ \ \ \ \ \ m\_localPlayer\ =\ m\_networkManager-\/>isHost()\ ?\ Player::Player1\ :\ Player::Player2;}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00025}00025\ \ \ \ \ \ \ \ \ m\_currentTurn\ =\ Player::Player1;\ \ \textcolor{comment}{//\ Player1\ always\ goes\ first}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00026}00026\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00027}00027\ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}Network\ game:\ I\ am\ "{}}\ <<\ (m\_localPlayer\ ==\ Player::Player1\ ?\ \textcolor{stringliteral}{"{}Player\ 1"{}}\ :\ \textcolor{stringliteral}{"{}Player\ 2"{}})\ <<\ \textcolor{stringliteral}{"{}\(\backslash\)n"{}};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00028}00028\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00029}00029\ \ \ \ \ \textcolor{keywordflow}{else}\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00030}00030\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00031}00031\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ For\ local\ modes,\ player\ controls\ Player1}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00032}00032\ \ \ \ \ \ \ \ \ m\_localPlayer\ =\ Player::Player1;}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00033}00033\ \ \ \ \ \ \ \ \ m\_currentTurn\ =\ Player::Player1;}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00034}00034\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00035}00035\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00036}00036\ \ \ \ \ \textcolor{comment}{//\ Create\ AI\ if\ in\ AI\ mode}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00037}00037\ \ \ \ \ \textcolor{keywordflow}{if}\ (m\_mode\ ==\ GameMode::VsAI)\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00038}00038\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00039}00039\ \ \ \ \ \ \ \ \ m\_ai\ =\ std::make\_unique<AIOpponent>(m\_aiDifficulty,\ Player::Player2);}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00040}00040\ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}Created\ AI\ opponent\ with\ difficulty:\ "{}}\ <<\ (int)m\_aiDifficulty\ <<\ \textcolor{stringliteral}{"{}\(\backslash\)n"{}};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00041}00041\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00042}00042\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00043}00043\ \ \ \ \ \textcolor{comment}{//\ DEBUG:\ }}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00044}00044\ \ \ \ \ \textcolor{keywordflow}{if}\ (m\_mode\ ==\ GameMode::VsNetworked\ \&\&\ !m\_networkManager)\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00045}00045\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00046}00046\ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}ERROR:\ Network\ mode\ requires\ NetworkManager!\(\backslash\)n"{}};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00047}00047\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00048}00048\ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00049}00049\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00050}00050\ \textcolor{keywordtype}{void}\ GamePlayState::onEnter()}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00051}00051\ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00052}00052\ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}Entering\ Gameplay\ State\ -\/\ Mode:\ "{}}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00053}00053\ \ \ \ \ \ \ \ \ <<\ (m\_mode\ ==\ GameMode::VsAI\ ?\ \textcolor{stringliteral}{"{}AI"{}}\ :\ \textcolor{stringliteral}{"{}PvP"{}})\ <<\ \textcolor{stringliteral}{"{}\(\backslash\)n"{}};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00054}00054\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00055}00055\ \ \ \ \ \textcolor{comment}{//\ Initialize\ fresh\ game}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00056}00056\ \ \ \ \ m\_currentPlayer\ =\ 1;}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00057}00057\ \ \ \ \ m\_winner\ =\ \textcolor{stringliteral}{"{}"{}};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00058}00058\ \ \ \ \ m\_isPaused\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00059}00059\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00060}00060\ \ \ \ \ \textcolor{comment}{//\ Setup\ game\ info\ text}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00061}00061\ \ \ \ \ m\_gameInfoText.setCharacterSize(28);}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00062}00062\ \ \ \ \ m\_gameInfoText.setFillColor(sf::Color::White);}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00063}00063\ \ \ \ \ m\_gameInfoText.setPosition(sf::Vector2f(50.f,\ 50.f));}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00064}00064\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00065}00065\ \ \ \ \ updateGameInfoText();}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00066}00066\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00067}00067\ \ \ \ \ \textcolor{comment}{//\ Setup\ pause\ menu\ texts}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00068}00068\ \ \ \ \ m\_pausedText.setString(\textcolor{stringliteral}{"{}PAUSED"{}});}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00069}00069\ \ \ \ \ m\_pausedText.setCharacterSize(72);}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00070}00070\ \ \ \ \ m\_pausedText.setFillColor(sf::Color::White);}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00071}00071\ \ \ \ \ m\_pausedText.setPosition(sf::Vector2f(350.f,\ 200.f));}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00072}00072\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00073}00073\ \ \ \ \ m\_resumeButton.setString(\textcolor{stringliteral}{"{}Resume"{}});}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00074}00074\ \ \ \ \ m\_resumeButton.setCharacterSize(36);}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00075}00075\ \ \ \ \ m\_resumeButton.setFillColor(sf::Color::White);}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00076}00076\ \ \ \ \ m\_resumeButton.setPosition(sf::Vector2f(400.f,\ 350.f));}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00077}00077\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00078}00078\ \ \ \ \ m\_mainMenuButton.setString(\textcolor{stringliteral}{"{}Main\ Menu"{}});}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00079}00079\ \ \ \ \ m\_mainMenuButton.setCharacterSize(36);}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00080}00080\ \ \ \ \ m\_mainMenuButton.setFillColor(sf::Color::White);}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00081}00081\ \ \ \ \ m\_mainMenuButton.setPosition(sf::Vector2f(400.f,\ 450.f));}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00082}00082\ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00083}00083\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00084}00084\ \textcolor{keywordtype}{void}\ GamePlayState::onExit()}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00085}00085\ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00086}00086\ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}Exiting\ Gameplay\ State\(\backslash\)n"{}};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00087}00087\ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00088}00088\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00089}00089\ \textcolor{keywordtype}{void}\ GamePlayState::update(sf::Time\ t\_deltaTime)}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00090}00090\ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00091}00091\ \ \ \ \ \textcolor{keywordflow}{if}\ (m\_isPaused\ ||\ !m\_winner.empty())}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00092}00092\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00093}00093\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00094}00094\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00095}00095\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00096}00096\ \ \ \ \ \textcolor{comment}{//\ Check\ for\ winner\ after\ each\ move}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00097}00097\ \ \ \ \ checkForWinner();}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00098}00098\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00099}00099\ \ \ \ \ \textcolor{comment}{//\ Update\ UI\ text}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00100}00100\ \ \ \ \ updateGameInfoText();}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00101}00101\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00102}00102\ \ \ \ \ \textcolor{keywordflow}{if}\ (m\_mode\ ==\ GameMode::VsNetworked)}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00103}00103\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00104}00104\ \ \ \ \ \ \ \ \ receiveAndApplyMoves();}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00105}00105\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00106}00106\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Check\ for\ disconnection}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00107}00107\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (m\_networkManager\ \&\&\ !m\_networkManager-\/>isConnected())}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00108}00108\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00109}00109\ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}Network\ connection\ lost!\(\backslash\)n"{}};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00110}00110\ \ \ \ \ \ \ \ \ \ \ \ \ m\_winner\ =\ \textcolor{stringliteral}{"{}Connection\ Lost"{}};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00111}00111\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00112}00112\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00113}00113\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00114}00114\ \ \ \ \ \textcolor{comment}{//\ AI\ logic}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00118}00118\ \ \ \ \ \textcolor{keywordflow}{if}\ (m\_mode\ ==\ GameMode::VsAI\ \&\&\ m\_board.getCurrentPlayer()\ ==\ Player::Player2\ \&\&\ !m\_aiIsThinking)\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00119}00119\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00120}00120\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Small\ delay\ so\ player\ can\ see\ board\ state}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00121}00121\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (m\_aiThinkTimer.getElapsedTime().asSeconds()\ >\ 1.7f)\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00122}00122\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00123}00123\ \ \ \ \ \ \ \ \ \ \ \ \ executeAIMove();}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00124}00124\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00125}00125\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00126}00126\ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00127}00127\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00128}00128\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00129}00129\ \textcolor{keywordtype}{void}\ GamePlayState::render(sf::RenderWindow\&\ t\_window)}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00130}00130\ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00131}00131\ \ \ \ \ \textcolor{comment}{//\ Draw\ game\ info}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00132}00132\ \ \ \ \ t\_window.draw(m\_gameInfoText);}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00133}00133\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00134}00134\ \ \ \ \ m\_board.render(t\_window,\ *m\_sharedFont);}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00135}00135\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00136}00136\ \ \ \ \ \textcolor{comment}{//\ Draw\ pause\ menu\ if\ paused}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00137}00137\ \ \ \ \ \textcolor{keywordflow}{if}\ (m\_isPaused)\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00138}00138\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00139}00139\ \ \ \ \ \ \ \ \ renderPauseMenu(t\_window);}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00140}00140\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00141}00141\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00142}00142\ \ \ \ \ \textcolor{comment}{//\ Draw\ winner\ text\ if\ game\ is\ over}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00143}00143\ \ \ \ \ \textcolor{keywordflow}{if}\ (!m\_winner.empty())\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00144}00144\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00145}00145\ \ \ \ \ \ \ \ \ sf::Text\ winText(*m\_sharedFont);}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00146}00146\ \ \ \ \ \ \ \ \ winText.setString(m\_winner\ +\ \textcolor{stringliteral}{"{}\ Wins!"{}});}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00147}00147\ \ \ \ \ \ \ \ \ winText.setCharacterSize(64);}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00148}00148\ \ \ \ \ \ \ \ \ winText.setFillColor(sf::Color::Green);}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00149}00149\ \ \ \ \ \ \ \ \ winText.setPosition(sf::Vector2f(300.f,\ 300.f));}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00150}00150\ \ \ \ \ \ \ \ \ t\_window.draw(winText);}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00151}00151\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00152}00152\ \ \ \ \ \ \ \ \ sf::Text\ clickText(*m\_sharedFont);}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00153}00153\ \ \ \ \ \ \ \ \ clickText.setString(\textcolor{stringliteral}{"{}Click\ to\ return\ to\ menu"{}});}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00154}00154\ \ \ \ \ \ \ \ \ clickText.setCharacterSize(24);}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00155}00155\ \ \ \ \ \ \ \ \ clickText.setFillColor(sf::Color::White);}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00156}00156\ \ \ \ \ \ \ \ \ clickText.setPosition(sf::Vector2f(350.f,\ 400.f));}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00157}00157\ \ \ \ \ \ \ \ \ t\_window.draw(clickText);}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00158}00158\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00159}00159\ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00160}00160\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00161}00161\ \textcolor{keywordtype}{void}\ GamePlayState::renderPauseMenu(sf::RenderWindow\&\ t\_window)}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00162}00162\ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00163}00163\ \ \ \ \ \textcolor{comment}{//\ Semi-\/transparent\ overlay}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00164}00164\ \ \ \ \ sf::RectangleShape\ overlay(sf::Vector2f(\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(t\_window.getSize().x),}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00165}00165\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(t\_window.getSize().y)));}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00166}00166\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00167}00167\ \ \ \ \ overlay.setFillColor(sf::Color(0,\ 0,\ 0,\ 180));}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00168}00168\ \ \ \ \ t\_window.draw(overlay);}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00169}00169\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00170}00170\ \ \ \ \ \textcolor{comment}{//\ Pause\ menu}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00171}00171\ \ \ \ \ t\_window.draw(m\_pausedText);}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00172}00172\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00173}00173\ \ \ \ \ \textcolor{comment}{//\ Buttons\ with\ hover\ effect}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00174}00174\ \ \ \ \ \textcolor{keywordflow}{if}\ (m\_pauseHover\ ==\ PauseButtonHover::Resume)\ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00175}00175\ \ \ \ \ \ \ \ \ m\_resumeButton.setFillColor(sf::Color::Yellow);}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00176}00176\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00177}00177\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00178}00178\ \ \ \ \ \ \ \ \ m\_resumeButton.setFillColor(sf::Color::White);}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00179}00179\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00180}00180\ \ \ \ \ t\_window.draw(m\_resumeButton);}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00181}00181\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00182}00182\ \ \ \ \ \textcolor{keywordflow}{if}\ (m\_pauseHover\ ==\ PauseButtonHover::MainMenu)\ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00183}00183\ \ \ \ \ \ \ \ \ m\_mainMenuButton.setFillColor(sf::Color::Yellow);}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00184}00184\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00185}00185\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00186}00186\ \ \ \ \ \ \ \ \ m\_mainMenuButton.setFillColor(sf::Color::White);}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00187}00187\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00188}00188\ \ \ \ \ t\_window.draw(m\_mainMenuButton);}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00189}00189\ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00190}00190\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00191}00191\ \textcolor{keywordtype}{void}\ GamePlayState::handleEvent(\textcolor{keyword}{const}\ sf::Event\&\ t\_event)}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00192}00192\ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00193}00193\ \ \ \ \ \textcolor{comment}{//\ ESC\ toggles\ pause}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00194}00194\ \ \ \ \ \textcolor{keywordflow}{if}\ (\textcolor{keyword}{const}\ \textcolor{keyword}{auto}*\ keyPress\ =\ t\_event.getIf<sf::Event::KeyPressed>())}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00195}00195\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00196}00196\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (keyPress-\/>code\ ==\ sf::Keyboard::Key::Escape\ \&\&\ m\_winner.empty())}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00197}00197\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00198}00198\ \ \ \ \ \ \ \ \ \ \ \ \ m\_isPaused\ =\ !m\_isPaused;}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00199}00199\ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ (m\_isPaused\ ?\ \textcolor{stringliteral}{"{}Game\ paused\(\backslash\)n"{}}\ :\ \textcolor{stringliteral}{"{}Game\ resumed\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00200}00200\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00201}00201\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00202}00202\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00203}00203\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00204}00204\ \ \ \ \ \textcolor{keywordflow}{if}\ (m\_isPaused)\ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00205}00205\ \ \ \ \ \ \ \ \ handlePauseInput(t\_event);}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00206}00206\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00207}00207\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00208}00208\ \ \ \ \ \ \ \ \ handleGameInput(t\_event);}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00209}00209\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00210}00210\ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00211}00211\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00212}00212\ \textcolor{keywordtype}{void}\ GamePlayState::handleGameInput(\textcolor{keyword}{const}\ sf::Event\&\ t\_event)}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00213}00213\ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00214}00214\ \ \ \ \ \textcolor{comment}{//\ If\ game\ is\ over,\ any\ click\ returns\ to\ menu}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00215}00215\ \ \ \ \ \textcolor{keywordflow}{if}\ (!m\_winner.empty())}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00216}00216\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00217}00217\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (t\_event.getIf<sf::Event::MouseButtonPressed>())}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00218}00218\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00219}00219\ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}Returning\ to\ main\ menu\(\backslash\)n"{}};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00220}00220\ \ \ \ \ \ \ \ \ \ \ \ \ m\_nextState\ =\ std::make\_unique<MainMenuState>(m\_sharedFont,\ m\_networkManager);}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00221}00221\ \ \ \ \ \ \ \ \ \ \ \ \ m\_transitionRequested\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00222}00222\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00223}00223\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00224}00224\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00225}00225\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00226}00226\ \ \ \ \ \textcolor{keywordflow}{if}\ (!isMyTurn())\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00227}00227\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00228}00228\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00229}00229\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00230}00230\ \ \ \ \ \textcolor{comment}{//\ Handle\ mouse\ clicks\ for\ game\ interaction}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00231}00231\ \ \ \ \ \textcolor{keywordflow}{if}\ (\textcolor{keyword}{const}\ \textcolor{keyword}{auto}*\ mousePress\ =\ t\_event.getIf<sf::Event::MouseButtonPressed>())}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00232}00232\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00233}00233\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (mousePress-\/>button\ ==\ sf::Mouse::Button::Left)}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00234}00234\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00235}00235\ \ \ \ \ \ \ \ \ \ \ \ \ sf::Vector2f\ mousePos(\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(mousePress-\/>position.x),}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00236}00236\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(mousePress-\/>position.y));}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00237}00237\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00238}00238\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ PLACEMENT\ PHASE}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00239}00239\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (m\_board.isPlacementPhase())}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00240}00240\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00241}00241\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ First\ check\ if\ clicking\ on\ unplaced\ piece\ selector}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00242}00242\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ PieceType\ clickedPiece\ =\ m\_board.getClickedUnplacedPiece(mousePos,\ m\_board.getCurrentPlayer());}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00243}00243\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (clickedPiece\ !=\ PieceType::None)}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00244}00244\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00245}00245\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m\_board.selectPieceType(clickedPiece);}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00246}00246\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}Selected\ piece\ type:\ "{}}\ <<\ (int)clickedPiece\ <<\ \textcolor{stringliteral}{"{}\(\backslash\)n"{}};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00247}00247\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00248}00248\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Then\ check\ if\ clicking\ on\ board\ to\ place}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00249}00249\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (m\_board.isPositionOnBoard(mousePos))}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00250}00250\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00251}00251\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ [row,\ col]\ =\ m\_board.screenToGrid(mousePos);}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00252}00252\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ PieceType\ selectedType\ =\ m\_board.getSelectedPieceType();}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00253}00253\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00254}00254\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (selectedType\ !=\ PieceType::None)}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00255}00255\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00256}00256\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (m\_board.placePiece(row,\ col,\ selectedType,\ m\_board.getCurrentPlayer()))}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00257}00257\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00258}00258\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}Placed\ piece\ at\ ("{}}\ <<\ row\ <<\ \textcolor{stringliteral}{"{},\ "{}}\ <<\ col\ <<\ \textcolor{stringliteral}{"{})\(\backslash\)n"{}};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00259}00259\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00260}00260\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (m\_mode\ ==\ GameMode::VsNetworked)}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00261}00261\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00262}00262\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Send\ move\ over\ network}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00263}00263\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ pieceTypeName;}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00264}00264\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{switch}\ (selectedType)\ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00265}00265\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ PieceType::Donkey:\ pieceTypeName\ =\ \textcolor{stringliteral}{"{}Donkey"{}};\ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00266}00266\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ PieceType::Snake:\ pieceTypeName\ =\ \textcolor{stringliteral}{"{}Snake"{}};\ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00267}00267\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ PieceType::Frog:\ pieceTypeName\ =\ \textcolor{stringliteral}{"{}Frog"{}};\ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00268}00268\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{default}:\ pieceTypeName\ =\ \textcolor{stringliteral}{"{}Unknown"{}};\ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00269}00269\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00270}00270\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00271}00271\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ message\ =\ \textcolor{stringliteral}{"{}PLACE|"{}}\ +\ pieceTypeName\ +\ \textcolor{stringliteral}{"{}|"{}}\ +}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00272}00272\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::to\_string(row)\ +\ \textcolor{stringliteral}{"{}|"{}}\ +\ std::to\_string(col);}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00273}00273\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00274}00274\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ sendMove(message);}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00275}00275\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00276}00276\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00277}00277\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Switch\ turn\ to\ opponent}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00278}00278\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m\_currentTurn\ =\ (m\_currentTurn\ ==\ Player::Player1)\ ?\ Player::Player2\ :\ Player::Player1;}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00279}00279\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00280}00280\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00281}00281\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Reset\ selection\ after\ successful\ placement}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00282}00282\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m\_board.selectPieceType(PieceType::None);}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00283}00283\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00284}00284\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00285}00285\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00286}00286\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}Cannot\ place\ piece\ at\ ("{}}\ <<\ row\ <<\ \textcolor{stringliteral}{"{},\ "{}}\ <<\ col\ <<\ \textcolor{stringliteral}{"{})\(\backslash\)n"{}};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00287}00287\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00288}00288\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00289}00289\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00290}00290\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00291}00291\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}No\ piece\ type\ selected!\(\backslash\)n"{}};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00292}00292\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00293}00293\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00294}00294\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00295}00295\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00296}00296\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ MOVEMENT\ PHASE}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00297}00297\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00298}00298\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00299}00299\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (m\_board.isPositionOnBoard(mousePos))}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00300}00300\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00301}00301\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ [row,\ col]\ =\ m\_board.screenToGrid(mousePos);}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00302}00302\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00303}00303\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ If\ no\ piece\ is\ selected,\ try\ to\ select\ one}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00304}00304\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!m\_board.isPieceSelected())}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00305}00305\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00306}00306\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (m\_board.selectPieceForMove(row,\ col))}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00307}00307\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00308}00308\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}Selected\ piece\ at\ ("{}}\ <<\ row\ <<\ \textcolor{stringliteral}{"{},\ "{}}\ <<\ col\ <<\ \textcolor{stringliteral}{"{})\(\backslash\)n"{}};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00309}00309\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00310}00310\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00311}00311\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ If\ piece\ is\ selected,\ try\ to\ move\ it}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00312}00312\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00313}00313\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00314}00314\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (m\_board.movePiece(row,\ col))}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00315}00315\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00316}00316\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}Moved\ piece\ to\ ("{}}\ <<\ row\ <<\ \textcolor{stringliteral}{"{},\ "{}}\ <<\ col\ <<\ \textcolor{stringliteral}{"{})\(\backslash\)n"{}};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00317}00317\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00318}00318\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (m\_mode\ ==\ GameMode::VsNetworked)}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00319}00319\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00320}00320\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ message\ =\ \textcolor{stringliteral}{"{}MOVE|"{}}\ +\ std::to\_string(row)\ +\ \textcolor{stringliteral}{"{}|"{}}\ +}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00321}00321\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::to\_string(col)\ +\ \textcolor{stringliteral}{"{}|"{}}\ +}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00322}00322\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::to\_string(row)\ +\ \textcolor{stringliteral}{"{}|"{}}\ +\ std::to\_string(col);}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00323}00323\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00324}00324\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ sendMove(message);}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00325}00325\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00326}00326\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00327}00327\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Switch\ turn\ to\ opponent}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00328}00328\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m\_currentTurn\ =\ (m\_currentTurn\ ==\ Player::Player1)\ ?\ Player::Player2\ :\ Player::Player1;}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00329}00329\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00330}00330\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00331}00331\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00332}00332\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00333}00333\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Click\ elsewhere\ -\/\ deselect\ or\ select\ new\ piece}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00334}00334\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m\_board.deselectPiece();}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00335}00335\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m\_board.selectPieceForMove(row,\ col);}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00336}00336\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00337}00337\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00338}00338\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00339}00339\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00340}00340\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00341}00341\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00342}00342\ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00343}00343\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00344}00344\ \textcolor{keywordtype}{void}\ GamePlayState::handlePauseInput(\textcolor{keyword}{const}\ sf::Event\&\ t\_event)}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00345}00345\ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00346}00346\ \ \ \ \ \textcolor{comment}{//\ Handle\ mouse\ movement\ for\ hover}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00347}00347\ \ \ \ \ \textcolor{keywordflow}{if}\ (\textcolor{keyword}{const}\ \textcolor{keyword}{auto}*\ mouseMove\ =\ t\_event.getIf<sf::Event::MouseMoved>())}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00348}00348\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00349}00349\ \ \ \ \ \ \ \ \ sf::Vector2f\ mousePos(\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(mouseMove-\/>position.x),}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00350}00350\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(mouseMove-\/>position.y));}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00351}00351\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00352}00352\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (isMouseOver(m\_resumeButton,\ mousePos))\ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00353}00353\ \ \ \ \ \ \ \ \ \ \ \ \ m\_pauseHover\ =\ PauseButtonHover::Resume;}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00354}00354\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00355}00355\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (isMouseOver(m\_mainMenuButton,\ mousePos))\ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00356}00356\ \ \ \ \ \ \ \ \ \ \ \ \ m\_pauseHover\ =\ PauseButtonHover::MainMenu;}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00357}00357\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00358}00358\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00359}00359\ \ \ \ \ \ \ \ \ \ \ \ \ m\_pauseHover\ =\ PauseButtonHover::None;}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00360}00360\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00361}00361\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00362}00362\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00363}00363\ \ \ \ \ \textcolor{comment}{//\ Handle\ clicks}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00364}00364\ \ \ \ \ \textcolor{keywordflow}{if}\ (\textcolor{keyword}{const}\ \textcolor{keyword}{auto}*\ mousePress\ =\ t\_event.getIf<sf::Event::MouseButtonPressed>())}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00365}00365\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00366}00366\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (mousePress-\/>button\ ==\ sf::Mouse::Button::Left)}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00367}00367\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00368}00368\ \ \ \ \ \ \ \ \ \ \ \ \ sf::Vector2f\ mousePos(\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(mousePress-\/>position.x),}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00369}00369\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(mousePress-\/>position.y));}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00370}00370\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00371}00371\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (isMouseOver(m\_resumeButton,\ mousePos))}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00372}00372\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00373}00373\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m\_isPaused\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00374}00374\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}Resuming\ game\(\backslash\)n"{}};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00375}00375\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00376}00376\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (isMouseOver(m\_mainMenuButton,\ mousePos))}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00377}00377\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00378}00378\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}Returning\ to\ main\ menu\ from\ pause\(\backslash\)n"{}};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00379}00379\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m\_nextState\ =\ std::make\_unique<MainMenuState>(m\_sharedFont,\ m\_networkManager);}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00380}00380\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m\_transitionRequested\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00381}00381\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00382}00382\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00383}00383\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00384}00384\ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00385}00385\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00386}00386\ \textcolor{keywordtype}{bool}\ GamePlayState::shouldTransition()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00387}00387\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00388}00388\ \ \ \ \ \textcolor{keywordflow}{return}\ m\_transitionRequested;}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00389}00389\ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00390}00390\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00391}00391\ std::unique\_ptr<GameState>\ GamePlayState::getNextState()}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00392}00392\ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00393}00393\ \ \ \ \ m\_transitionRequested\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00394}00394\ \ \ \ \ \textcolor{keywordflow}{return}\ std::move(m\_nextState);}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00395}00395\ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00396}00396\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00397}00397\ \textcolor{keywordtype}{bool}\ GamePlayState::isMouseOver(\textcolor{keyword}{const}\ sf::Text\&\ t\_text,\ sf::Vector2f\ t\_mousePos)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00398}00398\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00399}00399\ \ \ \ \ \textcolor{keywordflow}{return}\ t\_text.getGlobalBounds().contains(t\_mousePos);}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00400}00400\ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00401}00401\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00402}00402\ \textcolor{keywordtype}{void}\ GamePlayState::updateGameInfoText()}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00403}00403\ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00404}00404\ \ \ \ \ std::string\ modeText;}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00405}00405\ \ \ \ \ \textcolor{keywordflow}{if}\ (m\_mode\ ==\ GameMode::VsAI)}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00406}00406\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00407}00407\ \ \ \ \ \ \ \ \ modeText\ =\ \textcolor{stringliteral}{"{}vs\ AI"{}};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00408}00408\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00409}00409\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (m\_mode\ ==\ GameMode::VsPvP)\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00410}00410\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00411}00411\ \ \ \ \ \ \ \ \ modeText\ =\ \textcolor{stringliteral}{"{}PvP"{}};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00412}00412\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00413}00413\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (m\_mode\ ==\ GameMode::VsNetworked)}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00414}00414\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00415}00415\ \ \ \ \ \ \ \ \ modeText\ =\ \textcolor{stringliteral}{"{}Network"{}};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00416}00416\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00417}00417\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00418}00418\ \ \ \ \ std::string\ playerText\ =\ (m\_board.getCurrentPlayer()\ ==\ Player::Player1)\ ?\ \textcolor{stringliteral}{"{}Player\ 1"{}}\ :\ \textcolor{stringliteral}{"{}Player\ 2"{}};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00419}00419\ \ \ \ \ std::string\ phaseText\ =\ m\_board.isPlacementPhase()\ ?\ \textcolor{stringliteral}{"{}PLACEMENT"{}}\ :\ \textcolor{stringliteral}{"{}MOVEMENT"{}};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00420}00420\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00421}00421\ \ \ \ \ std::string\ info\ =\ \textcolor{stringliteral}{"{}Mode:\ "{}}\ +\ modeText\ +\ \textcolor{stringliteral}{"{}\ |\ "{}}\ +\ playerText\ +\ \textcolor{stringliteral}{"{}'s\ Turn\ |\ Phase:\ "{}}\ +\ phaseText;}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00422}00422\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00423}00423\ \ \ \ \ \textcolor{comment}{//\ Add\ turn\ indicator\ for\ network\ mode}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00424}00424\ \ \ \ \ \textcolor{keywordflow}{if}\ (m\_mode\ ==\ GameMode::VsNetworked)\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00425}00425\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00426}00426\ \ \ \ \ \ \ \ \ std::string\ youAre\ =\ (m\_localPlayer\ ==\ Player::Player1)\ ?\ \textcolor{stringliteral}{"{}You\ are\ Player\ 1"{}}\ :\ \textcolor{stringliteral}{"{}You\ are\ Player\ 2"{}};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00427}00427\ \ \ \ \ \ \ \ \ info\ =\ youAre\ +\ \textcolor{stringliteral}{"{}\ |\ "{}}\ +\ info;}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00428}00428\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00429}00429\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (isMyTurn())\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00430}00430\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00431}00431\ \ \ \ \ \ \ \ \ \ \ \ \ info\ +=\ \textcolor{stringliteral}{"{}\ |\ YOUR\ TURN"{}};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00432}00432\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00433}00433\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00434}00434\ \ \ \ \ \ \ \ \ \ \ \ \ info\ +=\ \textcolor{stringliteral}{"{}\ |\ Waiting\ for\ opponent..."{}};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00435}00435\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00436}00436\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00437}00437\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00438}00438\ \ \ \ \ \textcolor{keywordflow}{if}\ (m\_board.isPlacementPhase())}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00439}00439\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00440}00440\ \ \ \ \ \ \ \ \ info\ +=\ \textcolor{stringliteral}{"{}\ |\ Click\ piece,\ then\ click\ board"{}};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00441}00441\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00442}00442\ \ \ \ \ \textcolor{keywordflow}{else}\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00443}00443\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00444}00444\ \ \ \ \ \ \ \ \ info\ +=\ \textcolor{stringliteral}{"{}\ |\ Click\ piece,\ then\ click\ destination"{}};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00445}00445\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00446}00446\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00447}00447\ \ \ \ \ info\ +=\ \textcolor{stringliteral}{"{}\ |\ ESC\ to\ pause"{}};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00448}00448\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00449}00449\ \ \ \ \ m\_gameInfoText.setString(info);}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00450}00450\ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00451}00451\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00452}00452\ \textcolor{keywordtype}{void}\ GamePlayState::checkForWinner()}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00453}00453\ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00454}00454\ \ \ \ \ \textcolor{keywordflow}{if}\ (m\_winner.empty()\ \&\&\ !m\_board.isPlacementPhase())\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00455}00455\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00456}00456\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (m\_board.checkWin(Player::Player1))\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00457}00457\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00458}00458\ \ \ \ \ \ \ \ \ \ \ \ \ m\_winner\ =\ \textcolor{stringliteral}{"{}Player\ 1"{}};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00459}00459\ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}Player\ 1\ wins!\(\backslash\)n"{}};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00460}00460\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00461}00461\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (m\_mode\ ==\ GameMode::VsNetworked)}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00462}00462\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00463}00463\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ sendMove(\textcolor{stringliteral}{"{}WIN|Player\ 1"{}});}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00464}00464\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00465}00465\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00466}00466\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (m\_board.checkWin(Player::Player2))\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00467}00467\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00468}00468\ \ \ \ \ \ \ \ \ \ \ \ \ m\_winner\ =\ \textcolor{stringliteral}{"{}Player\ 2"{}};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00469}00469\ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}Player\ 2\ wins!\(\backslash\)n"{}};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00470}00470\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00471}00471\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (m\_mode\ ==\ GameMode::VsNetworked)}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00472}00472\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00473}00473\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ sendMove(\textcolor{stringliteral}{"{}WIN|Player\ 2"{}});\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00474}00474\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00475}00475\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00476}00476\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00477}00477\ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00478}00478\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00479}00479\ \textcolor{comment}{//\ AI\ move}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00480}00480\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00481}00481\ \textcolor{keywordtype}{void}\ GamePlayState::executeAIMove()}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00482}00482\ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00483}00483\ \ \ \ \ \textcolor{keywordflow}{if}\ (!m\_ai\ ||\ m\_aiIsThinking)\ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00484}00484\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00485}00485\ \ \ \ \ m\_aiIsThinking\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00486}00486\ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}===\ AI\ TURN\ ==="{}}\ <<\ \textcolor{stringliteral}{"{}\(\backslash\)n"{}};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00487}00487\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00488}00488\ \ \ \ \ AIMove\ move\ =\ m\_ai-\/>calculateBestMove(m\_board);}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00489}00489\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00490}00490\ \ \ \ \ \textcolor{keywordflow}{if}\ (move.isInPlacement)\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00491}00491\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00492}00492\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (m\_board.placePiece(move.row,\ move.col,\ move.pieceType,\ Player::Player2))\ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00493}00493\ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}AI\ placed\ "{}}\ <<\ (int)move.pieceType\ <<\ \textcolor{stringliteral}{"{}\ at\ ("{}}\ <<\ move.row\ <<\ \textcolor{stringliteral}{"{},\ "{}}\ <<\ move.col\ <<\ \textcolor{stringliteral}{"{})\(\backslash\)n"{}};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00494}00494\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00495}00495\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00496}00496\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00497}00497\ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}ERROR:\ AI\ tried\ invalid\ placement!\(\backslash\)n"{}};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00498}00498\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00499}00499\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00500}00500\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00501}00501\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (m\_board.selectPieceForMove(move.fromRow,\ move.fromCol))\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00502}00502\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00503}00503\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (m\_board.movePiece(move.toRow,\ move.toCol))\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00504}00504\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00505}00505\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}AI\ moved\ from\ ("{}}\ <<\ move.fromRow\ <<\ \textcolor{stringliteral}{"{},\ "{}}\ <<\ move.fromCol\ <<\ \textcolor{stringliteral}{"{})\ to\ ("{}}\ <<\ move.toRow\ <<\ \textcolor{stringliteral}{"{},\ "{}}\ <<\ move.toCol\ <<\ \textcolor{stringliteral}{"{})\(\backslash\)n"{}};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00506}00506\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00507}00507\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00508}00508\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00509}00509\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}ERROR:\ AI\ tried\ invalid\ move!\(\backslash\)n"{}};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00510}00510\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00511}00511\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00512}00512\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00513}00513\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00514}00514\ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}ERROR:\ AI\ couldn't\ select\ piece!\(\backslash\)n"{}};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00515}00515\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00516}00516\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00517}00517\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00518}00518\ \ \ \ \ m\_aiIsThinking\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00519}00519\ \ \ \ \ m\_aiThinkTimer.restart();}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00520}00520\ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00521}00521\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00522}00522\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00523}00523\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00524}00524\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00525}00525\ \textcolor{keywordtype}{bool}\ GamePlayState::isMyTurn()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00526}00526\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00527}00527\ \ \ \ \ \textcolor{keywordflow}{if}\ (m\_mode\ ==\ GameMode::VsNetworked)}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00528}00528\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_localPlayer\ ==\ m\_currentTurn;}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00529}00529\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00530}00530\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00531}00531\ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00532}00532\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00533}00533\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00534}00534\ \textcolor{keywordtype}{void}\ GamePlayState::sendMove(\textcolor{keyword}{const}\ std::string\&\ t\_message)}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00535}00535\ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00536}00536\ \ \ \ \ \textcolor{keywordflow}{if}\ (m\_mode\ ==\ GameMode::VsNetworked\ \&\&\ m\_networkManager)}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00537}00537\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00538}00538\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!m\_networkManager-\/>sendMessage(t\_message))}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00539}00539\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00540}00540\ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}ERROR:\ Failed\ to\ send\ move.\ \(\backslash\)n"{}};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00541}00541\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00542}00542\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00543}00543\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00544}00544\ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00545}00545\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00546}00546\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00547}00547\ \textcolor{keywordtype}{void}\ GamePlayState::receiveAndApplyMoves()}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00548}00548\ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00549}00549\ \ \ \ \ \textcolor{keywordflow}{if}\ (m\_mode\ !=\ GameMode::VsNetworked\ ||\ !m\_networkManager)\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00550}00550\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00551}00551\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00552}00552\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00553}00553\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00554}00554\ \ \ \ \ \textcolor{comment}{//\ Check\ for\ incoming\ messages}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00555}00555\ \ \ \ \ \textcolor{keyword}{auto}\ messageOpt\ =\ m\_networkManager-\/>receiveMessage();}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00556}00556\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00557}00557\ \ \ \ \ \textcolor{keywordflow}{if}\ (messageOpt.has\_value())\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00558}00558\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00559}00559\ \ \ \ \ \ \ \ \ std::string\ message\ =\ messageOpt.value();}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00560}00560\ \ \ \ \ \ \ \ \ applyOpponentMove(message);}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00561}00561\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00562}00562\ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00563}00563\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00564}00564\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00565}00565\ \textcolor{keywordtype}{void}\ GamePlayState::applyOpponentMove(\textcolor{keyword}{const}\ std::string\&\ t\_message)}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00566}00566\ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00567}00567\ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}Applying\ opponent\ move:\ "{}}\ <<\ t\_message\ <<\ \textcolor{stringliteral}{"{}\(\backslash\)n"{}};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00568}00568\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00569}00569\ \ \ \ \ \textcolor{comment}{//\ Parse\ message\ format:\ "{}PLACE|PieceType|Row|Col"{}\ or\ "{}MOVE|FromRow|FromCol|ToRow|ToCol"{}}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00570}00570\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ firstDelim\ =\ t\_message.find(\textcolor{charliteral}{'|'});}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00571}00571\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00572}00572\ \ \ \ \ \textcolor{keywordflow}{if}\ (firstDelim\ ==\ std::string::npos)}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00573}00573\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00574}00574\ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}ERROR:\ Invalid\ message\ format\(\backslash\)n"{}};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00575}00575\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00576}00576\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00577}00577\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00578}00578\ \ \ \ \ std::string\ messageType\ =\ t\_message.substr(0,\ firstDelim);}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00579}00579\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00580}00580\ \ \ \ \ \textcolor{keywordflow}{if}\ (messageType\ ==\ \textcolor{stringliteral}{"{}PLACE"{}})\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00581}00581\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00582}00582\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Parse:\ PLACE|Type|Row|Col}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00583}00583\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ secondDelim\ =\ t\_message.find(\textcolor{charliteral}{'|'},\ firstDelim\ +\ 1);}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00584}00584\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ thirdDelim\ =\ t\_message.find(\textcolor{charliteral}{'|'},\ secondDelim\ +\ 1);}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00585}00585\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00586}00586\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (secondDelim\ ==\ std::string::npos\ ||\ thirdDelim\ ==\ std::string::npos)\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00587}00587\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00588}00588\ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}ERROR:\ Invalid\ PLACE\ message\(\backslash\)n"{}};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00589}00589\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00590}00590\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00591}00591\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00592}00592\ \ \ \ \ \ \ \ \ std::string\ typeStr\ =\ t\_message.substr(firstDelim\ +\ 1,\ secondDelim\ -\/\ firstDelim\ -\/\ 1);}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00593}00593\ \ \ \ \ \ \ \ \ std::string\ rowStr\ =\ t\_message.substr(secondDelim\ +\ 1,\ thirdDelim\ -\/\ secondDelim\ -\/\ 1);}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00594}00594\ \ \ \ \ \ \ \ \ std::string\ colStr\ =\ t\_message.substr(thirdDelim\ +\ 1);}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00595}00595\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00596}00596\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Convert\ type\ string\ to\ PieceType}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00597}00597\ \ \ \ \ \ \ \ \ PieceType\ type\ =\ PieceType::None;}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00598}00598\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00599}00599\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (typeStr\ ==\ \textcolor{stringliteral}{"{}Donkey"{}})\ type\ =\ PieceType::Donkey;}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00600}00600\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (typeStr\ ==\ \textcolor{stringliteral}{"{}Snake"{}})\ type\ =\ PieceType::Snake;}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00601}00601\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (typeStr\ ==\ \textcolor{stringliteral}{"{}Frog"{}})\ type\ =\ PieceType::Frog;}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00602}00602\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00603}00603\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ row\ =\ std::stoi(rowStr);}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00604}00604\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ col\ =\ std::stoi(colStr);}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00605}00605\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00606}00606\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Apply\ opponent's\ placement}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00607}00607\ \ \ \ \ \ \ \ \ Player\ opponentPlayer\ =\ (m\_localPlayer\ ==\ Player::Player1)\ ?\ Player::Player2\ :\ Player::Player1;}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00608}00608\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00609}00609\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (m\_board.placePiece(row,\ col,\ type,\ opponentPlayer))\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00610}00610\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00611}00611\ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}Opponent\ placed\ "{}}\ <<\ typeStr\ <<\ \textcolor{stringliteral}{"{}\ at\ ("{}}\ <<\ row\ <<\ \textcolor{stringliteral}{"{},\ "{}}\ <<\ col\ <<\ \textcolor{stringliteral}{"{})\(\backslash\)n"{}};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00612}00612\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00613}00613\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Switch\ turn\ back\ to\ local\ player}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00614}00614\ \ \ \ \ \ \ \ \ \ \ \ \ m\_currentTurn\ =\ m\_localPlayer;}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00615}00615\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00616}00616\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00617}00617\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00618}00618\ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}ERROR:\ Opponent's\ move\ was\ invalid!\(\backslash\)n"{}};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00619}00619\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00620}00620\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00621}00621\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (messageType\ ==\ \textcolor{stringliteral}{"{}MOVE"{}})}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00622}00622\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00623}00623\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Parse:\ MOVE|FromRow|FromCol|ToRow|ToCol}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00624}00624\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ secondDelim\ =\ t\_message.find(\textcolor{charliteral}{'|'},\ firstDelim\ +\ 1);}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00625}00625\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ thirdDelim\ =\ t\_message.find(\textcolor{charliteral}{'|'},\ secondDelim\ +\ 1);}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00626}00626\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ fourthDelim\ =\ t\_message.find(\textcolor{charliteral}{'|'},\ thirdDelim\ +\ 1);}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00627}00627\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00628}00628\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (secondDelim\ ==\ std::string::npos\ ||\ thirdDelim\ ==\ std::string::npos\ ||\ fourthDelim\ ==\ std::string::npos)}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00629}00629\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00630}00630\ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}ERROR:\ Invalid\ MOVE\ message\(\backslash\)n"{}};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00631}00631\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00632}00632\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00633}00633\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00634}00634\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ fromRow\ =\ std::stoi(t\_message.substr(firstDelim\ +\ 1,\ secondDelim\ -\/\ firstDelim\ -\/\ 1));}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00635}00635\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ fromCol\ =\ std::stoi(t\_message.substr(secondDelim\ +\ 1,\ thirdDelim\ -\/\ secondDelim\ -\/\ 1));}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00636}00636\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ toRow\ =\ std::stoi(t\_message.substr(thirdDelim\ +\ 1,\ fourthDelim\ -\/\ thirdDelim\ -\/\ 1));}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00637}00637\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ toCol\ =\ std::stoi(t\_message.substr(fourthDelim\ +\ 1));}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00638}00638\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00639}00639\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Apply\ opponent's\ move}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00640}00640\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (m\_board.selectPieceForMove(fromRow,\ fromCol))\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00641}00641\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00642}00642\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (m\_board.movePiece(toRow,\ toCol))\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00643}00643\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00644}00644\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}Opponent\ moved\ from\ ("{}}\ <<\ fromRow\ <<\ \textcolor{stringliteral}{"{},\ "{}}\ <<\ fromCol\ <<\ \textcolor{stringliteral}{"{})\ to\ ("{}}\ <<\ toRow\ <<\ \textcolor{stringliteral}{"{},\ "{}}\ <<\ toCol\ <<\ \textcolor{stringliteral}{"{})\(\backslash\)n"{}};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00645}00645\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00646}00646\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Switch\ turn\ back\ to\ local\ player}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00647}00647\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m\_currentTurn\ =\ m\_localPlayer;}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00648}00648\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00649}00649\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00650}00650\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00651}00651\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}ERROR:\ Opponent's\ move\ destination\ was\ invalid!\(\backslash\)n"{}};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00652}00652\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00653}00653\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00654}00654\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00655}00655\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00656}00656\ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}ERROR:\ Opponent\ couldn't\ select\ piece!\(\backslash\)n"{}};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00657}00657\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00658}00658\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00659}00659\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (messageType\ ==\ \textcolor{stringliteral}{"{}WIN"{}})\ }
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00660}00660\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00661}00661\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Opponent\ won}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00662}00662\ \ \ \ \ \ \ \ \ std::string\ winnerName\ =\ t\_message.substr(firstDelim\ +\ 1);}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00663}00663\ \ \ \ \ \ \ \ \ m\_winner\ =\ winnerName;}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00664}00664\ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}Opponent\ won!\(\backslash\)n"{}};}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00665}00665\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_game_play_state_8cpp_source_l00666}00666\ \}}
+
+\end{DoxyCode}
