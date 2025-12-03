@@ -8,6 +8,7 @@ Board::Board()
     , m_selectedRow(-1)
     , m_selectedCol(-1)
     , m_pieceSelected(false)
+    , m_texturesLoaded(false)
 {
     // Initialize empty grid
     for (int row = 0; row < Globals::GRID_SIZE; ++row) 
@@ -16,6 +17,37 @@ Board::Board()
         {
             m_grid[row][col] = Piece();
         }
+    }
+    loadTextures();
+}
+
+
+// Add this new method:
+void Board::loadTextures()
+{
+    m_texturesLoaded = true;
+
+    if (!m_donkeyTexture.loadFromFile("ASSETS/IMAGES/pixartDonkey.png"))
+    {
+        std::cout << "Warning: Could not load donkey.png, using shapes\n";
+        m_texturesLoaded = false;
+    }
+
+    if (!m_snakeTexture.loadFromFile("ASSETS/IMAGES/pixartSnake.png"))
+    {
+        std::cout << "Warning: Could not load snake.png, using shapes\n";
+        m_texturesLoaded = false;
+    }
+
+    if (!m_frogTexture.loadFromFile("ASSETS/IMAGES/pixartFrog.png"))
+    {
+        std::cout << "Warning: Could not load frog.png, using shapes\n";
+        m_texturesLoaded = false;
+    }
+
+    if (m_texturesLoaded)
+    {
+        std::cout << "Loaded all piece sprites successfully!\n";
     }
 }
 
@@ -43,13 +75,15 @@ sf::Color Board::getPieceColor(PieceType type, Player player) const
     case PieceType::Donkey: return baseColor;
     case PieceType::Snake:
         // Darker shade
-        return sf::Color(baseColor.r * 0.3f, baseColor.g * 0.3f, baseColor.b * 0.3f);
+        return sf::Color(baseColor.r, baseColor.g, baseColor.b, baseColor.a * 0.7);
     case PieceType::Frog:
         // Lighter shade
         return sf::Color(
-            std::min(255, (int)(baseColor.r * 1.6f)),
-            std::min(255, (int)(baseColor.g * 1.6f)),
-            std::min(255, (int)(baseColor.b * 1.6f))
+            std::min(255, (int)(baseColor.r)),
+            std::min(255, (int)(baseColor.g)),
+            std::min(255, (int)(baseColor.b)),
+            std::min(255, (int)(baseColor.a * 1.4))
+ 
         );
     default: return sf::Color::White;
     }
@@ -405,6 +439,7 @@ void Board::drawGrid(sf::RenderWindow& window, sf::Vector2f position) const
     }
 }
 
+
 void Board::drawPieces(sf::RenderWindow& window, sf::Vector2f position) const
 {
     for (int row = 0; row < Globals::GRID_SIZE; ++row)
@@ -412,51 +447,92 @@ void Board::drawPieces(sf::RenderWindow& window, sf::Vector2f position) const
         for (int col = 0; col < Globals::GRID_SIZE; ++col)
         {
             const Piece& piece = m_grid[row][col];
-            if (!piece.isEmpty()) 
+            if (!piece.isEmpty())
             {
                 float x = position.x + col * Globals::CELL_SIZE + Globals::CELL_SIZE / 2.f;
                 float y = position.y + row * Globals::CELL_SIZE + Globals::CELL_SIZE / 2.f;
 
-                // Draw different shapes for different piece types
                 sf::Color color = getPieceColor(piece.type, piece.owner);
 
-                switch (piece.type) 
+                if (m_texturesLoaded)
                 {
-                case PieceType::Donkey: 
-                {
-                    // Circle for Donkey
-                    sf::CircleShape shape(Globals::CELL_SIZE * 0.35f);
-                    shape.setOrigin(sf::Vector2f(Globals::CELL_SIZE * 0.35f, Globals::CELL_SIZE * 0.35f));
-                    shape.setPosition(sf::Vector2f(x, y));
-                    shape.setFillColor(color);
-                    window.draw(shape);
-                    break;
+                    if (m_texturesLoaded)
+                    {
+                        const sf::Texture* texture = nullptr;
+
+                        switch (piece.type)
+                        {
+                        case PieceType::Donkey:
+                            texture = &m_donkeyTexture;
+                            break;
+                        case PieceType::Snake:
+                            texture = &m_snakeTexture;
+                            break;
+                        case PieceType::Frog:
+                            texture = &m_frogTexture;
+                            break;
+                        default:
+                            continue;
+                        }
+
+                        sf::Sprite sprite(*texture);  // Pass decided texture
+
+                        // Scale to fit cell
+                        sf::Vector2u textureSize = texture->getSize();
+                        float desiredSize = Globals::CELL_SIZE * 0.7f;
+                        float scale = desiredSize / std::max(textureSize.x, textureSize.y);
+                        sprite.setScale(sf::Vector2f(scale, scale));
+
+                        // Center sprite
+                        sf::FloatRect bounds = sprite.getLocalBounds();
+                        sprite.setOrigin(sf::Vector2f(bounds.size.x / 2.f,
+                                                      bounds.size.y / 2.f));
+                        sprite.setPosition(sf::Vector2(x, y));
+
+                        // Tints sprite colour based on the player owner
+                        sprite.setColor(color);
+
+                        window.draw(sprite);
+                    }
                 }
-                case PieceType::Snake: 
+                else
                 {
-                    // Triangle for Snake
-                    sf::CircleShape shape(Globals::CELL_SIZE * 0.35f, 3);
-                    shape.setOrigin(sf::Vector2f(Globals::CELL_SIZE * 0.35f, Globals::CELL_SIZE * 0.35f));
-                    shape.setPosition(sf::Vector2f(x, y));
-                    shape.setFillColor(color);
-                    window.draw(shape);
-                    break;
-                }
-                case PieceType::Frog: 
-                {
-                    // Square for Frog
-                    sf::RectangleShape shape(sf::Vector2f(Globals::CELL_SIZE * 0.6f, Globals::CELL_SIZE * 0.6f));
-                    shape.setOrigin(sf::Vector2f(Globals::CELL_SIZE * 0.3f, Globals::CELL_SIZE * 0.3f));
-                    shape.setPosition(sf::Vector2f(x, y));
-                    shape.setFillColor(color);
-                    window.draw(shape);
-                    break;
-                }
-                default: break;
+                    // Fallback to old shapes
+                    switch (piece.type)
+                    {
+                    case PieceType::Donkey:
+                    {
+                        sf::CircleShape shape(Globals::CELL_SIZE * 0.35f);
+                        shape.setOrigin(sf::Vector2f(Globals::CELL_SIZE * 0.35f, Globals::CELL_SIZE * 0.35f));
+                        shape.setPosition(sf::Vector2f(x, y));
+                        shape.setFillColor(color);
+                        window.draw(shape);
+                        break;
+                    }
+                    case PieceType::Snake:
+                    {
+                        sf::CircleShape shape(Globals::CELL_SIZE * 0.35f, 3);
+                        shape.setOrigin(sf::Vector2f(Globals::CELL_SIZE * 0.35f, Globals::CELL_SIZE * 0.35f));
+                        shape.setPosition(sf::Vector2f(x, y));
+                        shape.setFillColor(color);
+                        window.draw(shape);
+                        break;
+                    }
+                    case PieceType::Frog:
+                    {
+                        sf::RectangleShape shape(sf::Vector2f(Globals::CELL_SIZE * 0.6f, Globals::CELL_SIZE * 0.6f));
+                        shape.setOrigin(sf::Vector2f(Globals::CELL_SIZE * 0.3f, Globals::CELL_SIZE * 0.3f));
+                        shape.setPosition(sf::Vector2f(x, y));
+                        shape.setFillColor(color);
+                        window.draw(shape);
+                        break;
+                    }
+                    default: break;
+                    }
                 }
 
-                // Highlight selected piece
-                if (m_pieceSelected && row == m_selectedRow && col == m_selectedCol) 
+                // Selection highlight (same as before)
+                if (m_pieceSelected && row == m_selectedRow && col == m_selectedCol)
                 {
                     sf::CircleShape highlight(Globals::CELL_SIZE * 0.45f);
                     highlight.setOrigin(sf::Vector2f(Globals::CELL_SIZE * 0.45f, Globals::CELL_SIZE * 0.45f));
@@ -477,20 +553,44 @@ void Board::drawUnplacedPieces(sf::RenderWindow& window, Player player, sf::Font
     if (player != m_currentPlayer) return;
 
     const PlayerPieces& pieces = (player == Player::Player1) ? m_player1Pieces : m_player2Pieces;
-    sf::Color playerColor = getPlayerColor(player);
 
     float yOffset = Globals::UNPLACED_PANEL_Y;
     float spacing = 100.f;
+    float iconSize = 60.f;
 
     // Draw Donkeys
-    if (pieces.donkeys > 0) 
+    if (pieces.donkeys > 0)
     {
-        sf::CircleShape donkeyShape(30.f);
-        donkeyShape.setPosition(sf::Vector2f(Globals::UNPLACED_PANEL_X, yOffset));
-        donkeyShape.setFillColor(getPieceColor(PieceType::Donkey, player));
-        donkeyShape.setOutlineColor(m_selectedPieceType == PieceType::Donkey ? sf::Color::Yellow : sf::Color::White);
-        donkeyShape.setOutlineThickness(m_selectedPieceType == PieceType::Donkey ? 3.f : 1.f);
-        window.draw(donkeyShape);
+        if (m_texturesLoaded)
+        {
+            sf::Sprite sprite(m_donkeyTexture);
+            float scale = iconSize / std::max(m_donkeyTexture.getSize().x, m_donkeyTexture.getSize().y);
+            sprite.setScale(sf::Vector2f(scale, scale));
+            sprite.setPosition(sf::Vector2f(Globals::UNPLACED_PANEL_X, yOffset));
+            sprite.setColor(getPieceColor(PieceType::Donkey, player));
+            window.draw(sprite);
+
+            // Selection outline
+            if (m_selectedPieceType == PieceType::Donkey)
+            {
+                sf::RectangleShape outline(sf::Vector2f(iconSize, iconSize));
+                outline.setPosition(sf::Vector2f(Globals::UNPLACED_PANEL_X, yOffset));
+                outline.setFillColor(sf::Color::Transparent);
+                outline.setOutlineColor(sf::Color::Yellow);
+                outline.setOutlineThickness(3.f);
+                window.draw(outline);
+            }
+        }
+        else
+        {
+            // Fallback shape
+            sf::CircleShape donkeyShape(30.f);
+            donkeyShape.setPosition(sf::Vector2f(Globals::UNPLACED_PANEL_X, yOffset));
+            donkeyShape.setFillColor(getPieceColor(PieceType::Donkey, player));
+            donkeyShape.setOutlineColor(m_selectedPieceType == PieceType::Donkey ? sf::Color::Yellow : sf::Color::White);
+            donkeyShape.setOutlineThickness(m_selectedPieceType == PieceType::Donkey ? 3.f : 1.f);
+            window.draw(donkeyShape);
+        }
 
         sf::Text countText(font);
         countText.setString("x" + std::to_string(pieces.donkeys));
@@ -503,14 +603,36 @@ void Board::drawUnplacedPieces(sf::RenderWindow& window, Player player, sf::Font
     }
 
     // Draw Snakes
-    if (pieces.snakes > 0) 
+    if (pieces.snakes > 0)
     {
-        sf::CircleShape snakeShape(30.f, 3);
-        snakeShape.setPosition(sf::Vector2f(Globals::UNPLACED_PANEL_X, yOffset));
-        snakeShape.setFillColor(getPieceColor(PieceType::Snake, player));
-        snakeShape.setOutlineColor(m_selectedPieceType == PieceType::Snake ? sf::Color::Yellow : sf::Color::White);
-        snakeShape.setOutlineThickness(m_selectedPieceType == PieceType::Snake ? 3.f : 1.f);
-        window.draw(snakeShape);
+        if (m_texturesLoaded)
+        {
+            sf::Sprite sprite(m_snakeTexture);
+            float scale = iconSize / std::max(m_snakeTexture.getSize().x, m_snakeTexture.getSize().y);
+            sprite.setScale(sf::Vector2f(scale, scale));
+            sprite.setPosition(sf::Vector2f(Globals::UNPLACED_PANEL_X, yOffset));
+            sprite.setColor(getPieceColor(PieceType::Snake, player));
+            window.draw(sprite);
+
+            if (m_selectedPieceType == PieceType::Snake)
+            {
+                sf::RectangleShape outline(sf::Vector2f(iconSize, iconSize));
+                outline.setPosition(sf::Vector2f(Globals::UNPLACED_PANEL_X, yOffset));
+                outline.setFillColor(sf::Color::Transparent);
+                outline.setOutlineColor(sf::Color::Yellow);
+                outline.setOutlineThickness(3.f);
+                window.draw(outline);
+            }
+        }
+        else
+        {
+            sf::CircleShape snakeShape(30.f, 3);
+            snakeShape.setPosition(sf::Vector2f(Globals::UNPLACED_PANEL_X, yOffset));
+            snakeShape.setFillColor(getPieceColor(PieceType::Snake, player));
+            snakeShape.setOutlineColor(m_selectedPieceType == PieceType::Snake ? sf::Color::Yellow : sf::Color::White);
+            snakeShape.setOutlineThickness(m_selectedPieceType == PieceType::Snake ? 3.f : 1.f);
+            window.draw(snakeShape);
+        }
 
         sf::Text countText(font);
         countText.setString("x" + std::to_string(pieces.snakes));
@@ -523,14 +645,36 @@ void Board::drawUnplacedPieces(sf::RenderWindow& window, Player player, sf::Font
     }
 
     // Draw Frogs
-    if (pieces.frogs > 0) 
+    if (pieces.frogs > 0)
     {
-        sf::RectangleShape frogShape(sf::Vector2f(60.f, 60.f));
-        frogShape.setPosition(sf::Vector2f(Globals::UNPLACED_PANEL_X, yOffset));
-        frogShape.setFillColor(getPieceColor(PieceType::Frog, player));
-        frogShape.setOutlineColor(m_selectedPieceType == PieceType::Frog ? sf::Color::Yellow : sf::Color::White);
-        frogShape.setOutlineThickness(m_selectedPieceType == PieceType::Frog ? 3.f : 1.f);
-        window.draw(frogShape);
+        if (m_texturesLoaded)
+        {
+            sf::Sprite sprite(m_frogTexture);
+            float scale = iconSize / std::max(m_frogTexture.getSize().x, m_frogTexture.getSize().y);
+            sprite.setScale(sf::Vector2f(scale, scale));
+            sprite.setPosition(sf::Vector2f(Globals::UNPLACED_PANEL_X, yOffset));
+            sprite.setColor(getPieceColor(PieceType::Frog, player));
+            window.draw(sprite);
+
+            if (m_selectedPieceType == PieceType::Frog)
+            {
+                sf::RectangleShape outline(sf::Vector2f(iconSize, iconSize));
+                outline.setPosition(sf::Vector2f(Globals::UNPLACED_PANEL_X, yOffset));
+                outline.setFillColor(sf::Color::Transparent);
+                outline.setOutlineColor(sf::Color::Yellow);
+                outline.setOutlineThickness(3.f);
+                window.draw(outline);
+            }
+        }
+        else
+        {
+            sf::RectangleShape frogShape(sf::Vector2f(60.f, 60.f));
+            frogShape.setPosition(sf::Vector2f(Globals::UNPLACED_PANEL_X, yOffset));
+            frogShape.setFillColor(getPieceColor(PieceType::Frog, player));
+            frogShape.setOutlineColor(m_selectedPieceType == PieceType::Frog ? sf::Color::Yellow : sf::Color::White);
+            frogShape.setOutlineThickness(m_selectedPieceType == PieceType::Frog ? 3.f : 1.f);
+            window.draw(frogShape);
+        }
 
         sf::Text countText(font);
         countText.setString("x" + std::to_string(pieces.frogs));

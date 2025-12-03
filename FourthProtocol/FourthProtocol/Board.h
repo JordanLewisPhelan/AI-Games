@@ -51,6 +51,15 @@ private:
     int m_selectedCol;
     bool m_pieceSelected;
 
+    // Sprite textures
+    sf::Texture m_donkeyTexture;
+    sf::Texture m_snakeTexture;
+    sf::Texture m_frogTexture;
+    bool m_texturesLoaded;
+
+    // Helper to load textures
+    void loadTextures();
+
     // Helper methods
     bool isValidPosition(int row, int col) const;
     sf::Color getPlayerColor(Player player) const;
