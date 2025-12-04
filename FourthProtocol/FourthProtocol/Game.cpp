@@ -18,7 +18,7 @@
 /// </summary>
 Game::Game() :
 	m_window{ sf::VideoMode{ sf::Vector2u{Globals::SCREEN_WIDTH, Globals::SCREEN_HEIGHT}, 32U }, "Fourth Protocol" },
-	m_stateManager(), //when true game will exit
+	m_stateManager(), 
 	m_networkManager(std::make_shared<NetworkManager>())
 {
 	setupTexts(); // load font 
